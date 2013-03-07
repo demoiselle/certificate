@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE revhistory PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<revhistory>	
+	<revision>
+		<revnumber>1.0.0</revnumber>
+		<date>30/01/2013</date>
+		<authorinitials>hmp</authorinitials>
+		<revremark>Primeira release da documentação.</revremark>
+	</revision>
+</revhistory>
