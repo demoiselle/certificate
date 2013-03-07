@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="assinatura-jar">
+
+	<title>Assinatura de Jars</title>
+
+	<section>
+		<title>Introdução</title>
+		<para>
+			O modelo de segurança da plataforma Java é centrado sobre o conceito de sandbox (caixa de areia), no qual um código remoto como um applet por padrão não é confiável e 
+			portanto não pode ter acesso ilimitado ao Sistema Operacional. A sandbox garante que mesmo que um usuário carregue um applet malicioso, este não poderá danificar a 
+			máquina	local executando, por exemplo,	o comando de remoção de um arquivo do seu disco local.
+		</para>
+		<para>
+			Entretanto existem applets confiáveis que necessitam rodar fora da sandbox, como é o caso do componente Demoiselle Applet que necessita acessar certificados A3
+			armazenados em dispositivos como tokens usb. Nestes casos podemos criar uma permissão para acesso fora da sandbox através da assinatura digital do componente.
+		</para>
+		<para>
+			Neste parte da documentação é apresentada uma forma para assinar componentes utilizando as ferramentas <emphasis>keytool</emphasis> e <emphasis>jarsigner</emphasis> 
+			nativas na instalação do JDK. Vale lembrar que os certificados criados pelo <emphasis>keytool</emphasis> serão úuteis durante as fases de desenvolvimento e teste, 
+			entretanto para uso em ambiente de produção deve-se utilizar certificados emitidos por Autoridades Certificadoras (AC) reconhecidas.
+		</para>
+	</section>
+
+
+	<section>
+		<title>Criando um certificado</title>
+		<para>
+			Primeiramente criaremos o keystore que armazenará o certificado digital. A ferramenta <emphasis>keytool</emphasis> será utilizada para criação simultãnea do keystore 
+			e do certificado digital que identificaremos pelo alias <emphasis>applet_alias</emphasis>.
+		</para>
+
+		<programlisting role="JAVA"><![CDATA[keytool -genkey -alias applet_alias -keyalg RSA -keypass changeit -storepass changeit -keystore applet_keystore.jks]]></programlisting>
+
+		<important>
+			<para>
+				Utilizaremos a mesma senha
+				<emphasis>changeit</emphasis>
+				para acessar o keystore e o certificado contido nele.
+			</para>
+		</important>
+
+		<para>
+			Na sequência serão solicitadas algumas informações do certificado:
+		</para>
+
+
+		<programlisting role="XHTML"><![CDATA[What is your first and last name?
+  [Unknown]:  Framework Demoiselle
+What is the name of your organizational unit?
+  [Unknown]:  Demoiselle
+What is the name of your organization?
+  [Unknown]:  Demoiselle
+What is the name of your City or Locality?
+  [Unknown]:  Rio de Janeiro
+What is the name of your State or Province?
+  [Unknown]:  RJ
+What is the two-letter country code for this unit?
+  [Unknown]:  BR
+Is CN=Framework Demoiselle, OU=Demoiselle, O=Demoiselle, L=Rio de Janeiro, ST=RJ, C=BR correct?
+  [no]:  yes]]></programlisting>
+
+		<para>
+			Será criado o keystore JKS de nome <emphasis>applet_keystore.jks</emphasis> que contém um certificado auto assinado seu par de chaves identificado pelo alias 
+			<emphasis>applet_alias.</emphasis>
+		</para>
+
+	</section>
+
+	<section>
+		<title>Assinando um jar</title>
+
+		<para>
+			Neste momento a ferramenta <emphasis>jarsigner</emphasis> será utilizada para assinar todos os jars da aplicação. Portanto será necessário informar a localização do 
+			keystore, o nome do jar assinado, o nome do jar original e o alias do certificado:
+		</para>
+
+		<programlisting role="JAVA"><![CDATA[jarsigner -keystore applet_keystore.jks -signedjar meujar-assinado.jar meujar.jar applet_alias]]></programlisting>
+
+		<important>
+			<para>Note que o jar assinado (meujar-assinado.jar) define o nome do arquivo jar que será criado, diferente do nome original do jar (meujar.jar).</para>
+		</important>
+
+		<para>
+			Dentro do jar, na pasta <emphasis>META-INF</emphasis>, foram inseridos os aquivos <emphasis>APPLET_A.RSA</emphasis>, <emphasis>APPLET_A.SF</emphasis> e 
+			<emphasis>MANIFEST.MF</emphasis>, que possuem informações como o algoritmo de criptografia utilizado e a chave pública do certificado.
+		</para>
+
+		<para>
+			Para verificar a assinatura do jar utilize o comando <emphasis>jarsigner</emphasis> conforme abaixo:
+		</para>
+
+		<programlisting role="JAVA"><![CDATA[jarsigner -verify -keystore applet_keystore.jks meujar-assinado.jar]]></programlisting>
+
+	</section>
+</chapter>
