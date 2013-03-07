@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<part id="keystore-master">
+
+	<title>Demoiselle Keystore</title>
+
+	<partintro>
+		<para>
+			A RSA Laboratories definiu algumas especificações de uso de criptografia e assinatura digital conhecidas pelo prefixo PKCS. Duas delas estão relacionadas a keystore. São elas PKCS#11 e PKCS#12.
+		</para>
+
+		<para>
+			PKCS#11 define uma API genérica para acesso a hardware criptográfico, comumente chamados de Token ou Smartcard.
+		</para>
+
+		<para>
+			PKCS#12 define um formato de arquivo usado para guardar chaves privadas acompanhadas de seus certificados digitais e protegidos por meio de senha.
+		</para>
+
+		<para>
+			A linguagem Java suporta a utilização desses formatos e com isso define o que chamamos de KeyStore. Um KeyStore é usado para armazenar um ou mais certificados digitais 
+			e também par de chaves, com isso é possível utilizar os padrões da RSA através da mesma interface. A partir de um objeto KeyStore instanciado é	possível navegar pelos 
+			certificados digitais contidos no KeyStore por meio dos apelidos destes certificados.
+		</para>
+
+		<para>
+			O componente demoiselle-keystore visa facilitar o uso de KeyStore em diversos ambientes, seja PKCS#11 ou PKCS#12. A maneira como se carrega um KeyStore PKCS#11, ou seja, 
+			mantidos em hardware, difere quando trabalhamos com sistemas operacionais diferentes e até mesmo versões de JVM.
+		</para>
+
+		<para>
+			No ambiente Windows, é possível utilizar a API padrão do sistema operacional de carregamento de KeyStore PKCS#11, evitando ter de conhecer a marca e o driver do 
+			fabricante, mas para isso precisamos também saber a versão da JVM instalada. Isso é necessário porque na versão 1.6 a implementação JCE já comporta o tratamento nativo na
+			plataforma e na versão 1.5 ou inferior é necessário utilizar uma biblioteca para trabalhar com a API nativa do Windows.
+		</para>
+
+		<para>
+			Em ambiente Unix-like é possível carregar um KeyStore PKCS#11 a partir de um driver específico, mas é preciso saber o fabricante e o caminho do driver no sistema 
+			operacional. Para carregamento de KeyStore formato PKCS#12, ou seja, em arquivo, o processo de carregamento é o mesmo para os diversos sistemas operacionais.
+		</para>
+	</partintro>
+
+	<!-- capítulos -->
+	<xi:include href="configuracao.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	<xi:include href="funcionalidades.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+</part>
