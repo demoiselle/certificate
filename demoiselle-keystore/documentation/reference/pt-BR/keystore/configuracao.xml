@@ -347,7 +347,7 @@ library = /usr/local/ngsrv/libepsng_p11.so.1.2.2
 
 	</section>
 
-	<section>
+	<section id="disable_layer_mscapi">
 		<title>Desabilitar a camada de acesso SunMSCAPI</title>
 		<para>
 			Quando o componente é utilizado em ambiente Windows, o acesso é feito através de uma camada de abstração chamada MSCAPI, que abstrai informações que são particulares

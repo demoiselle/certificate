@@ -79,22 +79,7 @@
 	</section>
 
 	<section>
-		<title>Carregamento de KeyStore PKCS#11 em ambiente Windows - JVM 1.5 ou inferior</title>
-		<para>
-			Para carregar um KeyStore utilizando a API nativa do Windows basta utilizar a classe <emphasis>br.gov.frameworkdemoiselle.security.keystore.loader.implementation.AssemblaKeyStoreLoader</emphasis>.
-		</para>
-		
-		<para>
-			Abaixo temos exemplos de uso.
-		</para>
-
-		<programlisting role="JAVA"><![CDATA[KeyStore keyStore = (new AssemblaKeyStoreLoader()).getKeyStore(null);]]></programlisting>
-
-		<programlisting role="JAVA"><![CDATA[KeyStore keyStore = KeyStoreLoaderFactory.factoryKeyStoreLoader().getKeyStore(null);]]></programlisting>
-	</section>
-
-	<section>
-		<title>Carregamento de KeyStore PKCS#11 em ambiente Windows - JVM 1.6 ou posterior</title>
+		<title>Carregamento de KeyStore PKCS#11 em ambiente Windows</title>
 		<para>
 			Para carregar um KeyStore utilizando a API nativa do Windows basta utilizar a classe <emphasis>br.gov.frameworkdemoiselle.security.keystore.loader.implementation.MSKeyStoreLoader.</emphasis>
 		</para>
@@ -107,5 +92,11 @@
 
 		<programlisting role="JAVA"><![CDATA[KeyStore keyStore = KeyStoreLoaderFactory.factoryKeyStoreLoader().getKeyStore(null);]]></programlisting>
 
+		<important>
+			<para>
+				Este recurso só funciona em JVM 1.6 ou superior. Caso deseje executar em um ambiente com o Java mais antigo, desabilite a camada MSCAPI e faça o acesso
+				diretamente pelo driver. Para saber como proceder, consulte <xref linkend="disable_layer_mscapi" />.
+			</para>
+		</important>
 	</section>
 </chapter>

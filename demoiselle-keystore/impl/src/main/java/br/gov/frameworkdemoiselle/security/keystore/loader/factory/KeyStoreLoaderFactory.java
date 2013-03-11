@@ -44,7 +44,6 @@ import org.apache.log4j.Logger;
 import br.gov.frameworkdemoiselle.security.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.security.keystore.loader.KeyStoreLoaderException;
 import br.gov.frameworkdemoiselle.security.keystore.loader.configuration.Configuration;
-import br.gov.frameworkdemoiselle.security.keystore.loader.implementation.AssemblaKeyStoreLoader;
 import br.gov.frameworkdemoiselle.security.keystore.loader.implementation.DriverKeyStoreLoader;
 import br.gov.frameworkdemoiselle.security.keystore.loader.implementation.FileSystemKeyStoreLoader;
 import br.gov.frameworkdemoiselle.security.keystore.loader.implementation.MSKeyStoreLoader;
@@ -71,9 +70,6 @@ public class KeyStoreLoaderFactory {
 			if (Configuration.getInstance().isMSCapiDisabled()) {
 				logger.debug("Fabricando KeyStore no modo PKCS11 para Windows");
 				return new DriverKeyStoreLoader();
-			} else if (Configuration.getInstance().getJavaVersion().contains("1.5.0")) {
-				logger.debug("Fabricando KeyStore Assembla");
-				return new AssemblaKeyStoreLoader();
 			} else {
 				logger.debug("Fabricando KeyStore SunMSCAPI");
 				return new MSKeyStoreLoader();

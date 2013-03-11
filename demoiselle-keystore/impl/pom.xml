@@ -91,12 +91,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>microsoft</groupId>
-			<artifactId>assembla</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
