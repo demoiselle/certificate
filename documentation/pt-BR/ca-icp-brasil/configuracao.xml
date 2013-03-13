@@ -1,0 +1,599 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="ca-icpbrasil-configuracao">
+
+	<title>Configuração do CA ICP-Brasil</title>
+
+	<section>
+		<title>Instalação do componente</title>
+		<para>
+			Para instalar o componente
+			<emphasis>Demoiselle CA ICP-Brasil</emphasis>
+			na aplicação, basta adicionar a sua dependência no arquivo
+			<filename>pom.xml</filename>
+			do projeto gerenciado pelo Maven:
+		</para>
+		<programlisting role="XML">
+<![CDATA[
+<dependency>
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
+	<artifactId>demoiselle-ca-icpbrasil</artifactId>
+	<version>1.0.0</version>
+</dependency>]]>
+</programlisting>
+	</section>
+
+	<section>
+		<title>Autoridades Certificadoras</title>
+
+		<para>
+			Abaixo mostraremos a lista de autoridades certificadoras atual que está presente no componente:
+		</para>
+
+		<table>
+			<title>Lista de Autoridades Certificadoras</title>
+			<tgroup colsep="1" cols="2">
+				<colspec colnum="1" colname="c0" />
+				<colspec colnum="2" colname="c1" />
+
+				<thead>
+					<row>
+						<entry>Autoridade Certificadora</entry>
+						<entry>Arquivo</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>AC SINCOR RFB G4</entry>
+						<entry>ac_sincor_rfb_g4.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA-JUS v2</entry>
+						<entry>acserasajusv2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora Raiz Brasileira v3</entry>
+						<entry>icp-brasilv3.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Justica v4</entry>
+						<entry>acjusv4.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PJ-1 v1</entry>
+						<entry>ac_caixa_pj-1_v1.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Certificadora Digital</entry>
+						<entry>serasacd.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Presidencia da Republica v3</entry>
+						<entry>ac_pr_v3.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA RFB v1</entry>
+						<entry>acserasasrbv1.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign V3</entry>
+						<entry>accertisign_2004.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Certificadora Digital</entry>
+						<entry>serasacd_2004.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEMGE G2</entry>
+						<entry>ac_prodemge_g2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora v2</entry>
+						<entry>serasa_ac_v2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Certificadora Digital v1</entry>
+						<entry>acserasa_cd_v1.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign G5</entry>
+						<entry>accertisigng5_v2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Secretaria da Receita Federal v1</entry>
+						<entry>acsrf_2005.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora SERPRO v3</entry>
+						<entry>acserprov3.crt</entry>
+					</row>
+					<row>
+						<entry>AC PETROBRAS</entry>
+						<entry>ac_petrobras.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PJ v1</entry>
+						<entry>accaixapjv1.crt</entry>
+					</row>
+					<row>
+						<entry>AC Instituto Fenacon</entry>
+						<entry>ac_instituto_fenacon.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign SRF V3</entry>
+						<entry>accertisignsrf_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEMGE RFB G3</entry>
+						<entry>ac_prodemge_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA SRF</entry>
+						<entry>acserasasrf_16022005.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora SERPRORFB v3</entry>
+						<entry>acserprorfbv3.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign Multipla G5</entry>
+						<entry>accertisignmultiplag5.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERPRO-JUS v4</entry>
+						<entry>acserprojusv4.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO Final v1</entry>
+						<entry>acserproacf_04042005.crt</entry>
+					</row>
+					<row>
+						<entry>AC Secretaria da Receita Federal do Brasil</entry>
+						<entry>acrfbv2.crt</entry>
+					</row>
+					<row>
+						<entry>AC SINCOR RFB G3</entry>
+						<entry>ac_sincor_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora Raiz Brasileira v2</entry>
+						<entry>icp-brasilv2.crt</entry>
+					</row>
+					<row>
+						<entry>AC Instituto Fenacon RFB</entry>
+						<entry>ac_inst_fenacon_rfb.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora Principal</entry>
+						<entry>serasaacp.crt</entry>
+					</row>
+					<row>
+						<entry>AC Instituto Fenacon RFB</entry>
+						<entry>ac_instituto_fenacom_rfb.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRORFB</entry>
+						<entry>acserprorfb.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign SPB</entry>
+						<entry>ac_certisignspb.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign SPB G3</entry>
+						<entry>ac_certisign_spb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO - SRF</entry>
+						<entry>serprosrf.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA RFB v1</entry>
+						<entry>acserasarfb.crt</entry>
+					</row>
+					<row>
+						<entry>AC BR RFB G3</entry>
+						<entry>ac_br_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign G3</entry>
+						<entry>accertisigng3.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign Multipla</entry>
+						<entry>ac_certisignmultipla.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEMGE RFB G2</entry>
+						<entry>ac_prodemge_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Justica</entry>
+						<entry>acjus_19122005.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PF</entry>
+						<entry>accaixapf.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA v2</entry>
+						<entry>ac_caixa_v2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora Principal</entry>
+						<entry>serasaacp-22-04-2004.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora Raiz Brasileira v1</entry>
+						<entry>acraizv1.crt</entry>
+					</row>
+					<row>
+						<entry>AC SINCOR RFB G2</entry>
+						<entry>ac_sincor_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA-JUS</entry>
+						<entry>accaixajus_07042006.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Presidencia da Republica v3</entry>
+						<entry>acprv3.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora v1</entry>
+						<entry>acserasa_v1.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial SP</entry>
+						<entry>acimesp_19052006.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACON Certisign RFB G3</entry>
+						<entry>ac_fenacon_certisign_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA RFB v2</entry>
+						<entry>ac_serasa_rfb_v2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Casa da Moeda do Brasil</entry>
+						<entry>accmb.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACOR</entry>
+						<entry>acfenacor.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Justica v4</entry>
+						<entry>ac_jus_v4.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEMGE</entry>
+						<entry>acprodemge_2004.crt</entry>
+					</row>
+					<row>
+						<entry>AC BR RFB G2</entry>
+						<entry>ac_br_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Certificadora Digital v2</entry>
+						<entry>serasa_cd_v2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora</entry>
+						<entry>serasaac-23-04-2004.crt</entry>
+					</row>
+					<row>
+						<entry>AC Notarial RFB G3</entry>
+						<entry>ac_notarial_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign SRF</entry>
+						<entry>accertisignsrf_2003.crt</entry>
+					</row>
+					<row>
+						<entry>AC Instituto Fenacon RFB G2</entry>
+						<entry>ac_instituto_fenacon_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign G6</entry>
+						<entry>accertisigng6_v2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign</entry>
+						<entry>ac_certisign.crt</entry>
+					</row>
+					<row>
+						<entry>AC Notarial SRF</entry>
+						<entry>acnotarialsrf.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial SP G3</entry>
+						<entry>ac_imprensaoficialsp_g3_v2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Casa da Moeda do Brasil v2</entry>
+						<entry>ac_cmb_v2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Presidencia da Republica</entry>
+						<entry>acpr.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA v1</entry>
+						<entry>ac_caixa_v1.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO</entry>
+						<entry>acserpro.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora Principal v2</entry>
+						<entry>ac_serasa_acp_v2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PJ v2</entry>
+						<entry>ac_caixa_pj_v2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora SERPRO v2</entry>
+						<entry>serprov2.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACOR</entry>
+						<entry>acfenacor_03032006.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO SRF v1</entry>
+						<entry>acserprosrf_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA</entry>
+						<entry>accaixa_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACOR</entry>
+						<entry>acfenacor2006.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Presidencia da Republica v2</entry>
+						<entry>acprv2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PJ</entry>
+						<entry>accaixapj.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACON Certisign SRF</entry>
+						<entry>acfenaconcertisignsrf.crt</entry>
+					</row>
+					<row>
+						<entry>AC SINCOR</entry>
+						<entry>acsincor_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACOR v1</entry>
+						<entry>acfenacor_v1.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Presidencia da Republica</entry>
+						<entry>ac_pr_12022004.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACON Certisign RFB G2</entry>
+						<entry>ac_fenacon_certisign_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA-JUS v2</entry>
+						<entry>ac_caixa_jus_v2.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEST RFB v2</entry>
+						<entry>ac_prodest_rfb_v2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO Final v2</entry>
+						<entry>serprofinalv2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora SERPRO-JUS</entry>
+						<entry>acserprojus_10032006.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Certificadora Digital</entry>
+						<entry>ac_serasacd_2006.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign Multipla V3</entry>
+						<entry>accertisignmultipla_2004.crt</entry>
+					</row>
+					<row>
+						<entry>AC Instituto Fenacon G2</entry>
+						<entry>ac_institutofenacon_g2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign JUS</entry>
+						<entry>accertisignjus_19052006.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Secretaria da Receita Federal</entry>
+						<entry>acsrf_2002.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO v1</entry>
+						<entry>acserpro_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PF</entry>
+						<entry>accaixapf_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC Notarial RFB G2</entry>
+						<entry>ac_notarial_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do SERPRO Final v3</entry>
+						<entry>serproacfv3.crt</entry>
+					</row>
+					<row>
+						<entry>AC FENACOR</entry>
+						<entry>acfenacor_05082006.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial SP</entry>
+						<entry>acimesp_2004.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign-JUS G3</entry>
+						<entry>ac_certisign_jus_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PF v1</entry>
+						<entry>accaixapfv1.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial G2</entry>
+						<entry>acimprensaoficial.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PJ</entry>
+						<entry>accaixapj_2005.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA SRF</entry>
+						<entry>acserasasrf_08102003.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PF v2</entry>
+						<entry>ac_caixa_pf_v2.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA-JUS v1</entry>
+						<entry>accaixajusv1.crt</entry>
+					</row>
+					<row>
+						<entry>AC SINCOR G3</entry>
+						<entry>ac_sincor_g3.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora do PRODERJ v2</entry>
+						<entry>acproderj.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial SP SRF</entry>
+						<entry>ac_imesp_srf_pem.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign SPB G5</entry>
+						<entry>accertisignspbg5.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial SP RFB G3</entry>
+						<entry>ac_imesp_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora Raiz Brasileira</entry>
+						<entry>certificadoacraiz.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign RFB G4</entry>
+						<entry>ac_certisign_rfb_g4.crt</entry>
+					</row>
+					<row>
+						<entry>AC SERASA-JUS</entry>
+						<entry>acserasajus.crt</entry>
+					</row>
+					<row>
+						<entry>AC OAB</entry>
+						<entry>ac_oab.crt</entry>
+					</row>
+					<row>
+						<entry>AC CertiSign SPB V3</entry>
+						<entry>accertisignspb_29112004.crt</entry>
+					</row>
+					<row>
+						<entry>AC BR SRF</entry>
+						<entry>acbrsrf.crt</entry>
+					</row>
+					<row>
+						<entry>AC SINCOR SRF</entry>
+						<entry>ac_sincor_srf.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEST RFB V1</entry>
+						<entry>ac_prodest_rfb.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEMGE G3</entry>
+						<entry>ac_prodemge_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC OAB G2</entry>
+						<entry>ac_oab_g2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora</entry>
+						<entry>serasaac.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora Principal</entry>
+						<entry>serasaacp_04082006.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora da Presidencia da Republica v1</entry>
+						<entry>ac_pr_20092006.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora</entry>
+						<entry>serasaac_05082006.crt</entry>
+					</row>
+					<row>
+						<entry>Autoridade Certificadora Raiz Brasileira v1</entry>
+						<entry>icp-brasil.crt</entry>
+					</row>
+					<row>
+						<entry>AC PRODEMGE SRF</entry>
+						<entry>ac_prodemge_srf.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign Multipla G3</entry>
+						<entry>ac_certisign_multipla_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA PF-1 v1</entry>
+						<entry>ac_caixa_pf-1_v1.crt</entry>
+					</row>
+					<row>
+						<entry>AC SINCOR G2</entry>
+						<entry>ac_sincor_g2.crt</entry>
+					</row>
+					<row>
+						<entry>SERASA Autoridade Certificadora Principal v1</entry>
+						<entry>ac_serasa-acp_v1.crt</entry>
+					</row>
+					<row>
+						<entry>AC CAIXA</entry>
+						<entry>accaixa.crt</entry>
+					</row>
+					<row>
+						<entry>AC Imprensa Oficial SP RFB G2</entry>
+						<entry>ac_imesp_rfb_g2.crt</entry>
+					</row>
+					<row>
+						<entry>AC PETROBRAS G3</entry>
+						<entry>ac_petrobras_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC Certisign RFB G3</entry>
+						<entry>ac_certisign_rfb_g3.crt</entry>
+					</row>
+					<row>
+						<entry>AC Secretaria da Receita Federal do Brasil v3</entry>
+						<entry>acrfbv3.crt</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</section>
+</chapter>

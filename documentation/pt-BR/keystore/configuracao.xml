@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="keystore-configuracao">
+
+	<title>Configuração do Keystore</title>
+
+	<section>
+		<title>Instalação do componente</title>
+		<para>
+			Para instalar o componente
+			<emphasis>Demoiselle Keystore</emphasis>
+			na aplicação, basta adicionar a sua dependência no arquivo
+			<filename>pom.xml</filename>
+			do projeto gerenciado pelo Maven:
+		</para>
+		<programlisting role="XML"><![CDATA[<dependency>
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
+	<artifactId>demoiselle-keystore</artifactId>
+	<version>1.0.0</version>
+</dependency>]]></programlisting>
+	</section>
+
+	<section id="lista-drivers">
+		<title>Lista de Drivers</title>
+		<para>
+			Uma das configurações mais importantes desse componente é a lista de drivers PKCS#11 e seus respectivos arquivos. O componente já possui uma lista pré-estabelecida conforme a
+			tabela a seguir.
+		</para>
+
+		<table frame="all" pgwide="1">
+			<title>Drivers pré definidos</title>
+			<tgroup colsep="1" cols="2">
+				<colspec colnum="1" colname="c0" />
+				<colspec colnum="2" colname="c1" />
+				<thead>
+					<row>
+						<entry>Driver</entry>
+						<entry>Path do Driver</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Pronova1</entry>
+						<entry>/WINDOWS/system32/ngp11v211.dll</entry>
+					</row>
+					<row>
+						<entry>Pronova2</entry>
+						<entry>/WINNT/system32/ngp11v211.dll</entry>
+					</row>
+					<row>
+						<entry>Pronova3</entry>
+						<entry>/usr/lib/libepsng_p11.so</entry>
+					</row>
+					<row>
+						<entry>ePass2000</entry>
+						<entry>/usr/local/ngsrv/libepsng_p11.so.1.2.2</entry>
+					</row>
+					<row>
+						<entry>Gemplus1</entry>
+						<entry>/Arquivos de programas/Gemplus/GemSafe Libraries/BIN/gclib.dll</entry>
+					</row>
+					<row>
+						<entry>Gemplus2</entry>
+						<entry>/Program Files/Gemplus/GemSafe Libraries/BIN/gclib.dll</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</section>
+
+	<section>
+		<title>Configuração de Token / SmartCard em tempo de execução</title>
+
+		<para>
+			É possível, porém, adicionar mais drivers em tempo de execução. Para isso é necessário trabalhar com a classe
+			<literal>br.gov.frameworkdemoiselle.security.keystore.loader.configuration.Configuration.</literal>
+		</para>
+
+		<programlisting role="JAVA"><![CDATA[Configuration.getInstance().addDriver("Nome do Driver", "Path do Driver");]]></programlisting>
+
+		<para>
+			Este código irá procurar pelo driver e caso ele exista, ou seja, o path do arquivo for válido, o driver será colocado a disposição para futuro uso pelas
+			implementações de carregamento de KeyStore.
+		</para>
+
+		<para>
+			Caso seja necessário verificar os drivers já informados, podemos usar a seguinte construção:
+		</para>
+
+		<programlisting role="JAVA"><![CDATA[Map<String, String> drivers = Configuration.getInstance().getDrivers();]]></programlisting>
+
+
+	</section>
+
+	<section>
+		<title>Configuração de Token / SmartCard por variáveis de ambiente</title>
+
+		<para>
+			Em algumas ocasiões pode ser inviável utilizar o Configuration para adicionar um driver diretamente no código. Neste caso, A API do Java permite definir um arquivo
+			de configuração onde pode-se informar o nome do driver e seus parâmetros. O componente permite a definição desse arquivo por meio de váriáveis de
+			ambiente ou variáveis da JVM.
+		</para>
+
+		<para>
+			Abaixo temos o exemplo de como declarar essas configurações.
+		</para>
+
+
+		<table frame="all" pgwide="1">
+			<title>Configurações do PKCS#11</title>
+			<tgroup colsep="1" cols="3">
+				<colspec colnum="1" colname="c0" />
+				<colspec colnum="2" colname="c1" />
+				<colspec colnum="3" colname="c2" />
+				<thead>
+					<row>
+						<entry>Ambiente</entry>
+						<entry>Variável de Ambiente</entry>
+						<entry>Variável JVM</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Linux</entry>
+						<entry>export PKCS11_CONFIG_FILE=/usr/pkcs11/drivers.config</entry>
+						<entry>-DPKCS11_CONFIG_FILE=/usr/pkcs11/drivers.config</entry>
+					</row>
+					<row>
+						<entry>Windows</entry>
+						<entry>set PKCS11_CONFIG_FILE=c:/pkcs11/drivers.config</entry>
+						<entry>-DPKCS11_CONFIG_FILE=c:/pkcs11/drivers.config</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+
+		<para>
+			A estrutura deste arquivo pode ser encontrada
+			<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/security/p11guide.html">aqui</ulink>
+			para Java 1.5,
+			<ulink url="http://java.sun.com/javase/6/docs/technotes/guides/security/p11guide.html">aqui</ulink>
+			para Java 1.6 ou
+			<ulink url="http://docs.oracle.com/javase/7/docs/technotes/guides/security/p11guide.html">aqui</ulink>
+			para Java 1.7.
+		</para>
+
+		<para>
+			Uma alternativa a este arquivo de configuração é informar o driver diretamente. Para isso basta informar na variável, conforme o exemplo abaixo.
+		</para>
+
+
+		<table frame="all" pgwide="1">
+			<title>Configurações do PKCS#11</title>
+			<tgroup colsep="1" cols="3">
+				<colspec colnum="1" colname="c0" />
+				<colspec colnum="2" colname="c1" />
+				<colspec colnum="3" colname="c2" />
+				<thead>
+					<row>
+						<entry>Ambiente</entry>
+						<entry>Variável de Ambiente</entry>
+						<entry>Variável JVM</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Linux</entry>
+						<entry>export PKCS11_DRIVER=/usr/lib/libepsng_p11.so</entry>
+						<entry>-DPKCS11_DRIVER=/usr/lib/libepsng_p11.so</entry>
+					</row>
+					<row>
+						<entry>Windows</entry>
+						<entry>set PKCS11_DRIVER=/WINDOWS/system32/ngp11v211.dll</entry>
+						<entry>-DPKCS11_DRIVER=/WINDOWS/system32/ngp11v211.dll</entry>
+					</row>
+					<row>
+						<entry>Linux</entry>
+						<entry>export PKCS11_DRIVER=Pronova::/usr/lib/libepsng_p11.so</entry>
+						<entry>-DPKCS11_DRIVER=Pronova::/usr/lib/libepsng_p11.so</entry>
+					</row>
+					<row>
+						<entry>Windows</entry>
+						<entry>set PKCS11_DRIVER=Pronova::/WINDOWS/system32/ngp11v211.dll</entry>
+						<entry>-DPKCS11_DRIVER=Pronova::/WINDOWS/system32/ngp11v211.dll</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+
+		<para>
+			Quando a variável for declarada através da JVM, ela deve ser feita diretamente no painel de controle do JAVA. A seguir demonstramos a configuração para o sistema Windows.
+		</para>
+
+		<para>
+			Abra o painel de controle e seleciona e abra o aplicativo "Java".
+		</para>
+
+		<para>
+			<figure>
+				<title>
+					Java no Painel de Controle
+				</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="images/keystore_tela01.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</para>
+
+		<para>
+		    Selecione a aba "Java" e clique em "View..."
+		</para>
+		
+		<para>
+			<figure>
+				<title>
+					Configurações do ambiente Java
+				</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="images/keystore_tela02.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</para>
+
+		<para>
+		    Na aba "User", em "Runtime Parameters", coloque a declaração da variável. Em seguida, aplique as alterações.
+		</para>
+		
+		<para>
+			<figure>
+				<title>
+					Desabilitando a camada MSCAPI
+				</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="images/keystore_tela03.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</para>
+	</section>
+
+	<section>
+		<title>Configuração de Token / SmartCard por arquivo de configurações</title>
+		<para>
+			As configurações acima demonstram uma configuração mais refinada para o carregamento de certificados em dispositivos, mas o componente possui um procedimento
+			padrão a ser executado caso se deseje um método mais simplificado. A seguir é explicado como utilizar este mecanismo. 
+		</para>
+
+		<section>
+		    <title>Utilizando certificados armazenados em Disco ou em Token / SmartCard no Windows</title>
+		    <para>
+		        O Sistema Operacional Windows fornece uma camada chamada MSCAPI, ou Microsoft CryptoAPI, que facilita o acesso a certificados armazenados em disco ou em dispositivos
+		        criptográficos. Neste tipo de acesso, basta que o certificado esteja corretamente instalado e válido, e a própria camada nos fornecerá o driver correto e os meios para
+		        acessar os certificados. Até a versão 5 do Java não existia um provedor de acesso para esta camada, mas na versão 6 em diante foi implementado 
+		        o provedor <emphasis>SunMSCAPI</emphasis> para lidar com este tipo de acesso. 
+		    </para>
+		</section>
+		
+		
+		<section>
+			<title>Utilizando certificados armazenados em Disco no Linux ou Mac</title>
+
+			<para>
+				Ao Contrario do Windows, que utiliza a API da <ulink url="http://en.wikipedia.org/wiki/Microsoft_CryptoAPI">MS-CAPI</ulink>
+				para abstrair o acesso aos certificados digitais, em outros sistemas operacionais este recurso não existe. Para efetuar o acesso, precisamos criar um arquivo 
+				de configuração informando os parâmetros de acesso.
+			</para>
+
+			<para>
+				Para viabilizar o acesso em um sistema Não-Windows, deve ser criado um arquivo chamado <filename>drivers.config</filename> dentro do diretório
+				<citation>/home/usuario</citation> com a parametrização mostrada abaixo. Nesta configuração serão carregados todos os certificados A1 que estejam
+				instalados no Firefox.
+			</para>
+
+			<para>
+				Para o Ubuntu:
+			</para>
+
+			<programlisting role="XHTML"><![CDATA[
+name = Provedor
+slot = 2
+library = /usr/lib/nss/libsoftokn3.so
+nssArgs = "configdir='/home/<usuario>/.mozilla/firefox/bv3b2x7j.default' certPrefix='' keyPrefix='' secmod='secmod.db'  flags='readWrite'"
+]]></programlisting>
+
+			<para>
+				Para o Fedora:
+			</para>
+
+			<programlisting role="XHTML"><![CDATA[
+name = Provedor
+slot = 2
+library = /usr/lib/libsoftokn3.so
+nssArgs = "configdir='/home/<usuario>/.mozilla/firefox/d3qv5ulo.default' certPrefix='' keyPrefix='' secmod='secmod.db'  flags='readOnly'"
+]]></programlisting>
+
+			<para>
+				Para o Mac OS:
+			</para>
+
+			<programlisting role="XHTML"><![CDATA[
+name = Provedor
+slot = 2
+library = /Applications/Firefox.app/Contents/MacOS/libsoftokn3.dylib
+nssArgs = "configdir='/Users/usuario/Library/Application Support/Firefox/Profiles/5lnc5tyx.default' certPrefix='' keyPrefix='' secmod='secmod.db' flags='readOnly'"
+]]></programlisting>
+
+			<important>
+				<para>
+					A sequência de caracteres que precede o
+					<emphasis>.default</emphasis>
+					, como em
+					<emphasis>5lnc5tyx.default</emphasis>
+					é criptografada e, sendo assim, é diferente para cada equipamento e cada usuário.
+				</para>
+			</important>
+
+		</section>
+
+		<section>
+			<title>Utilizando certificados armazenados em Token / SmartCard no Linux ou Mac</title>
+
+			<para>
+				Para configurar um token A3, o conteúdo do arquivo
+				<filename>drivers.config</filename>
+				deve ser especificado como mostrado abaixo.
+			</para>
+
+			<programlisting role="JAVA"><![CDATA[
+name = Provedor
+description = Token Pronova ePass2000
+library = /usr/local/ngsrv/libepsng_p11.so.1.2.2
+]]></programlisting>
+
+			<important>
+				<para>
+					Não é possível utilizar certificados A3 e A1 no Linux ou Mac simultaneamente, devendo ser configurado somente UM dos tipos de acesso em um determinado momento.
+				</para>
+			</important>
+
+		</section>
+
+	</section>
+
+	<section id="disable_layer_mscapi">
+		<title>Desabilitar a camada de acesso SunMSCAPI</title>
+		<para>
+			Quando o componente é utilizado em ambiente Windows, o acesso é feito através de uma camada de abstração chamada MSCAPI, que abstrai informações que são particulares
+			de cada token ou smartcard, como os drivers do dispositivo, por exemplo. Este tipo de recurso facilita o uso do componente com dispositivos de diversos
+			fabricantes.
+			Porém, podem existir casos específicos em que o acesso precisa ser feito diretamente ao driver para utilização de funções específicas, como forçar o logout de um token.
+			Para isso, é necessário informar na JVM um parâmetro chamado
+			<literal>mscapi.disabled</literal>
+			passando o valor
+			<literal>true</literal>
+			. Este parâmetro informa que
+			o acesso será feito via PKCS11, sendo necessário informar o arquivo de configuração do token que se deseja acessar. Caso o parâmetro
+			<literal>mscapi.disabled</literal>
+			esteja ausente, o componente fará uso do MSCAPI normalmente.
+		</para>
+
+		<para>
+			A seguir demonstramos a configuração para o sistema Windows.
+		</para>
+
+		<para>
+			<figure>
+				<title>
+					Desabilitando a camada MSCAPI
+				</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="images/keystore_tela04.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</para>
+
+
+	</section>
+
+</chapter>
