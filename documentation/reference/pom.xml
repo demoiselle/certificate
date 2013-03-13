@@ -38,7 +38,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>demoiselle-certificate-reference</artifactId>
+    <artifactId>demoiselle-certificatetools-reference</artifactId>
     <packaging>jdocbook</packaging>
     <version>1.0.0</version>
 
@@ -50,6 +50,6 @@
     </parent>
 
 
-    <name>Demoiselle Certificate Documentation</name>
+    <name>Demoiselle Certificate Tools Documentation</name>
     <description>Gera a documentação de todos os componentes</description>
 </project>

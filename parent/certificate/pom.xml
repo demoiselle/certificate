@@ -40,7 +40,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.gov.frameworkdemoiselle.component</groupId>
-    <artifactId>demoiselle-certificate-parent</artifactId>
+    <artifactId>demoiselle-certificatetools-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -51,7 +51,7 @@
         <relativePath>../../../../internal/parent/demoiselle</relativePath>
     </parent>
 
-    <name>Demoiselle Certificate Parent</name>
+    <name>Demoiselle Certificate Tools Parent</name>
     <description></description>
     <url>http://www.frameworkdemoiselle.gov.br</url>
 
