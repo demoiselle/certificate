@@ -57,7 +57,8 @@
 	</description>
 
         <modules>
-            <module>documentation</module>            
+            <module>documentation/reference</module> 
+            <module>parent/certificate</module>               
             <module>impl/applet</module>            
             <module>impl/certificate</module>
             <module>impl/keystore</module>
