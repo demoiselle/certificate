@@ -34,19 +34,20 @@
  ou escreva para a Fundação do Software Livre (FSF) Inc.,
  51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>demoiselle-certificatetools-ca-icpbrasil-homologacao</artifactId>
 	<packaging>jar</packaging>
 
-        <parent>
-            <groupId>br.gov.frameworkdemoiselle.component</groupId>
-            <artifactId>demoiselle-certificatetools-parent</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <relativePath>../../parent/certificate</relativePath>
-        </parent>
+	<parent>
+		<groupId>br.gov.frameworkdemoiselle.component</groupId>
+		<artifactId>demoiselle-certificatetools-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../parent/certificate</relativePath>
+	</parent>
 
 	<name>Demoiselle Certificate Tools CA ICP-Brasil Homologacao</name>
 	<description>
@@ -99,12 +100,29 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	
+
 	<repositories>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-releases</id>
+			<name>Sonatype Nexus Releases</name>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 	</repositories>
 </project>

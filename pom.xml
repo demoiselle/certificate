@@ -34,12 +34,13 @@
  ou escreva para a Fundação do Software Livre (FSF) Inc.,
  51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-        <artifactId>demoiselle-certificatetools-build</artifactId>
+	<artifactId>demoiselle-certificatetools-build</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
@@ -50,24 +51,24 @@
 		<relativePath>../internal/parent/build/component</relativePath>
 	</parent>
 
-        <name>Demoiselle Certificate Tools Build Aggregator</name>
+	<name>Demoiselle Certificate</name>
 	<description>
 		A liberação de versões deste componente deve ser feita a partir deste build, que fará automaticamente o build
 		de todos os artefatos com versionamento sincronizado. Jamais gere uma versão deste componente sem utilizar este build.
 	</description>
 
-        <modules>
-            <module>documentation/reference</module> 
-            <module>parent/certificate</module>               
-            <module>impl/applet</module>            
-            <module>impl/certificate</module>
-            <module>impl/keystore</module>
-            <module>impl/criptography</module>
-            <module>impl/signer</module>
-            <module>impl/ca</module>      
-            <module>impl/ca-icp-brasil</module>
-            <module>impl/ca-icp-brasil-homologacao</module>            
-        </modules>
+	<modules>
+		<module>documentation/reference</module>
+		<module>parent/certificate</module>
+		<module>impl/applet</module>
+		<module>impl/certificate</module>
+		<module>impl/keystore</module>
+		<module>impl/criptography</module>
+		<module>impl/signer</module>
+		<module>impl/ca</module>
+		<module>impl/ca-icp-brasil</module>
+		<module>impl/ca-icp-brasil-homologacao</module>
+	</modules>
 
 	<build>
 		<plugins>
@@ -103,11 +104,28 @@
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-releases</id>
+			<name>Sonatype Nexus Releases</name>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 	</repositories>
 
 	<properties>
-		<project.alias>crypto</project.alias>
+		<project.alias>certificate</project.alias>
 		<category>security</category>
 	</properties>
 </project>
