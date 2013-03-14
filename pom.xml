@@ -61,7 +61,7 @@
 		<module>documentation/reference</module>
 		<module>parent/certificate</module>
 		<module>impl/applet</module>
-		<module>impl/certificate</module>
+		<module>impl/core</module>
 		<module>impl/keystore</module>
 		<module>impl/criptography</module>
 		<module>impl/signer</module>

@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
-import br.gov.frameworkdemoiselle.security.ca.provider.ProviderCA;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 
 public class ICPBrasilProviderCA implements ProviderCA {
 

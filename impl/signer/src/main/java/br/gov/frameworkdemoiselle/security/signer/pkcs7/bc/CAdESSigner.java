@@ -74,12 +74,12 @@ import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import br.gov.frameworkdemoiselle.security.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.security.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.security.certificate.CertificateManager;
-import br.gov.frameworkdemoiselle.security.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.security.certificate.IValidator;
-import br.gov.frameworkdemoiselle.security.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
+import br.gov.frameworkdemoiselle.certificate.certificate.CertificateException;
+import br.gov.frameworkdemoiselle.certificate.certificate.CertificateManager;
+import br.gov.frameworkdemoiselle.certificate.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.certificate.IValidator;
+import br.gov.frameworkdemoiselle.certificate.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.security.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.security.signer.SignerException;
 import br.gov.frameworkdemoiselle.security.signer.factory.PKCS1Factory;

@@ -83,7 +83,7 @@
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificate-certificate</artifactId>
+			<artifactId>demoiselle-certificate-core</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

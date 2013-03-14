@@ -63,7 +63,7 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import br.gov.frameworkdemoiselle.security.ca.manager.CAManager;
+import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.security.signer.SignerException;
 
 public class ValidadorUtil {

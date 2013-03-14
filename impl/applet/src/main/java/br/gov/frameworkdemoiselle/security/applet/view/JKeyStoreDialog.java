@@ -57,16 +57,16 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
+import br.gov.frameworkdemoiselle.certificate.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.DriverNotAvailableException;
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.InvalidPinException;
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.PKCS11NotFoundException;
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.factory.KeyStoreLoaderFactory;
 import br.gov.frameworkdemoiselle.security.applet.config.AppletConfig;
 import br.gov.frameworkdemoiselle.security.applet.handler.PinCallbackHandler;
 import br.gov.frameworkdemoiselle.security.applet.tiny.Item;
-import br.gov.frameworkdemoiselle.security.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.security.keystore.loader.DriverNotAvailableException;
-import br.gov.frameworkdemoiselle.security.keystore.loader.InvalidPinException;
-import br.gov.frameworkdemoiselle.security.keystore.loader.KeyStoreLoader;
-import br.gov.frameworkdemoiselle.security.keystore.loader.KeyStoreLoaderException;
-import br.gov.frameworkdemoiselle.security.keystore.loader.PKCS11NotFoundException;
-import br.gov.frameworkdemoiselle.security.keystore.loader.factory.KeyStoreLoaderFactory;
 
 /**
  * JDialog especializado para obtencao do KeyStore de um dispositivo usb ou

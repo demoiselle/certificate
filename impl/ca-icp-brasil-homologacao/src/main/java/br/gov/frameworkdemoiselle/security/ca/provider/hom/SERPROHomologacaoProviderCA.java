@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import br.gov.frameworkdemoiselle.security.ca.provider.ProviderCA;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 
 public class SERPROHomologacaoProviderCA implements ProviderCA {
 

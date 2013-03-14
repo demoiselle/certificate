@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import br.gov.frameworkdemoiselle.security.ca.provider.ProviderSignaturePolicyRootCA;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
 
 public class ADRBCMS_1_1_RootCAs implements ProviderSignaturePolicyRootCA {
 

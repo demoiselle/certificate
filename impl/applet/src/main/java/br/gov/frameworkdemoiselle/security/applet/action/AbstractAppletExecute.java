@@ -50,8 +50,8 @@ import org.w3c.dom.html.HTMLDocument;
 import org.w3c.dom.html.HTMLFormElement;
 import org.w3c.dom.html.HTMLInputElement;
 
+import br.gov.frameworkdemoiselle.certificate.certificate.CertificateManager;
 import br.gov.frameworkdemoiselle.security.applet.certificate.ICPBrasilCertificate;
-import br.gov.frameworkdemoiselle.security.certificate.CertificateManager;
 
 import com.sun.java.browser.dom.DOMAccessException;
 import com.sun.java.browser.dom.DOMAccessor;
