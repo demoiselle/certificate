@@ -75,12 +75,12 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.certificate.certificate.CertificateManager;
-import br.gov.frameworkdemoiselle.certificate.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.certificate.certificate.IValidator;
-import br.gov.frameworkdemoiselle.certificate.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.CertificateException;
+import br.gov.frameworkdemoiselle.certificate.CertificateManager;
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.IValidator;
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;

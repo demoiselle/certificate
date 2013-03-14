@@ -57,10 +57,10 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.applet.config.AppletConfig;
 import br.gov.frameworkdemoiselle.certificate.applet.handler.PinCallbackHandler;
 import br.gov.frameworkdemoiselle.certificate.applet.tiny.Item;
-import br.gov.frameworkdemoiselle.certificate.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.DriverNotAvailableException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.InvalidPinException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;

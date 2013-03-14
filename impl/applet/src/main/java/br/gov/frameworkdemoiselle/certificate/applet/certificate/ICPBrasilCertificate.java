@@ -40,10 +40,10 @@ package br.gov.frameworkdemoiselle.certificate.applet.certificate;
 import java.util.Date;
 import java.util.List;
 
-import br.gov.frameworkdemoiselle.certificate.certificate.extension.DefaultExtension;
-import br.gov.frameworkdemoiselle.certificate.certificate.extension.DefaultExtensionType;
-import br.gov.frameworkdemoiselle.certificate.certificate.extension.ICPBrasilExtension;
-import br.gov.frameworkdemoiselle.certificate.certificate.extension.ICPBrasilExtensionType;
+import br.gov.frameworkdemoiselle.certificate.extension.DefaultExtension;
+import br.gov.frameworkdemoiselle.certificate.extension.DefaultExtensionType;
+import br.gov.frameworkdemoiselle.certificate.extension.ICPBrasilExtension;
+import br.gov.frameworkdemoiselle.certificate.extension.ICPBrasilExtensionType;
 
 /**
  * Contem as informacoes do certificado. Essa classe he carrgada pelo Security
