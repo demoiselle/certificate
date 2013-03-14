@@ -41,7 +41,7 @@
 
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-build</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-ALPHA1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
