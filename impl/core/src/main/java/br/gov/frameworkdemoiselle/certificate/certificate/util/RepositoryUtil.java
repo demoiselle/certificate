@@ -51,13 +51,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.gov.frameworkdemoiselle.certificate.certificate.CertificateValidatorException;
 
 public class RepositoryUtil {
 
-	private static Logger logger = Logger.getLogger(RepositoryUtil.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(RepositoryUtil.class);
 
 	public static String urlToMD5(String url) {
 		try {

@@ -49,7 +49,7 @@
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
 
-	<name>Demoiselle Certificate Tools Certificate</name>
+	<name>Demoiselle Certificate Core</name>
 	<description>
 		Demoiselle Certificate Component
 	</description>
@@ -92,23 +92,18 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15</artifactId>
 			<version>1.45</version>
 		</dependency>
 		<dependency>
-			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificate-keystore</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificate-ca</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

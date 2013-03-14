@@ -41,41 +41,54 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 
 /**
- * Classe responsável por recuperar informações do sistema tais como versão do
- * sistema operacional e versão da JVM.<br>
- * Manipula também informaões dos drivers PKCS#11 a serem utilizados pelo
- * componente.<br>
- * É possível adicionar um Driver PKCS#11 em tempo de execução, não restringindo
- * a utilização apenas dos drivers configurados no componente.
+ * Classe responsável por recuperar informações do sistema tais como versão do sistema operacional e versão da JVM.<br>
+ * Manipula também informaões dos drivers PKCS#11 a serem utilizados pelo componente.<br>
+ * É possível adicionar um Driver PKCS#11 em tempo de execução, não restringindo a utilização apenas dos drivers
+ * configurados no componente.
  */
 public class Configuration {
 
-	private static final Logger logger = Logger.getLogger(Configuration.class);
+	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
 	protected static final String NAME_NULL = "Nome do driver deve ser informado";
+
 	protected static final String PATH_NULL = "Path do driver deve ser informado";
+
 	protected static final String PATH_INVALID = "Path do driver é inválido. O path deve conter o diretório e o nome do arquivo";
+
 	protected static final String DRIVER_ERROR_LOAD = "Impossivel carregar o driver";
+
 	protected static final String DRIVER_ERROR_LOAD_VARIABLE = "Impossivel carregar o driver definido na variavel de ambiente";
+
 	protected static final String KEY_JAVA_VERSION = "java.runtime.version";
+
 	protected static final String KEY_OS_NAME = "os.name";
+
 	protected static final String VAR_PKCS11_CONFIG = "PKCS11_CONFIG_FILE";
+
 	protected static final String VAR_PKCS11_DRIVER = "PKCS11_DRIVER";
+
 	protected static final String CUSTOM_CONFIG_PATH = "user.home";
+
 	protected static final String CUSTOM_CONFIG_FILENAME = "drivers.config";
+
 	protected static final String FILE_SEPARATOR = "file.separator";
+
 	protected static final String MSCAPI_DISABLED = "mscapi.disabled";
 
 	private static final Configuration instance = new Configuration();
+
 	private final Map<String, String> drivers = new HashMap<String, String>();
 
 	private Configuration() {
-		String winRoot = (System.getenv("SystemRoot") == null) ? "" : System.getenv("SystemRoot").replaceAll("\\\\", "/");
+		String winRoot = (System.getenv("SystemRoot") == null) ? "" : System.getenv("SystemRoot").replaceAll("\\\\",
+				"/");
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("Pronova1", winRoot + "/system32/ngp11v211.dll");
@@ -105,8 +118,8 @@ public class Configuration {
 	}
 
 	/**
-	 * Metodo que retorna a versao da JVM que esta rodando o componente. Busca
-	 * esta informacao nas propriedades do sistema.
+	 * Metodo que retorna a versao da JVM que esta rodando o componente. Busca esta informacao nas propriedades do
+	 * sistema.
 	 * 
 	 * @return versao da JVM atual
 	 */
@@ -120,8 +133,7 @@ public class Configuration {
 	}
 
 	/**
-	 * Metodo que retorna o nome do sistema operacional. Busca esta informacao
-	 * nas propriedades do sistema.
+	 * Metodo que retorna o nome do sistema operacional. Busca esta informacao nas propriedades do sistema.
 	 * 
 	 * @return nome do sistema operacional atual
 	 */
@@ -139,16 +151,14 @@ public class Configuration {
 	}
 
 	/**
-	 * Testa cada driver informado, verificando se existe o arquivo. Caso o
-	 * arquivo do driver informado nao existe, nao sera acrescentado este driver
-	 * na lista de driver para ser carregado.
+	 * Testa cada driver informado, verificando se existe o arquivo. Caso o arquivo do driver informado nao existe, nao
+	 * sera acrescentado este driver na lista de driver para ser carregado.
 	 * 
 	 * @param name
-	 *            Parametro obrigatorio que informa o apelido do Driver a ser
-	 *            carregado. Ex: Pronova
+	 *            Parametro obrigatorio que informa o apelido do Driver a ser carregado. Ex: Pronova
 	 * @param fileName
-	 *            Parametro obrigatorio que informa o path completo do driver no
-	 *            sistema operacional. Ex: /etc/driver/driver.so
+	 *            Parametro obrigatorio que informa o path completo do driver no sistema operacional. Ex:
+	 *            /etc/driver/driver.so
 	 */
 	public void addDriver(String name, String fileName) {
 
@@ -171,17 +181,15 @@ public class Configuration {
 	}
 
 	/**
-	 * O nome do driver é obrigatório para o devido carregamento da biblioteca,
-	 * mas não existe uma obrigatoriedade do nome ser sempre o mesmo e único,
-	 * então para facilitar nos casos em que não se saiba o fabricante do driver
-	 * pode-se utilizar este método que cria o nome do driver a partir do seu
-	 * arquivo fisico. Ex: /etc/driver/driver.so -> nome do driver = driver.so É
-	 * importante frisar que quanto maior for a informação melhor será para
-	 * corrigir problemas.
+	 * O nome do driver é obrigatório para o devido carregamento da biblioteca, mas não existe uma obrigatoriedade do
+	 * nome ser sempre o mesmo e único, então para facilitar nos casos em que não se saiba o fabricante do driver
+	 * pode-se utilizar este método que cria o nome do driver a partir do seu arquivo fisico. Ex: /etc/driver/driver.so
+	 * -> nome do driver = driver.so É importante frisar que quanto maior for a informação melhor será para corrigir
+	 * problemas.
 	 * 
 	 * @param fileName
-	 *            Parametro obrigatorio que informa o path completo do driver no
-	 *            sistema operacional. Ex: /etc/driver/driver.so
+	 *            Parametro obrigatorio que informa o path completo do driver no sistema operacional. Ex:
+	 *            /etc/driver/driver.so
 	 */
 	public void addDriver(String fileName) {
 		if (fileName == null || fileName.trim().length() <= 0)
@@ -197,11 +205,9 @@ public class Configuration {
 	}
 
 	/**
-	 * Recuperar o path do arquivo de configuração para SunPKCS11 de acordo com
-	 * o site. Para utilizar o arquivo de configuracao, basta informar o seu
-	 * path em uma variavel de ambiente ou então como parametro da JVM Java 1.5
-	 * - http://java.sun.com/j2se/1.5.0/docs/guide/security/p11guide.html Java
-	 * 1.6 -
+	 * Recuperar o path do arquivo de configuração para SunPKCS11 de acordo com o site. Para utilizar o arquivo de
+	 * configuracao, basta informar o seu path em uma variavel de ambiente ou então como parametro da JVM Java 1.5 -
+	 * http://java.sun.com/j2se/1.5.0/docs/guide/security/p11guide.html Java 1.6 -
 	 * http://java.sun.com/javase/6/docs/technotes/guides/security/p11guide.html
 	 */
 	public String getPKCS11ConfigFile() {
@@ -210,14 +216,11 @@ public class Configuration {
 	}
 
 	/**
-	 * Recuperar o driver e seu path a partir de variavel de ambiente ou
-	 * variavel da JVM. Exemplo de definicao: JVM:
-	 * -DPKCS11_DRIVER=Pronova::/usr/lib/libepsng_p11.so ou
-	 * -DPKCS11_DRIVER=/usr/lib/libepsng_p11.so Variavel de ambiente Linux
-	 * export PKCS11_DRIVER=Pronova::/usr/lib/libepsng_p11.so ou export
+	 * Recuperar o driver e seu path a partir de variavel de ambiente ou variavel da JVM. Exemplo de definicao: JVM:
+	 * -DPKCS11_DRIVER=Pronova::/usr/lib/libepsng_p11.so ou -DPKCS11_DRIVER=/usr/lib/libepsng_p11.so Variavel de
+	 * ambiente Linux export PKCS11_DRIVER=Pronova::/usr/lib/libepsng_p11.so ou export
 	 * PKCS11_DRIVER=/usr/lib/libepsng_p11.so Variavel de ambiente windows set
-	 * PKCS11_DRIVER=Pronova::/WINDOWS/system32/ngp11v211.dll set
-	 * PKCS11_DRIVER=/WINDOWS/system32/ngp11v211.dll
+	 * PKCS11_DRIVER=Pronova::/WINDOWS/system32/ngp11v211.dll set PKCS11_DRIVER=/WINDOWS/system32/ngp11v211.dll
 	 */
 	public void getPKCS11DriverFromVariable() {
 
@@ -239,13 +242,12 @@ public class Configuration {
 	}
 
 	/**
-	 * Busca nas variaveis de ambiente ou em variavel da JVM um determinado
-	 * valor. Prioridade para as variaveis de ambiente.
+	 * Busca nas variaveis de ambiente ou em variavel da JVM um determinado valor. Prioridade para as variaveis de
+	 * ambiente.
 	 * 
 	 * @param key
 	 *            Chave de localizacao da variavel
-	 * @return O conteudo definida em uma das variaveis. NULL se nenhuma
-	 *         variavel for definida
+	 * @return O conteudo definida em uma das variaveis. NULL se nenhuma variavel for definida
 	 */
 	private String getContentFromVariables(String key) {
 		String content = System.getenv(key);
@@ -262,7 +264,8 @@ public class Configuration {
 			content = System.getProperty(key.toUpperCase());
 
 		if (content == null) {
-			String filename = System.getProperty(CUSTOM_CONFIG_PATH) + System.getProperty(FILE_SEPARATOR) + CUSTOM_CONFIG_FILENAME;
+			String filename = System.getProperty(CUSTOM_CONFIG_PATH) + System.getProperty(FILE_SEPARATOR)
+					+ CUSTOM_CONFIG_FILENAME;
 			boolean exists = (new File(filename)).exists();
 			if (exists)
 				content = filename;

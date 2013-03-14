@@ -49,7 +49,7 @@
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
 
-	<name>Demoiselle Certificate Tools Criptography</name>
+	<name>Demoiselle Certificate Criptography</name>
 	<description>
 		Demoiselle Criptography Component
 	</description>

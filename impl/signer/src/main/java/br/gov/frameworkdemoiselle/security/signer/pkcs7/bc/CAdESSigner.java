@@ -60,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
@@ -73,6 +72,8 @@ import org.bouncycastle.cms.CMSSignedDataGenerator;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.certificate.CertificateException;
@@ -97,14 +98,12 @@ import br.gov.frameworkdemoiselle.security.signer.pkcs7.bc.attribute.BCAttribute
 import br.gov.frameworkdemoiselle.security.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 
 /**
- * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
- * CAdES (http://tools.ietf.org/html/rfc5126) e voltada para uso no âmbito
- * ICP-Brasil.
- * 
+ * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 - CAdES (http://tools.ietf.org/html/rfc5126)
+ * e voltada para uso no âmbito ICP-Brasil.
  */
 public class CAdESSigner implements PKCS7Signer {
 
-	private static final Logger log = Logger.getLogger(CAdESSigner.class);
+	private static final Logger log = LoggerFactory.getLogger(CAdESSigner.class);
 
 	private final PKCS1Signer pkcs1 = PKCS1Factory.getInstance().factoryDefault();
 
@@ -159,19 +158,13 @@ public class CAdESSigner implements PKCS7Signer {
 	}
 
 	/**
-	 * A validação se basea apenas em assinaturas com um assinante apenas.
+	 * A validação se basea apenas em assinaturas com um assinante apenas. Valida apenas com o conteúdo do tipo DATA:
+	 * OID ContentType 1.2.840.113549.1.9.3 = OID Data 1.2.840.113549.1.7.1
 	 * 
-	 * Valida apenas com o conteúdo do tipo DATA: OID ContentType
-	 * 1.2.840.113549.1.9.3 = OID Data 1.2.840.113549.1.7.1
-	 * 
-	 * @params content Necessário informar apenas se o pacote PKCS7 NÃO for do
-	 *         tipo ATTACHED. Caso seja do tipo attached, este parâmetro será
-	 *         substituido pelo conteúdo do pacote PKCS7.
-	 * @params signed Valor em bytes do pacote PKCS7, como por exemplo o
-	 *         conteúdo de um arquivo ".p7s". Não é a assinatura pura como no
-	 *         caso do PKCS1.
-	 * 
-	 *         TODO: Implementar validação de co-assinaturas
+	 * @params content Necessário informar apenas se o pacote PKCS7 NÃO for do tipo ATTACHED. Caso seja do tipo
+	 *         attached, este parâmetro será substituido pelo conteúdo do pacote PKCS7.
+	 * @params signed Valor em bytes do pacote PKCS7, como por exemplo o conteúdo de um arquivo ".p7s". Não é a
+	 *         assinatura pura como no caso do PKCS1. TODO: Implementar validação de co-assinaturas
 	 */
 	@Override
 	public boolean check(byte[] content, byte[] signed) {
@@ -215,7 +208,8 @@ public class CAdESSigner implements PKCS7Signer {
 				throw new SignerException(exception);
 			}
 		} catch (SignerException exception) {
-			throw new SignerException("Error on get information about certificates and public keys from a package PKCS7", exception);
+			throw new SignerException(
+					"Error on get information about certificates and public keys from a package PKCS7", exception);
 		}
 
 		try {
@@ -234,7 +228,8 @@ public class CAdESSigner implements PKCS7Signer {
 			throw new SignerException("Package PKCS7 without signed attributes");
 
 		// Validar a política
-		org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new DERObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
+		org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes
+				.get(new DERObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
 		if (signaturePolicyIdentifierAttribute != null) {
 			ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
 			for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
@@ -445,20 +440,13 @@ public class CAdESSigner implements PKCS7Signer {
 	}
 
 	/**
-	 * Método de assinatura de dados e geração do pacote PKCS7 Assina apenas com
-	 * o conteúdo do tipo DATA: OID ContentType 1.2.840.113549.1.9.3 = OID Data
-	 * 1.2.840.113549.1.7.1
-	 * 
-	 * Utiliza o algoritmo da propriedade algorithm. Caso essa propriedade não
-	 * esteja setada, o algoritmo do enum {@link SignerAlgorithmEnum.DEFAULT}
-	 * será usado.
-	 * 
-	 * Para este método é necessário informar o conteúdo, a chave privada e um
-	 * certificado digital padrão ICP-Brasil.
+	 * Método de assinatura de dados e geração do pacote PKCS7 Assina apenas com o conteúdo do tipo DATA: OID
+	 * ContentType 1.2.840.113549.1.9.3 = OID Data 1.2.840.113549.1.7.1 Utiliza o algoritmo da propriedade algorithm.
+	 * Caso essa propriedade não esteja setada, o algoritmo do enum {@link SignerAlgorithmEnum.DEFAULT} será usado. Para
+	 * este método é necessário informar o conteúdo, a chave privada e um certificado digital padrão ICP-Brasil.
 	 * 
 	 * @param content
-	 *            Conteúdo a ser assinado. TODO: Implementar co-assinaturas,
-	 *            informar a política de assinatura
+	 *            Conteúdo a ser assinado. TODO: Implementar co-assinaturas, informar a política de assinatura
 	 */
 	@Override
 	public byte[] signer(byte[] content) {
@@ -489,7 +477,8 @@ public class CAdESSigner implements PKCS7Signer {
 			}
 		}
 		if (addSigningCertificateAttribute) {
-			SigningCertificate signingCertificateAttribute = this.signaturePolicy.getSigningCertificateAttribute(this.certificate);
+			SigningCertificate signingCertificateAttribute = this.signaturePolicy
+					.getSigningCertificateAttribute(this.certificate);
 			this.addAttribute(signingCertificateAttribute);
 		}
 
@@ -522,7 +511,8 @@ public class CAdESSigner implements PKCS7Signer {
 
 		AttributeTable signedTable = this.mountSignedTable();
 		AttributeTable unsignedTable = this.mountUnsignedTable();
-		signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID, algorithmHashOID, signedTable, unsignedTable);
+		signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID,
+				algorithmHashOID, signedTable, unsignedTable);
 
 		try {
 			CMSProcessable processable = null;
@@ -530,7 +520,8 @@ public class CAdESSigner implements PKCS7Signer {
 				processable = new CMSAbsentContent();
 			else
 				processable = new CMSProcessableByteArray(content);
-			CMSSignedData signedData = signedDataGenerator.generate(CMSSignedDataGenerator.DATA, processable, this.attached, this.getProviderName(), true);
+			CMSSignedData signedData = signedDataGenerator.generate(CMSSignedDataGenerator.DATA, processable,
+					this.attached, this.getProviderName(), true);
 			result = signedData.getEncoded();
 		} catch (Exception e) {
 			throw new SignerException(e);
@@ -567,7 +558,8 @@ public class CAdESSigner implements PKCS7Signer {
 				if (this.certificateValidators == null || this.certificateValidators.isEmpty())
 					new CertificateManager(this.certificate, this.defaultCertificateValidators);
 				else
-					new CertificateManager(this.certificate, this.defaultCertificateValidators, this.certificateValidators.toArray(new IValidator[] {}));
+					new CertificateManager(this.certificate, this.defaultCertificateValidators,
+							this.certificateValidators.toArray(new IValidator[] {}));
 			} catch (Throwable exception) {
 				if (exception instanceof CertificateException)
 					throw (CertificateException) exception;

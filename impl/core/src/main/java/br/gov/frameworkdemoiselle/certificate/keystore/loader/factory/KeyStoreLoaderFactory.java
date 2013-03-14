@@ -39,7 +39,8 @@ package br.gov.frameworkdemoiselle.certificate.keystore.loader.factory;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
@@ -50,15 +51,12 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.MSK
 
 public class KeyStoreLoaderFactory {
 
-	private static final Logger logger = Logger.getLogger(KeyStoreLoaderFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(KeyStoreLoaderFactory.class);
 
 	/**
-	 * Método responsável por fabricar uma instância de KeyStoreLoader baseado
-	 * em PKCS#11.<br>
-	 * Normalmente este método fabrica carregadores baseados nas configurações
-	 * do ambiente.<br>
-	 * Pode-se fabricar instancias voltadas para ambiente windows ou linux, ou
-	 * então baseado na versão da JVM.<br>
+	 * Método responsável por fabricar uma instância de KeyStoreLoader baseado em PKCS#11.<br>
+	 * Normalmente este método fabrica carregadores baseados nas configurações do ambiente.<br>
+	 * Pode-se fabricar instancias voltadas para ambiente windows ou linux, ou então baseado na versão da JVM.<br>
 	 * 
 	 * @return {@link KeyStoreLoader}
 	 */
@@ -81,8 +79,7 @@ public class KeyStoreLoaderFactory {
 	}
 
 	/**
-	 * Método que fabrica uma instância de AbstractKeyStoreLoader para
-	 * manipulação de KeyStore padrão PKCS#12.
+	 * Método que fabrica uma instância de AbstractKeyStoreLoader para manipulação de KeyStore padrão PKCS#12.
 	 * 
 	 * @param java
 	 *            .io.File
@@ -93,10 +90,10 @@ public class KeyStoreLoaderFactory {
 	}
 
 	/**
-	 * Método responsável por fabricar uma instância de AbstractKeyStoreLoader
-	 * baseado em uma classe passada como parâmetro.<br>
-	 * Representa um ponto de extensão do componente, o qual permite a aplicação
-	 * implementar seu próprio meio de carregamento de KeyStore.<br>
+	 * Método responsável por fabricar uma instância de AbstractKeyStoreLoader baseado em uma classe passada como
+	 * parâmetro.<br>
+	 * Representa um ponto de extensão do componente, o qual permite a aplicação implementar seu próprio meio de
+	 * carregamento de KeyStore.<br>
 	 * 
 	 * @param java
 	 *            .lang.Class

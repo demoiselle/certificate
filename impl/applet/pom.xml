@@ -50,7 +50,7 @@
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
 
-	<name>Demoiselle Certificate Tools Applet</name>
+	<name>Demoiselle Certificate Applet</name>
 	<description>
         Demoiselle Applet Component
     </description>

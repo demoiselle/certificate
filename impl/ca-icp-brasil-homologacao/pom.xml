@@ -49,7 +49,7 @@
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
 
-	<name>Demoiselle Certificate Tools CA ICP-Brasil Homologacao</name>
+	<name>Demoiselle Certificate CA ICP-Brasil Homologacao</name>
 	<description>
 		Demoiselle CA ICP-Brasil Homologacao Component
 	</description>
@@ -96,7 +96,7 @@
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificate-ca</artifactId>
+			<artifactId>demoiselle-certificate-core</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

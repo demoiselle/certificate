@@ -48,7 +48,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.gov.frameworkdemoiselle.certificate.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.certificate.certificate.extension.ICPBR_CRL;
@@ -62,7 +64,7 @@ import br.gov.frameworkdemoiselle.certificate.certificate.extension.ICPBR_CRL;
 
 public class OnLineCRLRepository implements CRLRepository {
 
-	private final Logger logger = Logger.getLogger(OnLineCRLRepository.class.getName());
+	private final Logger logger = LoggerFactory.getLogger(OnLineCRLRepository.class);
 
 	@Override
 	public Collection<ICPBR_CRL> getX509CRL(X509Certificate certificate) {
