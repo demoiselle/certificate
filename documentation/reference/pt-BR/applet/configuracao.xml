@@ -19,7 +19,7 @@
 		<programlisting role="XML"><![CDATA[
 <dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-	<artifactId>demoiselle-applet</artifactId>
+	<artifactId>demoiselle-certificate-applet</artifactId>
 	<version>1.0.0</version>
 </dependency>]]></programlisting>
 	</section>
