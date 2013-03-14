@@ -40,7 +40,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-	<artifactId>demoiselle-certificatetools-build</artifactId>
+	<artifactId>demoiselle-certificate-build</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 

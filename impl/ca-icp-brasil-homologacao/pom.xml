@@ -39,12 +39,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>demoiselle-certificatetools-ca-icpbrasil-homologacao</artifactId>
+	<artifactId>demoiselle-certificate-ca-icpbrasil-homologacao</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
-		<artifactId>demoiselle-certificatetools-parent</artifactId>
+		<artifactId>demoiselle-certificate-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
@@ -96,7 +96,7 @@
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificatetools-ca</artifactId>
+			<artifactId>demoiselle-certificate-ca</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

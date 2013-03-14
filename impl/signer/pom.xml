@@ -39,12 +39,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>demoiselle-certificatetools-signer</artifactId>
+	<artifactId>demoiselle-certificate-signer</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
-		<artifactId>demoiselle-certificatetools-parent</artifactId>
+		<artifactId>demoiselle-certificate-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
@@ -83,23 +83,23 @@
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificatetools-certificate</artifactId>
+			<artifactId>demoiselle-certificate-certificate</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificatetools-ca</artifactId>
+			<artifactId>demoiselle-certificate-ca</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificatetools-ca-icpbrasil</artifactId>
+			<artifactId>demoiselle-certificate-ca-icpbrasil</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificatetools-criptography</artifactId>
+			<artifactId>demoiselle-certificate-criptography</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

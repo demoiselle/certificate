@@ -40,12 +40,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>demoiselle-certificatetools-applet</artifactId>
+	<artifactId>demoiselle-certificate-applet</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
-		<artifactId>demoiselle-certificatetools-parent</artifactId>
+		<artifactId>demoiselle-certificate-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
@@ -93,7 +93,7 @@
 
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificatetools-certificate</artifactId>
+			<artifactId>demoiselle-certificate-certificate</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
