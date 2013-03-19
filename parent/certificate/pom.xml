@@ -82,12 +82,12 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
+			<id>demoiselle.sourceforge.net</id>
 			<name>Sonatype Nexus Snapshots</name>
 			<url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/snapshot</url>
 		</snapshotRepository>
 		<repository>
-			<id>sonatype-nexus-staging</id>
+			<id>demoiselle.sourceforge.net</id>
 			<name>Nexus Release Repository</name>
 			<url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/release</url>
 		</repository>
