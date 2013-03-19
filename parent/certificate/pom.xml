@@ -80,6 +80,19 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/snapshot</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/release</url>
+		</repository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
