@@ -23,14 +23,8 @@
     <!-- Demoiselle Applet -->
     <xi:include href="applet/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <!-- Demoiselle Certificate -->
+    <!-- Demoiselle Core -->
     <xi:include href="core/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <!-- Demoiselle Keystore -->
-    <xi:include href="keystore/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <!-- Demoiselle CA -->
-    <xi:include href="ca/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <!-- Demoiselle Signer -->
     <xi:include href="signer/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />

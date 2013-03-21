@@ -3,19 +3,18 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="certificate-configuracao">
 
-	<title>Configuração do Demoiselle Certificate</title>
-	
-	<section>
-		<title>Instalação do componente</title>
-		<para>
-			Para instalar o componente <emphasis>Demoiselle Certificate</emphasis> na aplicação,
-			basta adicionar a sua dependência no arquivo <filename>pom.xml</filename> do projeto
-			gerenciado pelo Maven:
-		</para>
-		<programlisting role="XML"><![CDATA[<dependency>
+    <title>Configuração do Demoiselle Core</title>
+
+    <section>
+        <title>Instalação do componente</title>
+        <para>
+            Para instalar o componente <emphasis>Demoiselle Core</emphasis> na aplicação,
+            basta adicionar a sua dependência no arquivo <filename>pom.xml</filename> do projeto gerenciado pelo Maven:
+        </para>
+        <programlisting role="XML"><![CDATA[<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
-			<artifactId>demoiselle-certificate</artifactId>
+			<artifactId>demoiselle-certificate-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>]]></programlisting>
-	</section>	
+    </section>
 </chapter>
