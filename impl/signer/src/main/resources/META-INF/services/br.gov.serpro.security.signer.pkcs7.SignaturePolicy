@@ -1,3 +1,4 @@
-br.gov.serpro.security.signer.pkcs7.bc.policies.ADRBCAdES
-br.gov.serpro.security.signer.pkcs7.bc.policies.ADRBCAdESV2
-br.gov.serpro.security.signer.pkcs7.bc.policies.ADRBCAdESV3
+br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0
+br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_1
+br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_2_0
+br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_2_1
