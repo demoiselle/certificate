@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding="utf-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
-<chapter id="projeto-exemplo">
+<chapter id="applet-projeto-exemplo">
 
     <title>Criando o projeto exemplo</title>
     <para>
-        Nesta seção apresentaremos o passo-a-passo para construção de um projeto de exemplo do demoiselle-applet. Nele será construída uma página html que executará a applet para
+        Nesta seção apresentaremos o passo-a-passo para construção de um projeto de exemplo do <emphasis>demoiselle-applet</emphasis>. Nele será construída uma página html que executará a applet para
         obtenção de certificados A1 ou A3 e apresentação das informações do certificado na própria página html.
     </para>
 
@@ -158,107 +158,95 @@ public class App extends AbstractAppletExecute {
             Segue o código do formulário html.
         </para>
 
-        <programlisting role="HTML"><![CDATA[
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+        <programlisting role="HTML"><![CDATA[<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Projeto Exemplo</title>
-<style type="text/css">
-table.padrao {
-        background-color: #eeeeee;
-}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Projeto Exemplo</title>
+        <style type="text/css">
+            table.padrao {
+                background-color: #eeeeee;
+            }
 
-td.padrao {
-        font-family: "Arial";
-        font-size: 12px;
-}
+            td.padrao {
+                font-family: "Arial";
+                font-size: 12px;
+            }
 
-input.padrao {
-        font-family: "Arial";
-        font-size: 14px;
-        background-color: #F8F8F8;
-        border: 1px solid #E8E8E8;
-}
-</style>
-</head>
+            input.padrao {
+                font-family: "Arial";
+                font-size: 14px;
+                background-color: #F8F8F8;
+                border: 1px solid #E8E8E8;
+            }
+        </style>
+    </head>
 
-<script type="text/javascript">
+    <script type="text/javascript">
         function foo() {
-                alert("foo() method called!");
+            alert("foo() method called!");
         }
-</script>
+    </script>
 
-<body>
+    <body>
         <form id="mainForm" name="mainForm" method="post" action="FileUploadServlet">
-                <table align="center" border="0" cellspacing="5" cellpadding="1"
-                        class="padrao">
-                        <tr>
-                                <td align="center"><applet
-                                                codebase="http://localhost:8080/demoiselle-applet-customizada-web/"
-                                                code="br.gov.frameworkdemoiselle.security.applet.view.JPanelApplet" width=470
-                                                height=310 MAYSCRIPT
-                                                archive="demoiselle-applet-customizada-1.0.0-assinado.jar,
-                                                demoiselle-applet-1.0.0-assinado.jar,
-                                                demoiselle-certificate-1.0.0-assinado.jar,
-                                                demoiselle-keystore-1.0.0-assinado.jar,
-                                                demoiselle-signer-1.0.0-assinado.jar,
-                                                demoiselle-criptography-1.0.0-assinado.jar,
-                                                demoiselle-ca-1.0.0-assinado.jar,
-                                                demoiselle-ca-icpbrasil-1.0.0-assinado.jar,
-                                                demoiselle-ca-icpbrasil-homologacao-1.0.0-assinado.jar,
-                                                bcprov-jdk15-1.45-assinado.jar,
-                                                bcmail-jdk15-1.45-assinado.jar,
-                                                plugin-1.0-assinado.jar,
-                                                log4j-1.2.15-assinado.jar,
-                                                assembla-1.0.jar">
+            <table align="center" border="0" cellspacing="5" cellpadding="1" class="padrao">
+                <tr>
+                    <td align="center"><applet codebase="http://localhost:8080/demoiselle-certificate-applet-customizada-web/" code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=470 height=310 MAYSCRIPT
+                        archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
+                        demoiselle-certificate-applet-1.0.0-assinado.jar,
+                        demoiselle-certificate-core-1.0.0-assinado.jar,
+                        demoiselle-certificate-criptography-1.0.0-assinado.jar,
+                        demoiselle-certificate-signer-1.0.0-assinado.jar,
+                        demoiselle-certificate-ca-icpbrasil-1.0.0-assinado.jar,
+                        demoiselle-certificate-ca-icpbrasil-homologacao-1.0.0-assinado.jar,
+                        bcmail-jdk15-1.45-assinado.jar,
+                        bcprov-jdk15-1.45-assinado.jar,
+                        log4j-1.2.15-assinado.jar,
+                        slf4j-api-1.6.1-assinado.jar",
+                        plugin-1.0-assinado.jar>
 
-                                                <param name="factory.applet.action" value="br.gov.frameworkdemoiselle.App" />
-                                                <param name="applet.javascript.postaction.failure" value="foo" />
+                            <param name="factory.applet.action" value="br.gov.frameworkdemoiselle.App" />
+                            <param name="applet.javascript.postaction.failure" value="foo" />
 
-                                                <!--
-                                                <param name="label.dialog.button.run" value="Escolher" />
-                                                <param name="config.dialog.button-run.height" value="45" />
-                                                <param name="config.dialog.button-cancel.height" value="45" />
+                            <!--
+                            <param name="label.dialog.button.run" value="Escolher" />
+                            <param name="config.dialog.button-run.height" value="45" />
+                            <param name="config.dialog.button-cancel.height" value="45" />
 
-                                                <param name="config.dialog.table.certificates.x" value="15" />
-                                                <param name="config.dialog.table.certificates.y" value= "30"/>
-                                                <param name="config.dialog.table.certificates.width" value="440" />
-                                                <param name="config.dialog.table.certificates.height" value="210" />
-                                                -->
-                                        </applet>
-                                <td>
-                        </tr>
-                        <tr>
-                                <td>
-                                        <table align="center" border="0" cellspacing="0" cellpadding="5"
-                                                class="padrao">
-                                                <tr>
-                                                        <td class="padrao">CPF:</td>
-                                                        <td><input class="padrao" type="text" name="cpf" value=""
-                                                                size="11"></td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="padrao">Nome:</td>
-                                                        <td><input class="padrao" type="text" name="nome" value=""
-                                                                size="30"></td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="padrao">Email:</td>
-                                                        <td><input class="padrao" type="text" name="email" value=""
-                                                                size="30"></td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="padrao">Nascimento:</td>
-                                                        <td><input class="padrao" type="text" name="nascimento"
-                                                                value="" size="8"></td>
-                                                </tr>
-                                        </table>
-                        </tr>
-                </table>
+                            <param name="config.dialog.table.certificates.x" value="15" />
+                            <param name="config.dialog.table.certificates.y" value= "30"/>
+                            <param name="config.dialog.table.certificates.width" value="440" />
+                            <param name="config.dialog.table.certificates.height" value="210" />
+                            -->
+                        </applet>
+                    <td>
+                </tr>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellspacing="0" cellpadding="5" class="padrao">
+                            <tr>
+                                <td class="padrao">CPF:</td>
+                                <td><input class="padrao" type="text" name="cpf" value="" size="11"></td>
+                            </tr>
+                            <tr>
+                                <td class="padrao">Nome:</td>
+                                <td><input class="padrao" type="text" name="nome" value="" size="30"></td>
+                            </tr>
+                            <tr>
+                                <td class="padrao">Email:</td>
+                                <td><input class="padrao" type="text" name="email" value="" size="30"></td>
+                            </tr>
+                            <tr>
+                                <td class="padrao">Nascimento:</td>
+                                <td><input class="padrao" type="text" name="nascimento" value="" size="8"></td>
+                            </tr>
+                        </table>
+                </tr>
+            </table>
         </form>
-</body>
+    </body>
 </html>]]></programlisting>
 
     </section>
@@ -291,10 +279,7 @@ input.padrao {
             <para>
                 A chamada do método JavaScript por padrão só funciona no Linux e Mac, pois neles o acesso é feito diretamente pelo Hardware, e não por uma camada de abstração
                 como no Windows. Para que este recurso funcione também no Windows, é necessário indicar que o acesso deve ser feito diretamente pelo hardware também. Consulte
-                a
-                documentação do componente
-                <emphasis>demoiselle-keystore</emphasis>
-                para detalhes sobre este recurso.
+                a documentação do componente <emphasis>demoiselle-core</emphasis> para detalhes sobre este recurso.
             </para>
         </important>
 
@@ -320,36 +305,28 @@ input.padrao {
                 </thead>
                 <tbody>
                     <row>
-                        <entry>demoiselle-applet-customizada-1.0.0.jar</entry>
-                        <entry>demoiselle-applet-customizada-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-applet-customizada-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-applet-customizada-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-applet-1.0.0.jar</entry>
-                        <entry>demoiselle-applet-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-applet-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-applet-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-certificate-1.0.0.jar</entry>
-                        <entry>demoiselle-certificate-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-core-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-core-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-keystore-1.0.0.jar</entry>
-                        <entry>demoiselle-keystore-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-signer-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-signer-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-signer-1.0.0.jar</entry>
-                        <entry>demoiselle-signer-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-criptography-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-criptography-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-criptography-1.0.0.jar</entry>
-                        <entry>demoiselle-criptography-1.0.0-assinado.jar</entry>
-                    </row>
-                    <row>
-                        <entry>demoiselle-ca-1.0.0-.jar</entry>
-                        <entry>demoiselle-ca-1.0.0-assinado.jar</entry>
-                    </row>
-                    <row>
-                        <entry>demoiselle-ca-icpbrasil-1.0.0.jar</entry>
-                        <entry>demoiselle-ca-icpbrasil-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
                         <entry>bcprov-jdk15-145.jar</entry>
@@ -364,42 +341,12 @@ input.padrao {
                         <entry>log4j-1.2.15-assinado.jar</entry>
                     </row>
                     <row>
+                        <entry>slf4j-api-1.6.1.jar</entry>
+                        <entry>slf4j-api-1.6.1-assinado.jar</entry>
+                    </row>
+                    <row>
                         <entry>plugin-1.0.jar</entry>
                         <entry>plugin-1.0-assinado.jar</entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table>
-
-        <para>
-            Para utilizar o componente com certificados na JVM 1.5, deve-se incluir o componente
-            <emphasis>assembla</emphasis>
-            para o correto funcionamento.
-        </para>
-
-        <caution>
-            <para>
-                O componente
-                <emphasis>assembla</emphasis>
-                é um componente de terceiros e não está sendo evoluído, portanto a recomendação é utilizar a JVM 1.6 em diante para utilizar os novos recursos de manipulação de certificados do JAVA.
-            </para>
-        </caution>
-
-        <table frame="all" pgwide="1">
-            <title>Lista dos jars assinados</title>
-            <tgroup colsep="1" cols="2">
-                <colspec colnum="1" colname="c0" />
-                <colspec colnum="2" colname="c1" />
-                <thead>
-                    <row>
-                        <entry>Jar Original</entry>
-                        <entry>Jar Assinado</entry>
-                    </row>
-                </thead>
-                <tbody>
-                    <row>
-                        <entry>assembla-1.0.0.jar</entry>
-                        <entry>assembla-1.0.0-assinado.jar</entry>
                     </row>
                 </tbody>
             </tgroup>
@@ -422,8 +369,8 @@ input.padrao {
                 </thead>
                 <tbody>
                     <row>
-                        <entry>demoiselle-ca-icpbrasil-homologacao-1.0.0.jar</entry>
-                        <entry>demoiselle-ca-icpbrasil-homologacao-1.0.0-assinado.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-1.0.0-assinado.jar</entry>
                     </row>
                 </tbody>
             </tgroup>
@@ -440,7 +387,7 @@ input.padrao {
         <title>Publicando no servidor Tomcat</title>
 
         <para>
-            Para testar nosso projeto, crie um novo projeto Web (No exemplo utilizamos o nome demoiselle-applet-customizada-web) e copie todos os jar assinados e seu index.html para a pasta WebContent. Adicione seu projeto ao servidor Tomcat e acesse a aplicação pelo navegador.
+            Para testar nosso projeto, crie um novo projeto Web (No exemplo utilizamos o nome demoiselle-certificate-applet-customizada-web) e copie todos os jar assinados e seu index.html para a pasta WebContent. Adicione seu projeto ao servidor Tomcat e acesse a aplicação pelo navegador.
         </para>
 
     </section>
@@ -449,8 +396,8 @@ input.padrao {
         <title>Executando a applet</title>
 
         <para>
-            Abra seu navegador na url na qual foi publicado os arquivos. Neste exemplo seria http://localhost:8080/demoiselle-applet-customizada-web. Se o certificado digital
-            necessitar do pin para que seja feito o acesso, a aplicação solicitará imediatamente o pin de seu certificado, conforme a tela abaixo:
+            Abra seu navegador na url na qual foi publicado os arquivos. Neste exemplo seria http://localhost:8080/demoiselle-certificate-applet-customizada-web. Se o certificado
+            digital necessitar do pin para que seja feito o acesso, a aplicação solicitará imediatamente o pin de seu certificado, conforme a tela abaixo:
         </para>
 
         <para>
@@ -460,7 +407,7 @@ input.padrao {
                 </title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/tela02.png" format="PNG" />
+                        <imagedata fileref="images/tela02.png" format="PNG" align="center" scalefit="1" width="75%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -478,7 +425,7 @@ input.padrao {
                 </title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/tela03.png" format="PNG" />
+                        <imagedata fileref="images/tela03.png" format="PNG" align="center" scalefit="1" width="75%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -494,13 +441,13 @@ input.padrao {
             conforme mostrado abaixo.
         </para>
 
-        <programlisting role="JAVA"><![CDATA[code="br.gov.serpro.security.applet.view.JPanelApplet"]]></programlisting>
+        <programlisting role="JAVA"><![CDATA[code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet"]]></programlisting>
 
         <para>
             Para:
         </para>
 
-        <programlisting role="JAVA"><![CDATA[code="br.gov.serpro.security.applet.view.JDialogApplet"]]></programlisting>
+        <programlisting role="JAVA"><![CDATA[code="br.gov.frameworkdemoiselle.certificate.applet.view.JDialogApplet"]]></programlisting>
 
     </section>
 
@@ -776,7 +723,7 @@ input.padrao {
                 </title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/tela04.png" format="PNG" />
+                        <imagedata fileref="images/tela04.png" format="PNG" align="center" scalefit="1" width="75%"/>
                     </imageobject>
                 </mediaobject>
             </figure>

@@ -3,46 +3,45 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <book lang="pt">
 
-	<xi:include href="bookinfo.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="bookinfo.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-	<!-- prefácio -->
-	<preface>
-		<title>Sobre o Demoiselle Components</title>
-		<para>
-			O <emphasis>Demoiselle Components Guide</emphasis> agrega em um único lugar toda a
-			documentação referente a todos os componentes disponibilizados e que são
-			compatíveis com a versão mais recente do <emphasis>Demoiselle Framework</emphasis>. 
-		</para>
-	</preface>
+    <!-- prefácio -->
+    <preface>
+        <title>Sobre o Demoiselle Components</title>
+        <para>
+            O <emphasis>Demoiselle Components Guide</emphasis> agrega em um único lugar toda a
+            documentação referente a todos os componentes disponibilizados e que são
+            compatíveis com a versão mais recente do <emphasis>Demoiselle Framework</emphasis>.
+        </para>
+    </preface>
 
-	<!-- índice -->
-	<toc />
+    <!-- índice -->
+    <toc />
 
-	<!-- partes -->
+    <!-- partes -->
 
+    <!-- Demoiselle Applet -->
+    <xi:include href="applet/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle Keystore -->
-        <xi:include href="keystore/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle Certificate -->
+    <xi:include href="core/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle Signer -->
-        <xi:include href="signer/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle Keystore -->
+    <xi:include href="keystore/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle Criptography -->
-        <xi:include href="criptography/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle CA -->
+    <xi:include href="ca/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle Certificate -->
-        <xi:include href="certificate/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-        
-	<!-- Demoiselle Applet -->
-	<xi:include href="applet/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle Signer -->
+    <xi:include href="signer/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle CA -->
-        <xi:include href="ca/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle Criptography -->
+    <xi:include href="criptography/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle CA ICP-Brasil -->
-        <xi:include href="ca-icp-brasil/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle CA ICP-Brasil -->
+    <xi:include href="ca-icp-brasil/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <!-- Demoiselle CA ICP-Brasil Homologacao-->
-        <xi:include href="ca-icp-brasil-homologacao/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <!-- Demoiselle CA ICP-Brasil Homologacao-->
+    <xi:include href="ca-icp-brasil-homologacao/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
 </book>
