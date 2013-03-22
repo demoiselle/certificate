@@ -41,22 +41,24 @@
 
 public class App extends AbstractAppletExecute {
 
-        public void execute(KeyStore keystore, String alias, Applet applet) {
-                try {
-                        ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
-                        super.setFormField(applet, "mainForm", "cpf", certificado.getCpf());
-                        super.setFormField(applet, "mainForm", "nome", certificado.getNome());
-                        super.setFormField(applet, "mainForm", "nascimento", certificado.getDataNascimento());
-                        super.setFormField(applet, "mainForm", "email", certificado.getEmail());
-                } catch (KeyStoreException e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(applet, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+	public void execute(KeyStore keystore, String alias, Applet applet) {
+		try {
+			ICPBrasilCertificate certificado = super
+				.getICPBrasilCertificate(keystore, alias, false);
+			super.setFormField(applet, "mainForm", "cpf", certificado.getCpf());
+			super.setFormField(applet, "mainForm", "nome", certificado.getNome());
+			super.setFormField(applet, "mainForm", "nascimento", certificado.getDataNascimento());
+			super.setFormField(applet, "mainForm", "email", certificado.getEmail());
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(applet, e.getMessage(), "Error", 
+										  JOptionPane.ERROR_MESSAGE);
         }
+	}
 
-        public void cancel(KeyStore keystore, String alias, Applet applet);
+    public void cancel(KeyStore keystore, String alias, Applet applet);
 
-        }
+    }
 }]]></programlisting>
 
         <para>
@@ -194,7 +196,7 @@ public class App extends AbstractAppletExecute {
             <table align="center" border="0" cellspacing="5" cellpadding="1" class="padrao">
                 <tr>
                     <td align="center"><applet codebase="http://localhost:8080/demoiselle-certificate-applet-customizada-web/" code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=470 height=310 MAYSCRIPT
-                        archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
+                    	archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
                         demoiselle-certificate-applet-1.0.0-assinado.jar,
                         demoiselle-certificate-core-1.0.0-assinado.jar,
                         demoiselle-certificate-criptography-1.0.0-assinado.jar,
@@ -480,7 +482,8 @@ public class App extends AbstractAppletExecute {
         try {
             System.out.println("App.execute()");
 
-            ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
+            ICPBrasilCertificate certificado = super
+            	.getICPBrasilCertificate(keystore, alias, false);
             super.setFormField(applet, "mainForm", "cpf", certificado.getCpf());
             super.setFormField(applet, "mainForm", "nome", certificado.getNome());
             super.setFormField(applet, "mainForm", "nascimento", certificado.getDataNascimento());
@@ -522,7 +525,8 @@ public class App extends AbstractAppletExecute {
 
         } catch (KeyStoreException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(applet, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(applet, e.getMessage(), "Error", 
+            								JOptionPane.ERROR_MESSAGE);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (UnrecoverableKeyException e) {
