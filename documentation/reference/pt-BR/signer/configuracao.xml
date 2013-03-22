@@ -3,26 +3,26 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="signer-configuracao">
 
-	<title>Configuração do Demoiselle Signer</title>
+    <title>Configuração do Demoiselle Signer</title>
 
-	<section>
-		<title>Instalação do componente</title>
-		<para>
-			Para instalar o componente
-			<emphasis>Demoiselle Signer</emphasis>
-			na aplicação,
-			basta adicionar a sua dependência no arquivo
-			<filename>pom.xml</filename>
-			do projeto
-			gerenciado pelo Maven:
-		</para>
-		<programlisting role="XML"><![CDATA[
+    <section>
+        <title>Instalação do componente</title>
+        <para>
+            Para instalar o componente
+            <emphasis>Demoiselle Signer</emphasis>
+            na aplicação,
+            basta adicionar a sua dependência no arquivo
+            <filename>pom.xml</filename>
+            do projeto
+            gerenciado pelo Maven:
+        </para>
+        <programlisting role="XML"><![CDATA[
 <dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-	<artifactId>demoiselle-signer</artifactId>
+	<artifactId>demoiselle-certificate-signer</artifactId>
 	<version>1.0.0</version>
 </dependency>]]>
-		</programlisting>
-	</section>
+        </programlisting>
+    </section>
 
 </chapter>
