@@ -35,14 +35,13 @@
  51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.gov.frameworkdemoiselle.component</groupId>
     <artifactId>demoiselle-certificate-parent</artifactId>
-    <version>1.0.0-ALPHA1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -53,7 +52,7 @@
     </parent>
 
     <name>Demoiselle Certificate Parent</name>
-    <description></description>
+    <description />
     <url>http://www.frameworkdemoiselle.gov.br</url>
 
     <licenses>
@@ -140,4 +139,8 @@
         <demoiselle.framework.version>2.3.0</demoiselle.framework.version>
     </properties>
 
+
+  <scm>
+    <tag>1.0.0</tag>
+  </scm>
 </project>
