@@ -38,6 +38,10 @@ package br.gov.frameworkdemoiselle.certificate.ca.manager;
 
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCAFactory;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCAFactory;
+
+
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -51,10 +55,6 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-
-
-import br.gov.frameworkdemoiselle.certificate.provider.ProviderSignaturePolicyRootCA;
-import br.gov.frameworkdemoiselle.certificate.provider.ProviderSignaturePolicyRootCAFactory;
 
 public class CAManager {
 

@@ -68,16 +68,16 @@
         <url>http://www.serpro.gov.br</url>
     </organization>
 
-
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/*.jks</exclude>
-                    <exclude>**/*.cer</exclude>
-                </excludes>
+                <includes>
+                    <include>**/*.jks</include>
+                    <include>**/*.cer</include>
+                    <include>**/*.crt</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
@@ -85,11 +85,11 @@
                 <excludes>
                     <exclude>**/*.jks</exclude>
                     <exclude>**/*.cer</exclude>
+                    <exclude>**/*.crt</exclude>
                 </excludes>
             </resource>
         </resources>
     </build>
-
 
     <dependencyManagement>
         <dependencies>
