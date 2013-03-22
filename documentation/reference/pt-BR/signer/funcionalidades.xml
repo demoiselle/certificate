@@ -148,10 +148,15 @@ byte[] sign = signer.signer(this.content);]]></programlisting>
         </para>
 
         <programlisting role="JAVA"><![CDATA[
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
+...         
+
 byte[] content = readContent("texto.txt"); /* implementar metodo de leitura de arquivo */
 /* Gerando o HASH fora do assinador */
-br.gov.frameworkdemoisele.certificate.criptography.Digest digest = br.gov.frameworkdemoisele.certificate.criptography.factory.DigestFactory.getInstance().factoryDefault();
-digest.setAlgorithm(br.gov.frameworkdemoisele.security.criptography.DigestAlgorithmEnum.SHA_1);
+Digest digest = DigestFactory.getInstance().factoryDefault();
+digest.setAlgorithm(DigestAlgorithmEnum.SHA_1);
 byte[] hash = digest.digest(content);
 
 /* Gerando a assinatura a partir do HASH gerado anteriormente */

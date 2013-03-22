@@ -51,7 +51,7 @@
         <table>
             <title>Exemplo com Variável de Ambiente</title>
             <tgroup colsep="1" cols="2">
-                <colspec colnum="1" colname="c0" />
+                <colspec colnum="1" colname="c0" colwidth="50pt" />
                 <colspec colnum="2" colname="c1" />
                 <thead>
                     <row>
@@ -62,11 +62,11 @@
                 <tbody>
                     <row>
                         <entry>Linux</entry>
-                        <entry>export criptography.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.CriptographyImpl</entry>
+                        <entry align="left">export criptography.implementation = br.gov.frameworkdemoiselle.certificate.criptography.implementation.CriptographyImpl</entry>
                     </row>
                     <row>
                         <entry>Windows</entry>
-                        <entry>set criptography.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.CriptographyImpl</entry>
+                        <entry align="left">set criptography.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.CriptographyImpl</entry>
                     </row>
                 </tbody>
             </tgroup>
@@ -75,7 +75,7 @@
         <table>
             <title>Exemplo com Variável JVM</title>
             <tgroup colsep="1" cols="2">
-                <colspec colnum="1" colname="c0" />
+                <colspec colnum="1" colname="c0" colwidth="50pt" />
                 <colspec colnum="2" colname="c1" />
                 <thead>
                     <row>
@@ -86,11 +86,11 @@
                 <tbody>
                     <row>
                         <entry>Linux</entry>
-                        <entry>-criptography.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyCriptographyImpl</entry>
+                        <entry align="left">-criptography.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyCriptographyImpl</entry>
                     </row>
                     <row>
                         <entry>Windows</entry>
-                        <entry>-criptography.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyCriptographyImpl</entry>
+                        <entry align="left">-criptography.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyCriptographyImpl</entry>
                     </row>
                 </tbody>
             </tgroup>
@@ -104,7 +104,7 @@
         <table>
             <title>Exemplo com Variável de Ambiente</title>
             <tgroup colsep="1" cols="2">
-                <colspec colnum="1" colname="c0" />
+                <colspec colnum="1" colname="c0" colwidth="50pt" />
                 <colspec colnum="2" colname="c1" />
                 <thead>
                     <row>
@@ -115,11 +115,11 @@
                 <tbody>
                     <row>
                         <entry>Linux</entry>
-                        <entry>export digest.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
+                        <entry align="left">export digest.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
                     </row>
                     <row>
                         <entry>Windows</entry>
-                        <entry>set digest.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
+                        <entry align="left">set digest.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
                     </row>
                 </tbody>
             </tgroup>
@@ -128,7 +128,7 @@
         <table>
             <title>Exemplo com Variável JVM</title>
             <tgroup colsep="1" cols="2">
-                <colspec colnum="1" colname="c0" />
+                <colspec colnum="1" colname="c0" colwidth="50pt" />
                 <colspec colnum="2" colname="c1" />
                 <thead>
                     <row>
@@ -139,11 +139,11 @@
                 <tbody>
                     <row>
                         <entry>Linux</entry>
-                        <entry>-messageDigest.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
+                        <entry align="left">-messageDigest.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
                     </row>
                     <row>
                         <entry>Windows</entry>
-                        <entry>-messageDigest.implementation=br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
+                        <entry align="left">-messageDigest.implementation= br.gov.frameworkdemoiselle.certificate.criptography.implementation.MyDigestImpl</entry>
                     </row>
                 </tbody>
             </tgroup>
