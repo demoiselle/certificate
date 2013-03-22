@@ -36,90 +36,103 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-	<artifactId>demoiselle-certificate-parent</artifactId>
-	<version>1.0.0-ALPHA1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <groupId>br.gov.frameworkdemoiselle.component</groupId>
+    <artifactId>demoiselle-certificate-parent</artifactId>
+    <version>1.0.0-ALPHA1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<parent>
-		<groupId>br.gov.frameworkdemoiselle</groupId>
-		<artifactId>demoiselle-parent</artifactId>
-		<version>8</version>
-		<relativePath>../../../../internal/parent/demoiselle</relativePath>
-	</parent>
+    <parent>
+        <groupId>br.gov.frameworkdemoiselle</groupId>
+        <artifactId>demoiselle-parent</artifactId>
+        <version>8</version>
+        <relativePath>../../../../internal/parent/demoiselle</relativePath>
+    </parent>
 
-	<name>Demoiselle Certificate Parent</name>
-	<description></description>
-	<url>http://www.frameworkdemoiselle.gov.br</url>
+    <name>Demoiselle Certificate Parent</name>
+    <description></description>
+    <url>http://www.frameworkdemoiselle.gov.br</url>
 
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License, Version 3</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+        </license>
+    </licenses>
 
-	<organization>
-		<name>SERPRO - Serviço Federal de Processamento de Dados</name>
-		<url>http://www.serpro.gov.br</url>
-	</organization>
+    <organization>
+        <name>SERPRO - Serviço Federal de Processamento de Dados</name>
+        <url>http://www.serpro.gov.br</url>
+    </organization>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>br.gov.frameworkdemoiselle</groupId>
-				<artifactId>demoiselle-framework-bom</artifactId>
-				<version>${demoiselle.framework.version}</version>
-				<scope>import</scope>
-				<type>pom</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.jks</exclude>
+                    <exclude>**/*.cer</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>demoiselle.sourceforge.net</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/snapshot</url>
-		</snapshotRepository>
-		<repository>
-			<id>demoiselle.sourceforge.net</id>
-			<name>Nexus Release Repository</name>
-			<url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/release</url>
-		</repository>
-	</distributionManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>br.gov.frameworkdemoiselle</groupId>
+                <artifactId>demoiselle-framework-bom</artifactId>
+                <version>${demoiselle.framework.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-	<repositories>
-		<repository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>sonatype-nexus-releases</id>
-			<name>Sonatype Nexus Releases</name>
-			<url>https://oss.sonatype.org/content/repositories/releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>demoiselle.sourceforge.net</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/snapshot</url>
+        </snapshotRepository>
+        <repository>
+            <id>demoiselle.sourceforge.net</id>
+            <name>Nexus Release Repository</name>
+            <url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/release</url>
+        </repository>
+    </distributionManagement>
 
-	<properties>
-		<demoiselle.framework.version>2.3.0</demoiselle.framework.version>
-	</properties>
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>sonatype-nexus-releases</id>
+            <name>Sonatype Nexus Releases</name>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <properties>
+        <demoiselle.framework.version>2.3.0</demoiselle.framework.version>
+    </properties>
 
 </project>
