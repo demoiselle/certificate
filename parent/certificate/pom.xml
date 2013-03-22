@@ -68,6 +68,7 @@
         <url>http://www.serpro.gov.br</url>
     </organization>
 
+
     <build>
         <resources>
             <resource>
@@ -78,8 +79,17 @@
                     <exclude>**/*.cer</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.jks</exclude>
+                    <exclude>**/*.cer</exclude>
+                </excludes>
+            </resource>
         </resources>
     </build>
+
 
     <dependencyManagement>
         <dependencies>
