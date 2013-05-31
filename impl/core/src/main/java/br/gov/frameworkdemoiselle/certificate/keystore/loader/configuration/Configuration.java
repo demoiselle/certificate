@@ -108,6 +108,7 @@ public class Configuration {
         map.put("TokenOuSmartCard", "/usr/lib/libwdpkcs.so");
         map.put("TokenOuSmartCard", "/usr/local/lib64/libwdpkcs.so");
         map.put("TokenOuSmartCard", "/usr/local/lib/libwdpkcs.so");
+        map.put("TokenOuSmartCard", "/usr/lib/watchdata/ICP/lib/libwdpkcs_icp.so");
         map.put("TokenOuSmartCard", "/usr/lib/watchdata/lib/libwdpkcs.so");
         map.put("TokenOuSmartCard", "/opt/watchdata/lib64/libwdpkcs.so");
         map.put("TokenOuSmartCard", "/usr/lib/opensc-pkcs11.so");
