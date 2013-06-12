@@ -99,6 +99,6 @@
 	</distributionManagement>
 
 	<properties>
-		<project.context>component/certificate/reference</project.context>
+		<project.context>components/certificate/reference</project.context>
 	</properties>
 </project>
