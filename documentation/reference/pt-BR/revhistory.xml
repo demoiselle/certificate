@@ -3,6 +3,12 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
     <revision>
+        <revnumber>1.0.3</revnumber>
+        <date>15/11/2013</date>
+        <authorinitials>hmp</authorinitials>
+        <revremark>...</revremark>
+    </revision>
+    <revision>
         <revnumber>1.0.2</revnumber>
         <date>04/11/2013</date>
         <authorinitials>hmp</authorinitials>

@@ -197,12 +197,12 @@ public class App extends AbstractAppletExecute {
                 <tr>
                     <td align="center"><applet codebase="http://localhost:8080/demoiselle-certificate-applet-customizada-web/" code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=470 height=310 MAYSCRIPT
                     	archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
-                        demoiselle-certificate-applet-1.0.1-assinado.jar,
-                        demoiselle-certificate-core-1.0.1-assinado.jar,
-                        demoiselle-certificate-criptography-1.0.1-assinado.jar,
-                        demoiselle-certificate-signer-1.0.1-assinado.jar,
-                        demoiselle-certificate-ca-icpbrasil-1.0.1-assinado.jar,
-                        demoiselle-certificate-ca-icpbrasil-homologacao-1.0.1-assinado.jar,
+                        demoiselle-certificate-applet-1.0.3-assinado.jar,
+                        demoiselle-certificate-core-1.0.3-assinado.jar,
+                        demoiselle-certificate-criptography-1.0.3-assinado.jar,
+                        demoiselle-certificate-signer-1.0.3-assinado.jar,
+                        demoiselle-certificate-ca-icpbrasil-1.0.3-assinado.jar,
+                        demoiselle-certificate-ca-icpbrasil-homologacao-1.0.3-assinado.jar,
                         bcmail-jdk15-1.45-assinado.jar,
                         bcprov-jdk15-1.45-assinado.jar,
                         log4j-1.2.15-assinado.jar,
@@ -300,24 +300,24 @@ public class App extends AbstractAppletExecute {
                         <entry>demoiselle-certificate-applet-customizada-1.0.0-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-certificate-applet-1.0.1.jar</entry>
-                        <entry>demoiselle-certificate-applet-1.0.1-assinado.jar</entry>
+                        <entry>demoiselle-certificate-applet-1.0.3.jar</entry>
+                        <entry>demoiselle-certificate-applet-1.0.3-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-certificate-core-1.0.1.jar</entry>
-                        <entry>demoiselle-certificate-core-1.0.1-assinado.jar</entry>
+                        <entry>demoiselle-certificate-core-1.0.3.jar</entry>
+                        <entry>demoiselle-certificate-core-1.0.3-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-certificate-signer-1.0.1.jar</entry>
-                        <entry>demoiselle-certificate-signer-1.0.1-assinado.jar</entry>
+                        <entry>demoiselle-certificate-signer-1.0.3.jar</entry>
+                        <entry>demoiselle-certificate-signer-1.0.3-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-certificate-criptography-1.0.1.jar</entry>
-                        <entry>demoiselle-certificate-criptography-1.0.1-assinado.jar</entry>
+                        <entry>demoiselle-certificate-criptography-1.0.3.jar</entry>
+                        <entry>demoiselle-certificate-criptography-1.0.3-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry>demoiselle-certificate-ca-icpbrasil-1.0.1.jar</entry>
-                        <entry>demoiselle-certificate-ca-icpbrasil-1.0.1-assinado.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-1.0.3.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-1.0.3-assinado.jar</entry>
                     </row>
                     <row>
                         <entry>bcprov-jdk15-145.jar</entry>
@@ -360,8 +360,8 @@ public class App extends AbstractAppletExecute {
                 </thead>
                 <tbody>
                     <row>
-                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-1.0.1.jar</entry>
-                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-1.0.1-assinado.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-1.0.3.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-1.0.3-assinado.jar</entry>
                     </row>
                 </tbody>
             </tgroup>
@@ -653,12 +653,12 @@ public class App extends AbstractAppletExecute {
                 <tr>
                     <td align="center"><applet codebase="http://localhost:8080/demoiselle-certificate-applet-customizada-web/" code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=470 height=310 MAYSCRIPT
                         archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
-                        demoiselle-certificate-applet-1.0.1-assinado.jar,
-                        demoiselle-certificate-core-1.0.1-assinado.jar,
-                        demoiselle-certificate-criptography-1.0.1-assinado.jar,
-                        demoiselle-certificate-signer-1.0.1-assinado.jar,
-                        demoiselle-certificate-ca-icpbrasil-1.0.1-assinado.jar,
-                        demoiselle-certificate-ca-icpbrasil-homologacao-1.0.1-assinado.jar,
+                        demoiselle-certificate-applet-1.0.3-assinado.jar,
+                        demoiselle-certificate-core-1.0.3-assinado.jar,
+                        demoiselle-certificate-criptography-1.0.3-assinado.jar,
+                        demoiselle-certificate-signer-1.0.3-assinado.jar,
+                        demoiselle-certificate-ca-icpbrasil-1.0.3-assinado.jar,
+                        demoiselle-certificate-ca-icpbrasil-homologacao-1.0.3-assinado.jar,
                         bcmail-jdk15-1.45-assinado.jar,
                         bcprov-jdk15-1.45-assinado.jar,
                         log4j-1.2.15-assinado.jar,
