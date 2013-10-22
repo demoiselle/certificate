@@ -239,12 +239,12 @@ public class ADRBCMS_1_1 implements SignaturePolicy {
 		}
 
 		// Para a versão 1.1, o período para assinatura desta PA é de 26/12/2011
-		// a 31/12/2014.
+		// a 29/02/2012.
 		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.set(2011, Calendar.DECEMBER, 25, 0, 0, 0);
+		calendar.set(2011, Calendar.DECEMBER, 26, 0, 0, 0);
 		Date firstDate = calendar.getTime();
 
-		calendar.set(2014, Calendar.DECEMBER, 31, 23, 59, 59);
+		calendar.set(2012, Calendar.FEBRUARY, 29, 23, 59, 59);
 		Date lastDate = calendar.getTime();
 
 		if (dataSigner != null) {
@@ -252,7 +252,7 @@ public class ADRBCMS_1_1 implements SignaturePolicy {
 				throw new SignerException("Invalid signing time. Not valid before 12/26/2011");
 			}
 			if (dataSigner.after(lastDate)) {
-				throw new SignerException("Invalid signing time. Not valid after 12/31/2014");
+				throw new SignerException("Invalid signing time. Not valid after 02/29/2012");
 			}
 		} else {
 			throw new SignerException("There is SigningTime attribute on Package PKCS7, but it is null");
