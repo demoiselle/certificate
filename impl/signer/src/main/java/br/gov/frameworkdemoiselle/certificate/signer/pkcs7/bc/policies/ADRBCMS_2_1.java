@@ -246,10 +246,10 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
 
 		if (dataSigner != null) {
 			if (dataSigner.before(firstDate)) {
-				throw new SignerException("Invalid signing time. Not valid before march/06/2011");
+				throw new SignerException("Invalid signing time. Not valid before 03/06/2011");
 			}
 			if (dataSigner.after(lastDate)) {
-				throw new SignerException("Invalid signing time. Not valid after june/21/2023");
+				throw new SignerException("Invalid signing time. Not valid after 06/21/2023");
 			}
 		} else {
 			throw new SignerException("There is SigningTime attribute on Package PKCS7, but it is null");
