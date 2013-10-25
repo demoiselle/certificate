@@ -240,7 +240,7 @@ public class ADRBCMS_1_1 implements SignaturePolicy {
 
         //Para a versão 1.1, o período para assinatura desta PA é de 26/12/2011 a 29/02/2012.
         Calendar calendar = GregorianCalendar.getInstance();
-        calendar.set(2011, Calendar.DECEMBER, 25, 0, 0, 0);
+        calendar.set(2011, Calendar.DECEMBER, 26, 0, 0, 0);
         Date firstDate = calendar.getTime();
 
         calendar.set(2012, Calendar.FEBRUARY, 29, 23, 59, 59);
