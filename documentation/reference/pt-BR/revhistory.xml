@@ -4,10 +4,9 @@
 <revhistory>
     <revision>
         <revnumber>1.0.3</revnumber>
-        <date>15/11/2013</date>
+        <date>06/11/2013</date>
         <authorinitials>hmp</authorinitials>
-        <revremark>Atualização das cadeias de certificados</revremark>
-    </revision>
+        <revremark>Atualização das cadeias de certificados e correcao das datas das politicas de assinatura</revremark>       
     <revision>
         <revnumber>1.0.2</revnumber>
         <date>04/11/2013</date>

@@ -235,7 +235,7 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
 
         }
 
-        // Para a versão 2.1, o período para assinatura desta PA é de 06/03/2012 a 21/06/2023.
+        //Para a versão 2.1, o período para assinatura desta PA é de 06/03/2012 a 21/06/2023.
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(2012, Calendar.MARCH, 06, 0, 0, 0);
         Date firstDate = calendar.getTime();
@@ -245,7 +245,7 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
 
         if (dataSigner != null) {
             if (dataSigner.before(firstDate)) {
-                throw new SignerException("Invalid signing time. Not valid before 03/06/2011");
+                throw new SignerException("Invalid signing time. Not valid before 03/06/2012");
             }
             if (dataSigner.after(lastDate)) {
                 throw new SignerException("Invalid signing time. Not valid after 06/21/2023");

@@ -170,7 +170,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
             throw new SignerException("ContentType isn't a DATA type");
         }
 
-		// Com o atributo ContentType válido, extrair o conteúdo assinado, caso
+        // Com o atributo ContentType válido, extrair o conteúdo assinado, caso
         // possua o conteúdo atached
         try {
             CMSProcessable contentProcessable = signedData.getSignedContent();
@@ -211,7 +211,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
             throw new SignerException("Invalid signature", e);
         }
 
-		// O atributo signingCertificate deve conter referência apenas ao
+        // O atributo signingCertificate deve conter referência apenas ao
         // certificado do signatário.
         org.bouncycastle.asn1.cms.Attribute signedSigningCertificate = signedAttributesTable.get(new DERObjectIdentifier("1.2.840.113549.1.9.16.2.12"));
         if (signedSigningCertificate != null) {
@@ -235,7 +235,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
 
         }
 
-        // Para a versão 2.0, o período para assinatura desta PA é de 26/12/2011 a 21/06/2023.
+        //Para a versão 2.0, o período para assinatura desta PA é de 26/12/2011 a 21/06/2023.
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(2011, Calendar.DECEMBER, 26, 0, 0, 0);
         Date firstDate = calendar.getTime();
@@ -286,7 +286,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
          */
         ValidadorUtil.validate(certificate);
 
-		// TODO Implementar a validação do caminho de certificação para o
+        // TODO Implementar a validação do caminho de certificação para o
         // certificado digital a ser utilizado na assinatura
     }
 

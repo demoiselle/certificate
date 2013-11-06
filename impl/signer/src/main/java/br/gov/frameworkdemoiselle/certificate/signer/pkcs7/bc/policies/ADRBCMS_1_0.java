@@ -237,7 +237,7 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
             throw new SignerException("SigningTime error", error);
         }
 
-        // Para a versão 1.0, o período para assinatura desta PA é de 31/10/2008 a 31/12/2014
+         //Para a versão 1.0, o período para assinatura desta PA é de 31/10/2008 a 31/12/2014.
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(2008, Calendar.OCTOBER, 31, 0, 0, 0);
         Date firstDate = calendar.getTime();
