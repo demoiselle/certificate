@@ -40,7 +40,7 @@
 
 	<artifactId>demoiselle-certificate-reference</artifactId>
 	<packaging>jdocbook</packaging>
-	<version>1.0.3</version>
+	<version>1.0.4-SNAPSHOT</version>
 
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle</groupId>
@@ -101,8 +101,4 @@
 	<properties>
 		<project.context>components/certificate/reference</project.context>
 	</properties>
-
-  <scm>
-    <tag>1.0.3</tag>
-  </scm>
 </project>
