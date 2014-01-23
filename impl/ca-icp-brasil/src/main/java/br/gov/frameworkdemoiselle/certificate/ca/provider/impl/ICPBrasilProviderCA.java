@@ -72,7 +72,7 @@ public class ICPBrasilProviderCA implements ProviderCA {
         try {
             InputStream is = ICPBrasilProviderCA.class.getClassLoader().getResourceAsStream("icpbrasil.jks");
             keyStore = KeyStore.getInstance("JKS");
-            keyStore.load(is, "security-certificate".toCharArray());
+            keyStore.load(is, "changeit".toCharArray());
         } catch (Throwable error) {
             throw new ICPBrasilProviderCAException("KeyStore default not loaded.", error);
         }
