@@ -89,12 +89,12 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15</artifactId>
-            <version>1.45</version>
+            <version>1.46</version>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcmail-jdk15</artifactId>
-            <version>1.45</version>
+            <version>1.46</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
