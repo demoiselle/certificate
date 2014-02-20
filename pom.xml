@@ -40,7 +40,7 @@
 
     <groupId>br.gov.frameworkdemoiselle.component</groupId>
     <artifactId>demoiselle-certificate-build</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -103,7 +103,7 @@
         <connection>scm:git:git@github.com:demoiselle/${project.alias}.git</connection>
         <developerConnection>scm:git:git@github.com:demoiselle/${project.alias}.git</developerConnection>
         <url>http://github.com/demoiselle/${project.alias}</url>
-        <tag>1.0.6</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <repositories>
