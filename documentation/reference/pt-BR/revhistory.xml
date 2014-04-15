@@ -3,6 +3,12 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
     <revision>
+        <revnumber>1.0.7</revnumber>
+        <date>15/04/2014</date>
+        <authorinitials>hmp</authorinitials>
+        <revremark>Atualização das cadeias de certificados</revremark>
+    </revision>
+    <revision>
         <revnumber>1.0.6</revnumber>
         <date>20/02/2014</date>
         <authorinitials>hmp</authorinitials>

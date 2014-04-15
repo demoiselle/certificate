@@ -19,7 +19,7 @@
 <dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-ca-icpbrasil</artifactId>
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 </dependency>]]>
         </programlisting>
     </section>
@@ -235,6 +235,10 @@
                     <row>
                         <entry>AC Certisign-JUS G3</entry>
                         <entry>ac_certisign_jus_g3.crt</entry>
+                    </row>
+                    <row>
+                        <entry>Autoridade Certificadora do SERPRO Final v4</entry>
+                        <entry>ac_serpro_acf_v4.crt</entry>
                     </row>
                     <row>
                         <entry>Autoridade Certificadora da Presidencia da Republica</entry>
@@ -649,12 +653,12 @@
                         <entry>ac_valid_spb.crt</entry>
                     </row>
                     <row>
-                        <entry>SERASA Autoridade Certificadora</entry>
-                        <entry>serasaac.crt</entry>
-                    </row>
-                    <row>
                         <entry>AC CertiSign V3</entry>
                         <entry>accertisign_2004.crt</entry>
+                    </row>
+                    <row>
+                        <entry>SERASA Autoridade Certificadora</entry>
+                        <entry>serasaac.crt</entry>
                     </row>
                     <row>
                         <entry>AC CertiSign Multipla</entry>
@@ -677,12 +681,12 @@
                         <entry>acsrf_2005.crt</entry>
                     </row>
                     <row>
-                        <entry>AC SERASA-JUS v1</entry>
-                        <entry>ac_serasa-jus_v1.crt</entry>
-                    </row>
-                    <row>
                         <entry>AC Certisign G5</entry>
                         <entry>accertisigng5_v2.crt</entry>
+                    </row>
+                    <row>
+                        <entry>AC SERASA-JUS v1</entry>
+                        <entry>ac_serasa-jus_v1.crt</entry>
                     </row>
                 </tbody>
             </tgroup>
