@@ -47,7 +47,6 @@ package br.gov.frameworkdemoiselle.certificate.oid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -56,7 +55,6 @@ import org.bouncycastle.asn1.DERPrintableString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERUTF8String;
-
 import sun.security.util.DerValue;
 import sun.security.x509.OtherName;
 
@@ -176,7 +174,7 @@ public class OIDGeneric {
 
         for (int i = 0; i < fields.length; i += 2) {
             String key = (String) fields[i];
-            int size = ((Integer) fields[i + 1]).intValue();
+            int size = ((Integer) fields[i + 1]);
 
             properties.put(key, data.substring(tmp, Math.min(tmp + size, data.length())));
 
