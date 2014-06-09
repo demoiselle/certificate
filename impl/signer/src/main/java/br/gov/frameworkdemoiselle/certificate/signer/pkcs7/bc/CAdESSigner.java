@@ -96,6 +96,7 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapte
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
@@ -128,7 +129,7 @@ public class CAdESSigner implements PKCS7Signer {
             Class<? extends Attribute> clazz = getTypeAttribute(attribute);
             Collection<Attribute> collection = this.attributes.get(clazz);
             if (collection == null) {
-                collection = new HashSet<Attribute>();
+                collection = new HashSet<>();
             }
             collection.add(attribute);
             this.attributes.put(clazz, collection);
@@ -144,7 +145,7 @@ public class CAdESSigner implements PKCS7Signer {
 
     public void addCertificateValidator(IValidator validator) {
         if (this.certificateValidators == null) {
-            this.certificateValidators = new ArrayList<IValidator>();
+            this.certificateValidators = new ArrayList<>();
         }
         if (!this.certificateValidators.contains(validator)) {
             this.certificateValidators.add(validator);
@@ -195,13 +196,7 @@ public class CAdESSigner implements PKCS7Signer {
                     certificate = (X509Certificate) collCertificados.iterator().next();
                     publicKey = certificate.getPublicKey();
                 }
-            } catch (NoSuchAlgorithmException exception) {
-                throw new SignerException(exception);
-            } catch (NoSuchProviderException exception) {
-                throw new SignerException(exception);
-            } catch (CMSException exception) {
-                throw new SignerException(exception);
-            } catch (CertStoreException exception) {
+            } catch (NoSuchAlgorithmException | NoSuchProviderException | CMSException | CertStoreException exception) {
                 throw new SignerException(exception);
             }
         } catch (SignerException exception) {
@@ -211,9 +206,7 @@ public class CAdESSigner implements PKCS7Signer {
 
         try {
             signerInformation.verify(publicKey, "BC");
-        } catch (NoSuchAlgorithmException e) {
-            throw new SignerException(e);
-        } catch (NoSuchProviderException e) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new SignerException(e);
         } catch (CMSException e) {
             throw new SignerException("Invalid signature", e);
@@ -252,16 +245,12 @@ public class CAdESSigner implements PKCS7Signer {
         CertStore result = null;
 
         try {
-            List<Certificate> certificates = new ArrayList<Certificate>();
+            List<Certificate> certificates = new ArrayList<>();
             certificates.addAll(Arrays.asList(certificateChain));
             CollectionCertStoreParameters cert = new CollectionCertStoreParameters(certificates);
             result = CertStore.getInstance("Collection", cert, "BC");
 
-        } catch (InvalidAlgorithmParameterException exception) {
-            throw new SignerException(exception);
-        } catch (NoSuchAlgorithmException exception) {
-            throw new SignerException(exception);
-        } catch (NoSuchProviderException exception) {
+        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException exception) {
             throw new SignerException(exception);
         }
         return result;
@@ -309,7 +298,7 @@ public class CAdESSigner implements PKCS7Signer {
 
     @Override
     public Collection<Attribute> getAttributes() {
-        Collection<Attribute> result = new ArrayList<Attribute>();
+        Collection<Attribute> result = new ArrayList<>();
         Set<Class<? extends Attribute>> keys = this.attributes.keySet();
         for (Class<? extends Attribute> key : keys) {
             result.addAll(this.attributes.get(key));
@@ -448,7 +437,10 @@ public class CAdESSigner implements PKCS7Signer {
      * informar a política de assinatura
      */
     @Override
+    //TODO Renomear metodo para "doSign"
     public byte[] signer(byte[] content) {
+
+        Security.addProvider(new BouncyCastleProvider());
 
         if (this.certificate == null && this.certificateChain != null && this.certificateChain.length > 0) {
             this.certificate = (X509Certificate) this.certificateChain[0];
@@ -460,13 +452,9 @@ public class CAdESSigner implements PKCS7Signer {
             this.certificateChain = CAManager.getInstance().getCertificateChainArray(this.certificate);
         }
 
-        Security.addProvider(new BouncyCastleProvider());
-
         SignaturePolicyIdentifier signaturePolicyIdentifier = new SignaturePolicyIdentifier();
         signaturePolicyIdentifier.setSignaturePolicyId(this.signaturePolicy.getSignaturePolicyId());
-        if (signaturePolicyIdentifier != null) {
-            this.addAttribute(signaturePolicyIdentifier);
-        }
+        this.addAttribute(signaturePolicyIdentifier);
 
         boolean addSigningCertificateAttribute = true;
         for (Attribute attribute : this.getAttributes()) {
@@ -476,8 +464,7 @@ public class CAdESSigner implements PKCS7Signer {
             }
         }
         if (addSigningCertificateAttribute) {
-            SigningCertificate signingCertificateAttribute = this.signaturePolicy
-                    .getSigningCertificateAttribute(this.certificate);
+            SigningCertificate signingCertificateAttribute = this.signaturePolicy.getSigningCertificateAttribute(this.certificate);
             this.addAttribute(signingCertificateAttribute);
         }
 
@@ -501,8 +488,8 @@ public class CAdESSigner implements PKCS7Signer {
         CMSSignedDataGenerator signedDataGenerator = new CMSSignedDataGenerator();
         try {
             signedDataGenerator.addCertificatesAndCRLs(this.generatedCertStore());
-        } catch (Exception e) {
-            throw new SignerException(e);
+        } catch (CertStoreException | CMSException ex) {
+            throw new SignerException(ex);
         }
 
         // Valida o certificado usando a politica de certificacao
@@ -510,8 +497,7 @@ public class CAdESSigner implements PKCS7Signer {
 
         AttributeTable signedTable = this.mountSignedTable();
         AttributeTable unsignedTable = this.mountUnsignedTable();
-        signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID,
-                algorithmHashOID, signedTable, unsignedTable);
+        signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID, algorithmHashOID, signedTable, unsignedTable);
 
         try {
             CMSProcessable processable = null;
@@ -520,13 +506,13 @@ public class CAdESSigner implements PKCS7Signer {
             } else {
                 processable = new CMSProcessableByteArray(content);
             }
-            CMSSignedData signedData = signedDataGenerator.generate(CMSSignedDataGenerator.DATA, processable,
-                    this.attached, this.getProviderName(), true);
+            CMSSignedData signedData;
+            signedData = signedDataGenerator.generate(CMSSignedDataGenerator.DATA, processable, this.attached, this.getProviderName(), true);
             result = signedData.getEncoded();
-        } catch (Exception e) {
-            throw new SignerException(e);
-        }
 
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | CMSException | IOException ex) {
+            throw new SignerException(ex);
+        }
         return result;
     }
 
