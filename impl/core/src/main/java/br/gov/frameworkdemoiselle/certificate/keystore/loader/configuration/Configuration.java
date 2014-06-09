@@ -166,7 +166,6 @@ public class Configuration {
      * Retorna um conjunto de drivers no padrão Map<'nome driver', 'path
      * driver'>
      *
-     * @param drivers
      * @return
      */
     public Map<String, String> getDrivers() {
@@ -236,6 +235,8 @@ public class Configuration {
      * - http://java.sun.com/j2se/1.5.0/docs/guide/security/p11guide.html Java
      * 1.6 -
      * http://java.sun.com/javase/6/docs/technotes/guides/security/p11guide.html
+     *
+     * @return
      */
     public String getPKCS11ConfigFile() {
         String filePath = this.getContentFromVariables(Configuration.VAR_PKCS11_CONFIG);
