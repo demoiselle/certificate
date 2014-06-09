@@ -95,6 +95,7 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAtt
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
+import java.util.Arrays;
 
 /**
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
@@ -252,12 +253,7 @@ public class CAdESSigner implements PKCS7Signer {
 
         try {
             List<Certificate> certificates = new ArrayList<Certificate>();
-
-            // TODO Avaliar se pega todos os certificados
-            for (int i = 0; i < certificateChain.length; i++) {
-                certificates.add(certificateChain[i]);
-            }
-
+            certificates.addAll(Arrays.asList(certificateChain));
             CollectionCertStoreParameters cert = new CollectionCertStoreParameters(certificates);
             result = CertStore.getInstance("Collection", cert, "BC");
 
@@ -357,7 +353,7 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     private AttributeTable mountAttributeTable(Collection<Attribute> collection) {
-        if (collection == null || collection.size() == 0) {
+        if (collection == null || collection.isEmpty()) {
             return null;
         }
         AttributeTable table = null;
@@ -552,7 +548,7 @@ public class CAdESSigner implements PKCS7Signer {
             BasicCertificate basicCertificate = new BasicCertificate(this.certificate);
             try {
                 List<String> listLCRs = basicCertificate.getCRLDistributionPoint();
-                if (listLCRs == null || listLCRs.size() == 0) {
+                if (listLCRs == null || listLCRs.isEmpty()) {
                     throw new SignerException("Blank LCR distribuition point for certificate.");
                 }
             } catch (IOException error) {
@@ -572,7 +568,7 @@ public class CAdESSigner implements PKCS7Signer {
                 if (exception instanceof CertificateValidatorException) {
                     throw (CertificateValidatorException) exception;
                 }
-                throw new SignerException("Certificate is not valid", exception);
+                throw new SignerException("O certificado nao e valido.", exception);
             }
         }
     }
