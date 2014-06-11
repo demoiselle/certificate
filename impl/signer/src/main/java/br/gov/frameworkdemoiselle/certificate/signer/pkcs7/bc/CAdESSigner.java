@@ -36,50 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc;
 
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.cert.CertStore;
-import java.security.cert.CertStoreException;
-import java.security.cert.Certificate;
-import java.security.cert.CollectionCertStoreParameters;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bouncycastle.asn1.ASN1Set;
-import org.bouncycastle.asn1.DERObjectIdentifier;
-import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.cms.AttributeTable;
-import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.CMSProcessable;
-import org.bouncycastle.cms.CMSProcessableByteArray;
-import org.bouncycastle.cms.CMSSignedData;
-import org.bouncycastle.cms.CMSSignedDataGenerator;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.SignerInformationStore;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.gov.frameworkdemoiselle.certificate.CertificateException;
 import br.gov.frameworkdemoiselle.certificate.CertificateManager;
 import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.IValidator;
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
@@ -95,8 +57,43 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAtt
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.Provider;
+import java.security.PublicKey;
+import java.security.Security;
+import java.security.cert.CertStore;
+import java.security.cert.CertStoreException;
+import java.security.cert.Certificate;
+import java.security.cert.CollectionCertStoreParameters;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.bouncycastle.asn1.ASN1Set;
+import org.bouncycastle.asn1.DERObjectIdentifier;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.cms.AttributeTable;
+import org.bouncycastle.cms.CMSException;
+import org.bouncycastle.cms.CMSProcessable;
+import org.bouncycastle.cms.CMSProcessableByteArray;
+import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.CMSSignedDataGenerator;
+import org.bouncycastle.cms.SignerInformation;
+import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
@@ -105,7 +102,7 @@ import java.util.logging.Level;
  */
 public class CAdESSigner implements PKCS7Signer {
 
-    private static final Logger log = LoggerFactory.getLogger(CAdESSigner.class);
+    private static final Logger logger = LoggerFactory.getLogger(CAdESSigner.class);
     private final PKCS1Signer pkcs1 = PKCS1Factory.getInstance().factoryDefault();
     private X509Certificate certificate;
     private Certificate certificateChain[];
@@ -187,11 +184,11 @@ public class CAdESSigner implements PKCS7Signer {
          * Retirando o Certificado Digital e a chave Pública da assinatura
          */
         try {
-            CertStore certs;
+            CertStore certStore;
             try {
                 Security.addProvider(new BouncyCastleProvider());
-                certs = signedData.getCertificatesAndCRLs("Collection", "BC");
-                Collection<? extends Certificate> collCertificados = certs.getCertificates(signerInformation.getSID());
+                certStore = signedData.getCertificatesAndCRLs("Collection", "BC");
+                Collection<? extends Certificate> collCertificados = certStore.getCertificates(signerInformation.getSID());
                 if (!collCertificados.isEmpty()) {
                     certificate = (X509Certificate) collCertificados.iterator().next();
                     publicKey = certificate.getPublicKey();
@@ -200,8 +197,7 @@ public class CAdESSigner implements PKCS7Signer {
                 throw new SignerException(exception);
             }
         } catch (SignerException exception) {
-            throw new SignerException(
-                    "Error on get information about certificates and public keys from a package PKCS7", exception);
+            throw new SignerException("Error on get information about certificates and public keys from a package PKCS7", exception);
         }
 
         try {
@@ -219,19 +215,18 @@ public class CAdESSigner implements PKCS7Signer {
         }
 
         // Validar a política
-        org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes
-                .get(new DERObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
+        org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new DERObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
         if (signaturePolicyIdentifierAttribute != null) {
             ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
             for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
                 DERSequence sequence = iterator.nextElement();
                 DERObjectIdentifier policyIdentifier = (DERObjectIdentifier) sequence.getObjectAt(0);
                 String policyOID = policyIdentifier.getId();
-                SignaturePolicy policy = SignaturePolicyFactory.getInstance().factory(policyOID);
-                if (policy != null) {
-                    policy.validate(content, signed);
+                SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
+                if (signaturePolicy != null) {
+                    signaturePolicy.validate(content, signed);
                 } else {
-                    log.warn("Não existe validador para a política " + policyOID);
+                    logger.warn("Não existe validador para a política " + policyOID);
                 }
             }
         } else {
@@ -241,7 +236,6 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     private CertStore generatedCertStore() {
-
         CertStore result = null;
 
         try {
@@ -267,6 +261,14 @@ public class CAdESSigner implements PKCS7Signer {
 
     }
 
+    /**
+     * Extrai o conteudo assinado da estrutura de assinatura digital, caso
+     * exista
+     *
+     * @param signed O conteudo assinado
+     * @param validate Extrai validando a assinatura, em caso verdadeiro.
+     * @return O conteudo original
+     */
     @Override
     public byte[] getAttached(byte[] signed, boolean validate) {
 
