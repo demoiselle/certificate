@@ -36,31 +36,22 @@
  */
 package br.gov.frameworkdemoiselle.certificate.repository;
 
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
-
-/**
- * Representa o aplicativo de gerenciamneot dos arquivos de CRL. Recomenda-ser
- * criar um serviço que periodimente chame este aplicação para atulização das
- * CRL cadastrada no arquivo de índice.
- */
 public class RepositoryService {
 
     private static final String UPDATE = "update-crl-list";
     private static final String ADD = "add-crl";
     private static String rt = "";
+    private static final Logger logger = Logger.getLogger(RepositoryService.class.getName());
 
-    /**
-     * Método principal
-     *
-     * @param args
-     */
     public static void main(String[] args) {
         if (args == null || args.length < 2) {
             println(" Error: number of invalid arguments.\n " + "Use: java -jar demoiselle-certificate-core.jar [operation] <[url]> <[fileindex]>\n " + "Sample for update: java -jar security-certificate.jar " + UPDATE + " /tmp/crls/crl_index.txt\n " + "Sample for add url of crl: java -jar security-certificate.jar " + ADD
