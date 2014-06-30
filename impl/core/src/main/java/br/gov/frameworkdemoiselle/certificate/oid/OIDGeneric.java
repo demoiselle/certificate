@@ -70,10 +70,10 @@ public class OIDGeneric {
     /**
      * Instance for object.
      *
-     * @param data -> byte array with certificate content.
+     * @param data Conjunto de bytes com o conteúdo do certificado
      * @return Object GenericOID
-     * @throws IOException
-     * @throws Exception
+     * @throws IOException Retorna a exceção IOException
+     * @throws Exception Retorna a exceção Exception
      */
     public static OIDGeneric getInstance(byte[] data) throws IOException, Exception {
         ASN1InputStream is = new ASN1InputStream(data);
@@ -134,10 +134,10 @@ public class OIDGeneric {
 
     /**
      *
-     * @param der -> Certificate DER (sun.security.util.DerValue)
+     * @param der Certificate DER (sun.security.util.DerValue)
      * @return OIDGenerico
-     * @throws IOException
-     * @throws Exception
+     * @throws IOException Retorna a exceção IOException
+     * @throws Exception Retorna a exceção Exception
      */
     public static OIDGeneric getInstance(DerValue der) throws IOException, Exception {
         OtherName on = new OtherName(der);
@@ -167,7 +167,7 @@ public class OIDGeneric {
 
     /**
      *
-     * @param fields -> fields from certificate
+     * @param fields Campos do certificado
      */
     protected void initialize(Object[] fields) {
         int tmp = 0;

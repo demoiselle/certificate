@@ -36,12 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.extension;
 
-import java.security.cert.CertificateParsingException;
-import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import br.gov.frameworkdemoiselle.certificate.oid.OIDGeneric;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_1;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_2;
@@ -51,6 +45,11 @@ import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_5;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_6;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_7;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_8;
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class Certificate Extra <br>
@@ -67,11 +66,11 @@ public class CertificateExtra {
     private static final Integer UM = 1;
 
     private String email = null;
-    private final Map<String, OIDGeneric> extras = new HashMap<String, OIDGeneric>();
+    private final Map<String, OIDGeneric> extras = new HashMap<>();
 
     /**
      *
-     * @param certificate
+     * @param certificate O certificado a ser analizado
      */
     public CertificateExtra(X509Certificate certificate) {
         try {
@@ -110,27 +109,27 @@ public class CertificateExtra {
     }
 
     /**
-     * Check if it is "ICP-BRASIL Pessoa Fisica" Certificate
+     * Verifica se o certificado é "ICP-BRASIL Pessoa Física"
      *
-     * @return
+     * @return True, se for pessoa física. False caso contrário.
      */
     public boolean isCertificatePF() {
         return extras.get("2.16.76.1.3.1") != null;
     }
 
     /**
-     * Check if it is "ICP-BRASIL Pessoa Juridica" Certificate
+     * Verifica se o certificado é "ICP-BRASIL Pessoa Jurídica"
      *
-     * @return
+     * @return True, se for pessoa jurídica. False caso contrário.
      */
     public boolean isCertificatePJ() {
         return extras.get("2.16.76.1.3.7") != null;
     }
 
     /**
-     * Check if it is "ICP-BRASIL Equipment" Certificate
+     * Verifica se o certificado é "ICP-BRASIL Equipment"
      *
-     * @return
+     * @return True, se for de equipamento. False caso contrário.
      */
     public boolean isCertificateEquipment() {
         return extras.get("2.16.76.1.3.8") != null;

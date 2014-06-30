@@ -36,6 +36,10 @@
  */
 package br.gov.frameworkdemoiselle.certificate.repository;
 
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
+import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,14 +53,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
-import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
-import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
 
 /**
  * Implementação de um repositorio Offline. Neste caso apenas o file system será
@@ -148,7 +146,7 @@ public class OffLineCRLRepository implements CRLRepository {
      * Quando o arquivo crl não se encontra no repositorio local, deve-se
      * cadastra-lo no arquivo de indice.
      *
-     * @param url
+     * @param url A url a ser cadastrada
      */
     public void addFileIndex(String url) {
         String fileNameCRL = RepositoryUtil.urlToMD5(url);

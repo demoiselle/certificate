@@ -36,14 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration;
 
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 
 /**
  * Classe responsável por recuperar informações do sistema tais como versão do
@@ -70,11 +68,15 @@ public class Configuration {
     protected static final String FILE_SEPARATOR = "file.separator";
     protected static final String MSCAPI_DISABLED = "mscapi.disabled";
     private static final Configuration instance = new Configuration();
-    private final Map<String, String> drivers = new HashMap<String, String>();
+
+    public static Configuration getInstance() {
+        return Configuration.instance;
+    }
+    private final Map<String, String> drivers = new HashMap<>();
 
     private Configuration() {
         String winRoot = (System.getenv("SystemRoot") == null) ? "" : System.getenv("SystemRoot").replaceAll("\\\\", "/");
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         map.put("TokenOuSmartCard_00", winRoot.concat("/system32/ngp11v211.dll"));
         map.put("TokenOuSmartCard_01", winRoot.concat("/system32/aetpkss1.dll"));
@@ -131,10 +133,6 @@ public class Configuration {
             Configuration.logger.error(DRIVER_ERROR_LOAD, error);
         }
 
-    }
-
-    public static Configuration getInstance() {
-        return Configuration.instance;
     }
 
     /**
@@ -207,7 +205,7 @@ public class Configuration {
      * mas não existe uma obrigatoriedade do nome ser sempre o mesmo e único,
      * então para facilitar nos casos em que não se saiba o fabricante do driver
      * pode-se utilizar este método que cria o nome do driver a partir do seu
-     * arquivo fisico. Ex: /etc/driver/driver.so -> nome do driver = driver.so É
+     * arquivo fisico. Ex: /etc/driver/driver.so nome do driver = driver.so É
      * importante frisar que quanto maior for a informação melhor será para
      * corrigir problemas.
      *
@@ -310,4 +308,5 @@ public class Configuration {
 
         return content;
     }
+
 }

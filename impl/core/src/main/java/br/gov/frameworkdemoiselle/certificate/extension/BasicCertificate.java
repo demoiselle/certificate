@@ -47,25 +47,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.ASN1OctetString;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
+import org.bouncycastle.asn1.x509.DistributionPointName;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.PolicyInformation;
-import org.bouncycastle.asn1.x509.X509Extensions;
 
-/**
- * Basic Information for ICP-BRASIL (DOC-ICP-04) Certificates. Abstracts the
- * rules to PESSOA FISICA, PESSOA JURIDICA and EQUIPAMENTO/APLICAÇÃO
- *
- *
- * @author CETEC/CTCTA
- */
 public class BasicCertificate {
 
     public static final String OID_A1_CERTIFICATE = "2.16.76.1.2.1";
@@ -76,12 +75,41 @@ public class BasicCertificate {
     public static final String OID_S2_CERTIFICATE = "2.16.76.1.2.102";
     public static final String OID_S3_CERTIFICATE = "2.16.76.1.2.103";
     public static final String OID_S4_CERTIFICATE = "2.16.76.1.2.104";
+    private static final Logger logger = Logger.getLogger(BasicCertificate.class.getName());
 
     private X509Certificate certificate = null;
     private ICPBRSubjectAlternativeNames subjectAlternativeNames = null;
     private ICPBRKeyUsage keyUsage = null;
     private ICPBR_DN certificateFrom = null;
     private ICPBR_DN certificateFor = null;
+
+    /**
+     *
+     * @param certificate type X509Certificate
+     * @see java.security.cert.X509Certificate
+     */
+    public BasicCertificate(X509Certificate certificate) {
+        this.certificate = certificate;
+    }
+
+    /**
+     *
+     * @param data Os bytes do certificado a ser utilizado
+     * @throws Exception Retorna a exceção Exception
+     */
+    public BasicCertificate(byte[] data) throws Exception {
+        this.certificate = getCertificate(data);
+    }
+
+    /**
+     *
+     * @param is O stream do certificado a ser utilizado
+     * @throws IOException Retorna a exceção IOException
+     * @throws Exception Retorna a exceção Exception
+     */
+    public BasicCertificate(InputStream is) throws IOException, Exception {
+        this.certificate = getCertificate(is);
+    }
 
     /**
      *
@@ -102,35 +130,7 @@ public class BasicCertificate {
 
     /**
      *
-     * @param certificate -> type X509Certificate
-     * @see java.security.cert.X509Certificate
-     */
-    public BasicCertificate(X509Certificate certificate) {
-        this.certificate = certificate;
-    }
-
-    /**
-     *
-     * @param data
-     * @throws Exception
-     */
-    public BasicCertificate(byte[] data) throws Exception {
-        this.certificate = getCertificate(data);
-    }
-
-    /**
-     *
-     * @param is
-     * @throws Exception
-     * @throws IOException
-     */
-    public BasicCertificate(InputStream is) throws IOException, Exception {
-        this.certificate = getCertificate(is);
-    }
-
-    /**
-     *
-     * @param data -> byte array
+     * @param data byte array
      * @return String
      */
     private String toString(byte[] data) {
@@ -142,7 +142,7 @@ public class BasicCertificate {
 
     /**
      *
-     * @param bi -> Big Integer
+     * @param bi Big Integer
      * @return String
      */
     private String toString(BigInteger bi) {
@@ -183,14 +183,11 @@ public class BasicCertificate {
     }
 
     /**
-     * Returns the IssuerDn of certificate on ICPBR_DN format thats works as a
-     * properties<br>
+     * Obtem o IssuerDN de um certificado
      *
-     * The toString Method of this class returns IssuerDn.getName()<br>
+     * @return O IssuerDN do certificado
      *
-     * @return ICPBR_DN
-     * @see ICPBR_DN
-     * @throws IOException
+     * @throws IOException Retorna a exceção IOException
      */
     public ICPBR_DN getCertificateIssuerDN() throws IOException {
         if (certificateFrom == null) {
@@ -209,14 +206,10 @@ public class BasicCertificate {
     }
 
     /**
-     * Returns the SubjectDN of certificate on ICPBR_DN on ICPBR_DN format thats
-     * works as a properties<br>
+     * Retorna o SubjectDN de um Certificado
      *
-     * The toString Method of this class returns SubjectDN.getName()<br>
-     *
-     * @return ICPBR_DN
-     * @see ICPBR_DN
-     * @throws IOException
+     * @return O SubjectDN
+     * @throws IOException Retorna a exceção IOException
      */
     public ICPBR_DN getCertificateSubjectDN() throws IOException {
         if (certificateFor == null) {
@@ -237,7 +230,7 @@ public class BasicCertificate {
             String nome = this.getCertificateSubjectDN().getProperty("CN");
             int pos;
 
-            pos = nome.indexOf(":");
+            pos = nome.indexOf(':');
             if (pos > 0) {
                 return nome.substring(0, pos);
             }
@@ -249,16 +242,18 @@ public class BasicCertificate {
     }
 
     /**
+     * Retorna a data inicial de validade do certificado
      *
-     * @return Date -> Validate starts date
+     * @return Date A a data inicial
      */
     public Date getBeforeDate() {
         return certificate.getNotBefore();
     }
 
     /**
+     * Retorna a data final de validade do certificado
      *
-     * @return Date -> Validate ends date
+     * @return Date A data final
      */
     public Date getAfterDate() {
         return certificate.getNotAfter();
@@ -429,41 +424,41 @@ public class BasicCertificate {
      */
     public String getNivelCertificado() {
         try {
-            DERSequence seq = (DERSequence) getExtensionValue(X509Extensions.CertificatePolicies.getId());
-            if (seq == null) {
-                return null;
-            }
-            for (int pos = 0; pos < seq.size(); pos++) {
-                PolicyInformation pol = new PolicyInformation((DERSequence) seq.getObjectAt(pos));
+            DLSequence sequence = (DLSequence) getExtensionValue(Extension.certificatePolicies.getId());
+            if (sequence != null) {
+                for (int pos = 0; pos < sequence.size(); pos++) {
+                    DLSequence sequence2 = (DLSequence) sequence.getObjectAt(pos);
+                    ASN1ObjectIdentifier policyIdentifier = (ASN1ObjectIdentifier) sequence2.getObjectAt(0);
+                    PolicyInformation policyInformation = new PolicyInformation(policyIdentifier);
+                    String id = policyInformation.getPolicyIdentifier().getId();
+                    if (id == null) {
+                        continue;
+                    }
 
-                String id = pol.getPolicyIdentifier().getId();
-                if (id == null) {
-                    continue;
-                }
-
-                if (id.startsWith(OID_A1_CERTIFICATE)) {
-                    return "A1";
-                }
-                if (id.startsWith(OID_A2_CERTIFICATE)) {
-                    return "A2";
-                }
-                if (id.startsWith(OID_A3_CERTIFICATE)) {
-                    return "A3";
-                }
-                if (id.startsWith(OID_A4_CERTIFICATE)) {
-                    return "A4";
-                }
-                if (id.startsWith(OID_S1_CERTIFICATE)) {
-                    return "S1";
-                }
-                if (id.startsWith(OID_S2_CERTIFICATE)) {
-                    return "S2";
-                }
-                if (id.startsWith(OID_S3_CERTIFICATE)) {
-                    return "S3";
-                }
-                if (id.startsWith(OID_S4_CERTIFICATE)) {
-                    return "S4";
+                    if (id.startsWith(OID_A1_CERTIFICATE)) {
+                        return "A1";
+                    }
+                    if (id.startsWith(OID_A2_CERTIFICATE)) {
+                        return "A2";
+                    }
+                    if (id.startsWith(OID_A3_CERTIFICATE)) {
+                        return "A3";
+                    }
+                    if (id.startsWith(OID_A4_CERTIFICATE)) {
+                        return "A4";
+                    }
+                    if (id.startsWith(OID_S1_CERTIFICATE)) {
+                        return "S1";
+                    }
+                    if (id.startsWith(OID_S2_CERTIFICATE)) {
+                        return "S2";
+                    }
+                    if (id.startsWith(OID_S3_CERTIFICATE)) {
+                        return "S3";
+                    }
+                    if (id.startsWith(OID_S4_CERTIFICATE)) {
+                        return "S4";
+                    }
                 }
             }
             return null;
@@ -474,15 +469,14 @@ public class BasicCertificate {
     }
 
     /**
-     * Returns the AuthorityKeyIdentifier extension value on String format.<br>
-     * Otherwise, returns <b>null</b>.<br>
+     * Obtém o Identificador de chave de autoridade de um certificado
      *
-     * @return String
-     * @throws IOException
+     * @return O Identificador de chave de autoridade
+     * @throws IOException Retorna a exceção IOException
      */
     public String getAuthorityKeyIdentifier() throws IOException {
         // TODO - Precisa validar este metodo com a RFC
-        DERSequence seq = (DERSequence) getExtensionValue(X509Extensions.AuthorityKeyIdentifier.getId());
+        DERSequence seq = (DERSequence) getExtensionValue(Extension.authorityKeyIdentifier.getId());
         if (seq == null || seq.size() == 0) {
             return null;
         }
@@ -493,15 +487,14 @@ public class BasicCertificate {
     }
 
     /**
-     * Returns the SubjectKeyIdentifier extension value on String format.<br>
-     * Otherwise, returns <b>null</b>.<br>
+     * Retorna o Identificador de chave de assunto de um certificado
      *
-     * @return String
-     * @throws java.io.IOException
+     * @return O Identificador de chave de assunto
+     * @throws IOException Retorna a exceção
      */
     public String getSubjectKeyIdentifier() throws IOException {
         // TODO - Precisa validar este metodo com a RFC
-        DEROctetString oct = (DEROctetString) getExtensionValue(X509Extensions.SubjectKeyIdentifier.getId());
+        DEROctetString oct = (DEROctetString) getExtensionValue(Extension.subjectKeyIdentifier.getId());
         if (oct == null) {
             return null;
         }
@@ -510,51 +503,56 @@ public class BasicCertificate {
     }
 
     /**
-     * Returns a List of URL for Certificate Revocation List. Must have on or
-     * more<br>
-     * Otherwise, returns <b>null</b>.<br>
+     * Retorna uma lista de ulrs que informam a localização das listas de
+     * certificados revogados
      *
-     * @return String
-     * @throws IOException
+     * @return Lista de urls das CRLs
+     * @throws IOException Retorna a exceção IOException
      */
     public List<String> getCRLDistributionPoint() throws IOException {
 
-        List<String> lcrS = new ArrayList<String>();
-        DERObject derObj = getExtensionValue(X509Extensions.CRLDistributionPoints.getId());
-        if (derObj == null) {
+        List<String> crlUrls = new ArrayList<>();
+        ASN1Primitive primitive = getExtensionValue(Extension.cRLDistributionPoints.getId());
+        if (primitive == null) {
             return null;
         }
-        CRLDistPoint crlDistPoint = CRLDistPoint.getInstance(derObj);
-        DistributionPoint[] dp = crlDistPoint.getDistributionPoints();
-        for (int i = 0; i < dp.length; i++) {
-            DERSequence seq = (DERSequence) new ASN1InputStream(dp[i].getDistributionPoint().getName().getDEREncoded()).readObject();
-            DERTaggedObject tag = (DERTaggedObject) seq.getObjectAt(0);
-            try {
-                ASN1OctetString oct = DEROctetString.getInstance(tag);
-                lcrS.add(new String(oct.getOctets()));
-            } catch (Exception e) {
-                // Não é um objeto com informação de DistributionPoint
-            }
+        CRLDistPoint crlDistPoint = CRLDistPoint.getInstance(primitive);
+        DistributionPoint[] distributionPoints = crlDistPoint.getDistributionPoints();
 
+        logger.log(Level.INFO, "Analizando os pontos de distribuição");
+        for (DistributionPoint distributionPoint : distributionPoints) {
+            DistributionPointName dpn = distributionPoint.getDistributionPoint();
+            // Look for URIs in fullName
+            if (dpn != null) {
+                if (dpn.getType() == DistributionPointName.FULL_NAME) {
+                    GeneralName[] genNames = GeneralNames.getInstance(dpn.getName()).getNames();
+                    for (GeneralName genName : genNames) {
+                        if (genName.getTagNo() == GeneralName.uniformResourceIdentifier) {
+                            String url = DERIA5String.getInstance(genName.getName()).getString();
+                            crlUrls.add(url);
+                            logger.log(Level.INFO, "Adicionando a url {0}", url);
+                        }
+                    }
+                }
+            }
         }
-        return lcrS;
+        return crlUrls;
     }
 
     /**
-     * Returns the DERObject for the informed OID<br>
-     * atraves do OID.<br>
+     * Obtém o conteúdo de um determinado OID
      *
-     * @param oid
-     * @return DERObject
-     * @see DERObject
+     * @param oid A identificação do campo
+     *
+     * @return O conteúdo relacionado ao OID informado
      */
-    public DERObject getExtensionValue(String oid) {
-        byte[] extvalue = certificate.getExtensionValue(oid);
-        if (extvalue == null) {
+    public ASN1Primitive getExtensionValue(String oid) {
+        byte[] extensionValue = certificate.getExtensionValue(oid);
+        if (extensionValue == null) {
             return null;
         }
         try {
-            DEROctetString oct = (DEROctetString) (new ASN1InputStream(extvalue).readObject());
+            DEROctetString oct = (DEROctetString) (new ASN1InputStream(extensionValue).readObject());
             return (new ASN1InputStream(oct.getOctets()).readObject());
         } catch (IOException e) {
             e.printStackTrace();
@@ -564,7 +562,7 @@ public class BasicCertificate {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(0);
         try {
             SimpleDateFormat dtValidade = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
