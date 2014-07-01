@@ -46,6 +46,12 @@ public interface SignaturePolicy {
 
     abstract public SignaturePolicyId getSignaturePolicyId();
 
+    /**
+     * Valida uma assinatura digital de acordo com as políticas da ICP-Brasil
+     *
+     * @param content
+     * @param contentSigned
+     */
     abstract public void validate(byte[] content, byte[] contentSigned);
 
     abstract public void validate(X509Certificate certificate, PrivateKey privateKey);
