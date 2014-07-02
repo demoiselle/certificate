@@ -49,20 +49,20 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCert
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Security;
-import java.security.cert.CertStore;
-import java.security.cert.CertStoreException;
-import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
+import java.security.interfaces.RSAKey;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERSet;
@@ -70,13 +70,19 @@ import org.bouncycastle.asn1.DERUTCTime;
 import org.bouncycastle.asn1.cms.AttributeTable;
 import org.bouncycastle.asn1.cms.CMSAttributes;
 import org.bouncycastle.asn1.cms.ContentInfo;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.CMSProcessable;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.CMSTypedData;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.cms.SignerInformationVerifier;
+import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.util.Store;
 
 /**
  * Implementa a Política ICP-Brasil
@@ -84,12 +90,13 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * POLÍTICA ICP-BRASIL PARA ASSINATURA DIGITAL COM REFERÊNCIA BÁSICA NO FORMATO
  * CMS versão 1.0
  *
- * definina no documento: REQUISITOS DAS POLÍTICAS DE ASSINATURA DIGITAL NA
+ * definida no documento: REQUISITOS DAS POLÍTICAS DE ASSINATURA DIGITAL NA
  * ICP-BRASIL - DOC-ICP-15.03 - Versão 2.0 - 05 de abril de 2010
  *
  */
 public class ADRBCMS_1_0 implements SignaturePolicy {
 
+    private static final Logger logger = Logger.getLogger(ADRBCMS_1_0.class.getName());
     private final int keySize = 1024;
 
     @Override
@@ -104,154 +111,125 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
 
     @Override
     public void validate(byte[] content, byte[] contentSigned) {
+        Security.addProvider(new BouncyCastleProvider());
 
         if (contentSigned == null || contentSigned.length == 0) {
-            throw new SignaturePolicyException("Content signed is null");
+            throw new SignaturePolicyException("O conteúdo assinado está vazio");
         }
 
-        X509Certificate certificate = null;
-        PublicKey publicKey = null;
-
-        /*
-         * Validando a integridade do arquivo
-         */
-        CMSSignedData signedData = null;
+        //Validando a integridade do arquivo
+        CMSSignedData cmsSignedData = null;
         try {
             if (content == null) {
-                signedData = new CMSSignedData(contentSigned);
+                cmsSignedData = new CMSSignedData(contentSigned);
             } else {
-                signedData = new CMSSignedData(new CMSProcessableByteArray(content), contentSigned);
+                cmsSignedData = new CMSSignedData(new CMSProcessableByteArray(content), contentSigned);
             }
         } catch (CMSException exception) {
-            throw new SignerException("Invalid bytes for a package PKCS7", exception);
+            throw new SignerException("Bytes inválidos encontrados no pacote PKCS7", exception);
         }
 
-        /*
-         * Validando as informações da assinatura
-         */
-        SignerInformationStore signerInformationStore = signedData.getSignerInfos();
-        SignerInformation signerInformation = (SignerInformation) signerInformationStore.getSigners().iterator().next();
-
-        /*
-         * Retirando o Certificado Digital e a chave Pública da assinatura
-         */
         try {
-            CertStore certs;
-            try {
-                Security.addProvider(new BouncyCastleProvider());
-                certs = signedData.getCertificatesAndCRLs("Collection", "BC");
-                Collection<? extends Certificate> collCertificados = certs.getCertificates(signerInformation.getSID());
-                if (!collCertificados.isEmpty()) {
-                    certificate = (X509Certificate) collCertificados.iterator().next();
-                    publicKey = certificate.getPublicKey();
+            Store certStore = cmsSignedData.getCertificates();
+            SignerInformationStore signers = cmsSignedData.getSignerInfos();
+            Iterator<?> it = signers.getSigners().iterator();
+
+            X509Certificate certificate = null;
+
+            //Recupera o certificado e a chave pública da assinatura
+            while (it.hasNext()) {
+                SignerInformation signer = (SignerInformation) it.next();
+                Collection<?> certCollection = certStore.getMatches(signer.getSID());
+
+                Iterator<?> certIt = certCollection.iterator();
+                X509CertificateHolder certificateHolder = (X509CertificateHolder) certIt.next();
+
+                if (!certCollection.isEmpty()) {
+                    certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certificateHolder);
                 }
-            } catch (NoSuchAlgorithmException exception) {
-                throw new SignerException(exception);
-            } catch (NoSuchProviderException exception) {
-                throw new SignerException(exception);
-            } catch (CMSException exception) {
-                throw new SignerException(exception);
-            } catch (CertStoreException exception) {
-                throw new SignerException(exception);
+
+                //Realiza a validação dos atributos
+                AttributeTable signedAttributesTable = signer.getSignedAttributes();
+
+                //Validando o atributo ContentType
+                org.bouncycastle.asn1.cms.Attribute attributeContentType = signedAttributesTable.get(CMSAttributes.contentType);
+                if (attributeContentType == null) {
+                    throw new SignerException("O pacote PKCS7 não contém o atributo \"ContentType\"");
+                }
+
+                if (!attributeContentType.getAttrValues().getObjectAt(0).equals(ContentInfo.data)) {
+                    throw new SignerException("\"ContentType\" não é do tipo \"DATA\"");
+                }
+
+                //Com o atributo ContentType válido, extrair o conteúdo assinado, caso possua o conteúdo anexado
+                CMSTypedData contentProcessable = cmsSignedData.getSignedContent();
+                if (contentProcessable != null) {
+                    content = (byte[]) contentProcessable.getContent();
+                }
+
+                //Validando o atributo MessageDigest
+                org.bouncycastle.asn1.cms.Attribute attributeMessageDigest = signedAttributesTable.get(CMSAttributes.messageDigest);
+                if (attributeMessageDigest == null) {
+                    throw new SignerException("O pacote PKCS7 não possui o atributo \"MessageDigest\"");
+                }
+
+                Object primitive = attributeMessageDigest.getAttrValues().getObjectAt(0).toASN1Primitive();
+                ASN1OctetString octeto = ASN1OctetString.getInstance(primitive);
+                byte[] hashContentSigned = octeto.getOctets();
+
+                String algorithm = SignerAlgorithmEnum.getSignerOIDAlgorithmHashEnum(signer.getDigestAlgorithmID().getAlgorithm().getId()).getAlgorithmHash();
+                if (!algorithm.equals(DigestAlgorithmEnum.SHA_1.getAlgorithm())) {
+                    throw new SignerException("Algoritmo de resumo inválido para esta política");
+                }
+
+                Digest digest = DigestFactory.getInstance().factoryDefault();
+                digest.setAlgorithm(DigestAlgorithmEnum.SHA_1.getAlgorithm());
+                byte[] hashContent = digest.digest(content);
+                if (!MessageDigest.isEqual(hashContentSigned, hashContent)) {
+                    throw new SignerException("Hash not equal");
+                }
+
+                JcaSimpleSignerInfoVerifierBuilder builder = new JcaSimpleSignerInfoVerifierBuilder();
+                SignerInformationVerifier verifier = builder.build(certificateHolder);
+                signer.verify(verifier);
+
+                // Valida a cadeia de certificação de um arquivo assinado
+                ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0, CertPathEncoding.PKCS7);
+
+                //Valida o período de validade
+                org.bouncycastle.asn1.cms.Attribute attributeSigningTime = signedAttributesTable.get(CMSAttributes.signingTime);
+                ASN1Set valorDateSigner = attributeSigningTime.getAttrValues();
+                DERSet derSet = (DERSet) valorDateSigner.toASN1Primitive();
+                DERUTCTime utcTime = (DERUTCTime) derSet.getObjectAt(0);
+                Date dataSigner = utcTime.getAdjustedDate();
+
+                //Para a versão 1.0, o período para assinatura desta PA é de 31/10/2008 a 31/12/2014.
+                logger.log(Level.INFO, "Verificando o período de validade da política");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh:mm:ss");
+                Calendar calendar = GregorianCalendar.getInstance();
+                calendar.set(2008, Calendar.OCTOBER, 31, 0, 0, 0);
+                Date beforeDate = calendar.getTime();
+
+                calendar.set(2014, Calendar.DECEMBER, 31, 23, 59, 59);
+                Date afterDate = calendar.getTime();
+
+                if (dataSigner != null) {
+                    if (dataSigner.before(beforeDate)) {
+                        throw new SignerException("Esta política não é válida antes de" + sdf.format(beforeDate));
+                    }
+                    if (dataSigner.after(afterDate)) {
+                        throw new SignerException("Esta política não é válida depois de" + sdf.format(afterDate));
+                    }
+                } else {
+                    throw new SignerException("Existe o atributo \"SigningTime\" no pacote PKCS7, mas ele é nulo.");
+                }
             }
-        } catch (SignerException exception) {
-            throw new SignerException("Error on get information about certificates and public keys from a package PKCS7", exception);
-        }
-
-        /*
-         * Validando os atributos assinados
-         */
-        AttributeTable signedAttributesTable = signerInformation.getSignedAttributes();
-
-        /*
-         * Validando o atributo ContentType
-         */
-        org.bouncycastle.asn1.cms.Attribute attributeContentType = signedAttributesTable.get(CMSAttributes.contentType);
-        if (attributeContentType == null) {
-            throw new SignerException("Package PKCS7 without attribute ContentType");
-        }
-
-        if (!attributeContentType.getAttrValues().getObjectAt(0).equals(ContentInfo.data)) {
-            throw new SignerException("ContentType isn't a DATA type");
-        }
-
-        /*
-         * Com o atributo ContentType válido, extrair o conteúdo assinado, caso
-         * possua o conteúdo atached
-         */
-        try {
-            CMSProcessable contentProcessable = signedData.getSignedContent();
-            if (contentProcessable != null) {
-                content = (byte[]) contentProcessable.getContent();
-            }
-        } catch (Exception exception) {
-            throw new SignerException(exception);
-        }
-
-        /*
-         * Validando o atributo MessageDigest
-         */
-        org.bouncycastle.asn1.cms.Attribute attributeMessageDigest = signedAttributesTable.get(CMSAttributes.messageDigest);
-        if (attributeMessageDigest == null) {
-            throw new SignerException("Package PKCS7 without attribute MessageDigest");
-        }
-        Object der = attributeMessageDigest.getAttrValues().getObjectAt(0).getDERObject();
-        ASN1OctetString octeto = ASN1OctetString.getInstance(der);
-        byte[] hashContentSigned = octeto.getOctets();
-
-        String algorithm = SignerAlgorithmEnum.getSignerOIDAlgorithmHashEnum(signerInformation.getDigestAlgorithmID().getObjectId().toString()).getAlgorithmHash();
-        if (!algorithm.equals(DigestAlgorithmEnum.SHA_1.getAlgorithm())) {
-            throw new SignerException("Algoritmo de resumo inválido para esta política");
-        }
-
-        Digest digest = DigestFactory.getInstance().factoryDefault();
-        digest.setAlgorithm(DigestAlgorithmEnum.SHA_1.getAlgorithm());
-        byte[] hashContent = digest.digest(content);
-        if (!MessageDigest.isEqual(hashContentSigned, hashContent)) {
-            throw new SignerException("Hash not equal");
-        }
-
-        try {
-            signerInformation.verify(publicKey, "BC");
-        } catch (NoSuchAlgorithmException e) {
-            throw new SignerException(e);
-        } catch (NoSuchProviderException e) {
-            throw new SignerException(e);
+        } catch (SignerException ex) {
+            throw new SignerException("Ocorreu um erro ao verificar o certificado e chave pública do pacote PKCS7", ex);
         } catch (CMSException e) {
             throw new SignerException("Invalid signature", e);
-        }
-
-        // Valida a cadeia de certificação de um arquivo assinado
-        ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0, CertPathEncoding.PKCS7);
-
-        Date dataSigner = null;
-        try {
-            org.bouncycastle.asn1.cms.Attribute attributeSigningTime = signedAttributesTable.get(CMSAttributes.signingTime);
-            ASN1Set valorDateSigner = attributeSigningTime.getAttrValues();
-            DERSet derSet = (DERSet) valorDateSigner.getDERObject();
-            DERUTCTime time = (DERUTCTime) derSet.getObjectAt(0);
-            dataSigner = time.getAdjustedDate();
-        } catch (Throwable error) {
-            throw new SignerException("SigningTime error", error);
-        }
-
-        //Para a versão 1.0, o período para assinatura desta PA é de 31/10/2008 a 31/12/2014.
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.set(2008, Calendar.OCTOBER, 31, 0, 0, 0);
-        Date firstDate = calendar.getTime();
-
-        calendar.set(2014, Calendar.DECEMBER, 31, 23, 59, 59);
-        Date lastDate = calendar.getTime();
-
-        if (dataSigner != null) {
-            if (dataSigner.before(firstDate)) {
-                throw new SignerException("Invalid signing time. Not valid before 10/31/2008");
-            }
-            if (dataSigner.after(lastDate)) {
-                throw new SignerException("Invalid signing time. Not valid after 12/31/2014");
-            }
-        } else {
-            throw new SignerException("There is SigningTime attribute on Package PKCS7, but it is null");
+        } catch (CertificateException | OperatorCreationException | ParseException ex) {
+            throw new SignerException(ex);
         }
     }
 
@@ -259,18 +237,18 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
      * Efetua a validação da politica para um determinado certificado no momento
      * da assinatura
      *
+     * @param certificate O certificado a ser validado
+     * @param privateKey A chave privada a ser validada
      */
     @Override
     public void validate(X509Certificate certificate, PrivateKey privateKey) {
 
-        /*
-         * O tamanho mínimo de chaves para criação de assinaturas segundo esta
-         * PA é de :
-         *
-         * a) para a versão 1.0: 1024 bits; b) para a versão 1.1: 1024 bits; c)
-         * para a versão 2.0: 2048 bits.
-         */
-        if (((RSAPublicKey) certificate.getPublicKey()).getModulus().bitLength() < keySize) {
+        // O tamanho mínimo de chaves para criação de assinaturas segundo estaPA é de:
+        // para a versão 1.0: 1024 bits
+        // para a versão 1.1: 1024 bits
+        // para a versão 2.0: 2048 bits
+        // para a versão 2.1: 2048 bits
+        if (((RSAKey) certificate.getPublicKey()).getModulus().bitLength() < keySize) {
             throw new SignerException("O tamanho mínimo da chave privada deve ser de " + keySize + " bits");
         }
 
@@ -285,8 +263,7 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
          */
         ValidadorUtil.validate(certificate);
 
-        // TODO Implementar a validação do caminho de certificação para o
-        // certificado digital a ser utilizado na assinatura
+        // TODO Implementar a validação do caminho de certificação para o certificado digital a ser utilizado na assinatura
     }
 
     @Override
