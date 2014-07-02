@@ -36,12 +36,8 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.certificate.CertificateManager;
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.IValidator;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
@@ -58,16 +54,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapte
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
-import java.security.cert.CertStore;
-import java.security.cert.CertStoreException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -77,29 +69,38 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.cms.AttributeTable;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaCertStore;
+import org.bouncycastle.cms.CMSAbsentContent;
+import org.bouncycastle.cms.CMSAttributeTableGenerator;
 import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.cms.CMSProcessable;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.CMSSignedDataGenerator;
+import org.bouncycastle.cms.CMSTypedData;
+import org.bouncycastle.cms.DefaultSignedAttributeTableGenerator;
+import org.bouncycastle.cms.SignerInfoGenerator;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.cms.SimpleAttributeTableGenerator;
+import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.util.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
- * CAdES (http://tools.ietf.org/html/rfc5126) e voltada para uso no âmbito
- * ICP-Brasil.
- */
 public class CAdESSigner implements PKCS7Signer {
 
     private static final Logger logger = LoggerFactory.getLogger(CAdESSigner.class);
@@ -120,7 +121,7 @@ public class CAdESSigner implements PKCS7Signer {
     @Override
     public void addAttribute(Attribute attribute) {
         if (this.attributes == null) {
-            this.attributes = new HashMap<Class<? extends Attribute>, Collection<Attribute>>();
+            this.attributes = new HashMap<>();
         }
         if (attribute != null) {
             Class<? extends Attribute> clazz = getTypeAttribute(attribute);
@@ -164,88 +165,86 @@ public class CAdESSigner implements PKCS7Signer {
     @Override
     public boolean check(byte[] content, byte[] signed) {
 
-        CMSSignedData signedData = null;
-        PublicKey publicKey = null;
+        Security.addProvider(new BouncyCastleProvider());
+
+        CMSSignedData cmsSignedData = null;
 
         try {
             if (content == null) {
-                signedData = new CMSSignedData(signed);
+                cmsSignedData = new CMSSignedData(signed);
             } else {
-                signedData = new CMSSignedData(new CMSProcessableByteArray(content), signed);
+                cmsSignedData = new CMSSignedData(new CMSProcessableByteArray(content), signed);
             }
-        } catch (CMSException exception) {
-            throw new SignerException("Invalid bytes for a PKCS7 package", exception);
+        } catch (CMSException ex) {
+            throw new SignerException("Bytes inválidos localizados no pacote PKCS7.", ex);
         }
 
-        SignerInformationStore signerInformationStore = signedData.getSignerInfos();
-        SignerInformation signerInformation = (SignerInformation) signerInformationStore.getSigners().iterator().next();
+        //Quantidade inicial de assinaturas validadas
+        int verified = 0;
 
-        /*
-         * Retirando o Certificado Digital e a chave Pública da assinatura
-         */
-        try {
-            CertStore certStore;
+        Store certStore = cmsSignedData.getCertificates();
+        SignerInformationStore signers = cmsSignedData.getSignerInfos();
+        Iterator<?> it = signers.getSigners().iterator();
+
+        //Realização da verificação básica de todas as assinaturas
+        while (it.hasNext()) {
             try {
-                Security.addProvider(new BouncyCastleProvider());
-                certStore = signedData.getCertificatesAndCRLs("Collection", "BC");
-                Collection<? extends Certificate> collCertificados = certStore.getCertificates(signerInformation.getSID());
-                if (!collCertificados.isEmpty()) {
-                    certificate = (X509Certificate) collCertificados.iterator().next();
-                    publicKey = certificate.getPublicKey();
+                SignerInformation signer = (SignerInformation) it.next();
+                Collection<?> certCollection = certStore.getMatches(signer.getSID());
+
+                Iterator<?> certIt = certCollection.iterator();
+                X509CertificateHolder certificateHolder = (X509CertificateHolder) certIt.next();
+
+                if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certificateHolder))) {
+                    verified++;
                 }
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | CMSException | CertStoreException exception) {
-                throw new SignerException(exception);
-            }
-        } catch (SignerException exception) {
-            throw new SignerException("Error on get information about certificates and public keys from a package PKCS7", exception);
-        }
 
-        try {
-            signerInformation.verify(publicKey, "BC");
-        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-            throw new SignerException(e);
-        } catch (CMSException e) {
-            throw new SignerException("Invalid signature", e);
-        }
+                //Realiza a verificação dos atributos
+                AttributeTable signedAttributes = signer.getSignedAttributes();
+                if (signedAttributes == null) {
+                    throw new SignerException("O pacote PKCS7 não contém atributos assinados.");
+                }
 
-        AttributeTable signedAttributes = signerInformation.getSignedAttributes();
-
-        if (signedAttributes == null) {
-            throw new SignerException("Package PKCS7 without signed attributes");
-        }
-
-        // Validar a política
-        org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new DERObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
-        if (signaturePolicyIdentifierAttribute != null) {
-            ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
-            for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
-                DERSequence sequence = iterator.nextElement();
-                DERObjectIdentifier policyIdentifier = (DERObjectIdentifier) sequence.getObjectAt(0);
-                String policyOID = policyIdentifier.getId();
-                SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
-                if (signaturePolicy != null) {
-                    signaturePolicy.validate(content, signed);
+                // Valida a política de assinatura
+                org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new ASN1ObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
+                if (signaturePolicyIdentifierAttribute != null) {
+                    ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
+                    for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
+                        DERSequence sequence = iterator.nextElement();
+                        DERObjectIdentifier policyIdentifier = (DERObjectIdentifier) sequence.getObjectAt(0);
+                        String policyOID = policyIdentifier.getId();
+                        SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
+                        if (signaturePolicy != null) {
+                            signaturePolicy.validate(content, signed);
+                        } else {
+                            logger.warn("Não existe validador para a política " + policyOID);
+                        }
+                    }
                 } else {
-                    logger.warn("Não existe validador para a política " + policyOID);
+                    throw new SignerException("Formato ICP-Brasil inválido. Não existe uma política de assinatura.");
                 }
+            } catch (OperatorCreationException | java.security.cert.CertificateException ex) {
+                throw new SignerException(ex);
+            } catch (CMSException ex) {
+                throw new SignerException("A assinatura fornecida é inválida.", ex);
             }
-        } else {
-            throw new SignerException("ICP-Brasil invalid format. There is not policy signature.");
         }
+
+        logger.info("Verificadas {0} assinaturas.", verified);
+
         return true;
     }
 
-    private CertStore generatedCertStore() {
-        CertStore result = null;
-
+    private Store generatedCertStore() {
+        Store result = null;
         try {
             List<Certificate> certificates = new ArrayList<>();
             certificates.addAll(Arrays.asList(certificateChain));
             CollectionCertStoreParameters cert = new CollectionCertStoreParameters(certificates);
-            result = CertStore.getInstance("Collection", cert, "BC");
+            result = new JcaCertStore(certificates);
 
-        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException exception) {
-            throw new SignerException(exception);
+        } catch (CertificateEncodingException ex) {
+            throw new SignerException(ex);
         }
         return result;
     }
@@ -255,10 +254,14 @@ public class CAdESSigner implements PKCS7Signer {
         return this.signaturePolicy.getSignerAlgorithm().getAlgorithm();
     }
 
+    /**
+     * Retorna o conteúdo original do arquivo assinado
+     *
+     * @param signed O conteúdo assinado
+     * @return O conteúdo original
+     */
     public byte[] getAttached(byte[] signed) {
-
         return this.getAttached(signed, true);
-
     }
 
     /**
@@ -336,7 +339,7 @@ public class CAdESSigner implements PKCS7Signer {
         } else if (attribute instanceof SignedAttribute) {
             return SignedAttribute.class;
         }
-        throw new SignerException("Attribute invalid. Attribute should be SignedAttribute or UnsignedAttribute");
+        throw new SignerException("O atributo é inválido. Ele dever ser do tipo \"SignedAttribute\" ou \"UnsignedAttribute\"");
     }
 
     public boolean isDefaultCertificateValidators() {
@@ -430,7 +433,7 @@ public class CAdESSigner implements PKCS7Signer {
      * Método de assinatura de dados e geração do pacote PKCS7 Assina apenas com
      * o conteúdo do tipo DATA: OID ContentType 1.2.840.113549.1.9.3 = OID Data
      * 1.2.840.113549.1.7.1 Utiliza o algoritmo da propriedade algorithm. Caso
-     * essa propriedade não esteja setada, o algoritmo do enum
+     * essa propriedade não seja informada, o algoritmo do enum
      * {@link SignerAlgorithmEnum.DEFAULT} será usado. Para este método é
      * necessário informar o conteúdo, a chave privada e um certificado digital
      * padrão ICP-Brasil.
@@ -439,8 +442,7 @@ public class CAdESSigner implements PKCS7Signer {
      * informar a política de assinatura
      */
     @Override
-    //TODO Renomear metodo para "doSign"
-    public byte[] signer(byte[] content) {
+    public byte[] doSign(byte[] content) {
 
         Security.addProvider(new BouncyCastleProvider());
 
@@ -448,12 +450,11 @@ public class CAdESSigner implements PKCS7Signer {
             this.certificate = (X509Certificate) this.certificateChain[0];
         }
 
-        this.validateForSigner(content);
-
         if (this.certificateChain == null || this.certificateChain.length <= 1) {
             this.certificateChain = CAManager.getInstance().getCertificateChainArray(this.certificate);
         }
 
+        //Adiciona o atributo SignaturePolicyIdentifier
         SignaturePolicyIdentifier signaturePolicyIdentifier = new SignaturePolicyIdentifier();
         signaturePolicyIdentifier.setSignaturePolicyId(this.signaturePolicy.getSignaturePolicyId());
         this.addAttribute(signaturePolicyIdentifier);
@@ -475,89 +476,47 @@ public class CAdESSigner implements PKCS7Signer {
             throw new SignerException("Impossivel extrair a cadeia de confianca do certificado");
         }
 
-        String algorithmHashOID = null;
-        String algorithmEncryptationOID = null;
-        if (this.pkcs1 != null && this.pkcs1.getAlgorithm() != null && this.pkcs1.getAlgorithm().trim().length() > 0) {
-            algorithmHashOID = SignerAlgorithmEnum.valueOf(this.pkcs1.getAlgorithm()).getOIDAlgorithmHash();
-            algorithmEncryptationOID = SignerAlgorithmEnum.valueOf(this.pkcs1.getAlgorithm()).getOIDAlgorithmCipher();
-        } else {
-            algorithmHashOID = this.signaturePolicy.getSignerAlgorithm().getOIDAlgorithmHash();
-            algorithmEncryptationOID = this.signaturePolicy.getSignerAlgorithm().getOIDAlgorithmCipher();
-        }
-
-        byte[] result = null;
-
-        CMSSignedDataGenerator signedDataGenerator = new CMSSignedDataGenerator();
-        try {
-            signedDataGenerator.addCertificatesAndCRLs(this.generatedCertStore());
-        } catch (CertStoreException | CMSException ex) {
-            throw new SignerException(ex);
-        }
-
         // Valida o certificado usando a politica de certificacao
         this.signaturePolicy.validate(this.certificate, this.pkcs1.getPrivateKey());
 
-        AttributeTable signedTable = this.mountSignedTable();
-        AttributeTable unsignedTable = this.mountUnsignedTable();
-        signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID, algorithmHashOID, signedTable, unsignedTable);
-
         try {
-            CMSProcessable processable = null;
-            if (content == null) {
-                processable = new CMSAbsentContent();
-            } else {
-                processable = new CMSProcessableByteArray(content);
-            }
-            CMSSignedData signedData;
-            signedData = signedDataGenerator.generate(CMSSignedDataGenerator.DATA, processable, this.attached, this.getProviderName(), true);
-            result = signedData.getEncoded();
+            //Monta a tabela de atributos assinados e não assinados
+            AttributeTable signedAttributesTable = this.mountSignedTable();
+            AttributeTable unsignedAttributesTable = this.mountUnsignedTable();
 
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | CMSException | IOException ex) {
+            // Create the table table generator that will added to the Signer builder
+            CMSAttributeTableGenerator signedAttributeGenerator = new DefaultSignedAttributeTableGenerator(signedAttributesTable);
+            CMSAttributeTableGenerator unsignedAttributeGenerator = new SimpleAttributeTableGenerator(unsignedAttributesTable);
+
+            CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
+            gen.addCertificates(this.generatedCertStore());
+
+            SignerInfoGenerator signerInfoGenerator = new JcaSimpleSignerInfoGeneratorBuilder().setSignedAttributeGenerator(signedAttributeGenerator).
+                    setUnsignedAttributeGenerator(unsignedAttributeGenerator).build(this.signaturePolicy.getSignerAlgorithm().name(), this.pkcs1.getPrivateKey(), this.certificate);
+            gen.addSignerInfoGenerator(signerInfoGenerator);
+
+            CMSTypedData cmsTypedData;
+            if (content == null) {
+                //TODO Verificar a necessidade da classe CMSAbsentContent local
+                cmsTypedData = new CMSAbsentContent();
+            } else {
+                cmsTypedData = new CMSProcessableByteArray(content);
+            }
+
+            //TODO Estudar este método de contra-assinatura posteriormente
+            //gen.generateCounterSigners(null);
+            //Efetua a assinatura digital do conteúdo
+            CMSSignedData cmsSignedData = gen.generate(cmsTypedData, this.attached);
+            byte[] result = cmsSignedData.getEncoded();
+            return result;
+
+        } catch (CMSException | IOException | OperatorCreationException | CertificateEncodingException ex) {
             throw new SignerException(ex);
         }
-        return result;
     }
 
     private org.bouncycastle.asn1.cms.Attribute transformAttribute(Attribute attribute) {
         BCAttribute adapter = BCAdapter.factoryBCAttribute(attribute);
         return new org.bouncycastle.asn1.cms.Attribute(adapter.getObjectIdentifier(), adapter.getValue());
-    }
-
-    private void validateForSigner(byte... content) {
-        if (this.pkcs1 == null) {
-            throw new SignerException("Please enter the required properties");
-        }
-        if (this.pkcs1.getPrivateKey() == null) {
-            throw new SignerException("Private Key is null");
-        }
-        if (this.certificate == null) {
-            throw new SignerException("Certificate is null");
-        } else {
-            BasicCertificate basicCertificate = new BasicCertificate(this.certificate);
-            try {
-                List<String> listLCRs = basicCertificate.getCRLDistributionPoint();
-                if (listLCRs == null || listLCRs.isEmpty()) {
-                    throw new SignerException("Blank LCR distribuition point for certificate.");
-                }
-            } catch (IOException error) {
-                throw new SignerException("Error on read CRL distribuition point from Certificate");
-            }
-            try {
-                if (this.certificateValidators == null || this.certificateValidators.isEmpty()) {
-                    new CertificateManager(this.certificate, this.defaultCertificateValidators);
-                } else {
-                    new CertificateManager(this.certificate, this.defaultCertificateValidators,
-                            this.certificateValidators.toArray(new IValidator[]{}));
-                }
-            } catch (Throwable exception) {
-                if (exception instanceof CertificateException) {
-                    throw (CertificateException) exception;
-                }
-                if (exception instanceof CertificateValidatorException) {
-                    throw (CertificateValidatorException) exception;
-                }
-                throw new SignerException("O certificado nao e valido.", exception);
-            }
-        }
     }
 }
