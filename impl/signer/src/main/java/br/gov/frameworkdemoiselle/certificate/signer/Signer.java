@@ -86,7 +86,7 @@ public interface Signer {
      * @param content
      * @return
      */
-    abstract public byte[] signer(byte[] content);
+    abstract public byte[] doSign(byte[] content);
 
     /**
      * Método de validação da aassiantura.
