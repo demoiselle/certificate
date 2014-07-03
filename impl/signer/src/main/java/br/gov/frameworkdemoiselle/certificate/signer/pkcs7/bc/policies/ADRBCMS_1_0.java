@@ -199,14 +199,15 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
                 Date dataSigner = utcTime.getAdjustedDate();
 
                 //Para a versão 1.0, o período para assinatura desta PA é de 31/10/2008 a 31/12/2014.
-                logger.log(Level.INFO, "Verificando o período de validade da política");
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh:mm:ss");
                 Calendar calendar = GregorianCalendar.getInstance();
                 calendar.set(2008, Calendar.OCTOBER, 31, 0, 0, 0);
                 Date beforeDate = calendar.getTime();
 
                 calendar.set(2014, Calendar.DECEMBER, 31, 23, 59, 59);
                 Date afterDate = calendar.getTime();
+
+                logger.log(Level.INFO, "Verificando o período de validade da política");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh:mm:ss");
 
                 if (dataSigner != null) {
                     if (dataSigner.before(beforeDate)) {
