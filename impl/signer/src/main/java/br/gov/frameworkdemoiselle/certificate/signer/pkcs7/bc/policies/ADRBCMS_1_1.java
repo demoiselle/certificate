@@ -95,7 +95,7 @@ import org.bouncycastle.util.Store;
  */
 public class ADRBCMS_1_1 implements SignaturePolicy {
 
-    private static final Logger logger = Logger.getLogger(ADRBCMS_1_0.class.getName());
+    private static final Logger logger = Logger.getLogger(ADRBCMS_1_1.class.getName());
     private final int keySize = 1024;
 
     @Override
@@ -259,13 +259,11 @@ public class ADRBCMS_1_1 implements SignaturePolicy {
         }
 
         /*
-         * Assinaturas digitais geradas segundo esta Política de Assinatura
-         * deverão ser criadas com chave privada associada ao certificado
-         * ICP-Brasil * tipo A1 (do OID 2.16.76.1.2.1.1 ao OID
-         * 2.16.76.1.2.1.100), tipo A2 (do OID 2.16.76.1.2.2.1 ao OID
-         * 2.16.76.1.2.2.100), do tipo A3 (do OID 2.16.76.1.2.3.1 ao OID
-         * 2.16.76.1.2.3.100) e do tipo A4 (do OID 2.16.76.1.2.4.1 ao OID
-         * 2.16.76.1.2.4.100), conforme definido em DOC-ICP-04.
+         * Assinaturas digitais geradas segundo esta Política de Assinatura deverão ser criadas com chave privada associada ao certificado ICP-Brasil
+         * tipo A1 (do OID 2.16.76.1.2.1.1 ao OID 2.16.76.1.2.1.100)
+         * tipo A2 (do OID 2.16.76.1.2.2.1 ao OID 2.16.76.1.2.2.100)
+         * tipo A3 (do OID 2.16.76.1.2.3.1 ao OID 2.16.76.1.2.3.100)
+         * tipo A4 (do OID 2.16.76.1.2.4.1 ao OID 2.16.76.1.2.4.100), conforme definido em DOC-ICP-04.
          */
         ValidadorUtil.validate(certificate);
 
