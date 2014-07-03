@@ -50,7 +50,6 @@ import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
-import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAKey;
@@ -80,7 +79,6 @@ import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.cms.SignerInformationVerifier;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.util.Store;
 
@@ -111,7 +109,6 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
 
     @Override
     public void validate(byte[] content, byte[] contentSigned) {
-        Security.addProvider(new BouncyCastleProvider());
 
         if (contentSigned == null || contentSigned.length == 0) {
             throw new SignaturePolicyException("O conteúdo assinado está vazio");
@@ -134,8 +131,6 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
             SignerInformationStore signers = cmsSignedData.getSignerInfos();
             Iterator<?> it = signers.getSigners().iterator();
 
-            X509Certificate certificate = null;
-
             //Recupera o certificado e a chave pública da assinatura
             while (it.hasNext()) {
                 SignerInformation signer = (SignerInformation) it.next();
@@ -145,7 +140,7 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
                 X509CertificateHolder certificateHolder = (X509CertificateHolder) certIt.next();
 
                 if (!certCollection.isEmpty()) {
-                    certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certificateHolder);
+                    X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certificateHolder);
                 }
 
                 //Realiza a validação dos atributos
@@ -183,10 +178,10 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
                 }
 
                 Digest digest = DigestFactory.getInstance().factoryDefault();
-                digest.setAlgorithm(DigestAlgorithmEnum.SHA_1.getAlgorithm());
+                digest.setAlgorithm(algorithm);
                 byte[] hashContent = digest.digest(content);
                 if (!MessageDigest.isEqual(hashContentSigned, hashContent)) {
-                    throw new SignerException("Hash not equal");
+                    throw new SignerException("O hash é diferente.");
                 }
 
                 JcaSimpleSignerInfoVerifierBuilder builder = new JcaSimpleSignerInfoVerifierBuilder();
@@ -221,13 +216,13 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
                         throw new SignerException("Esta política não é válida depois de" + sdf.format(afterDate));
                     }
                 } else {
-                    throw new SignerException("Existe o atributo \"SigningTime\" no pacote PKCS7, mas ele é nulo.");
+                    throw new SignerException("O atributo \"SigningTime\" existe no pacote PKCS7, mas ele é nulo.");
                 }
             }
         } catch (SignerException ex) {
             throw new SignerException("Ocorreu um erro ao verificar o certificado e chave pública do pacote PKCS7", ex);
         } catch (CMSException e) {
-            throw new SignerException("Invalid signature", e);
+            throw new SignerException("A assinatura é inválida.", e);
         } catch (CertificateException | OperatorCreationException | ParseException ex) {
             throw new SignerException(ex);
         }
