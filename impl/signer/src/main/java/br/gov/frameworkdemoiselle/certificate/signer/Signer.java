@@ -81,10 +81,10 @@ public interface Signer {
     abstract public void setAlgorithm(SignerAlgorithmEnum algorithm);
 
     /**
-     * Método de assinatura digital.
+     * Efetua a assinatura digital de um conjunto de bytes
      *
-     * @param content
-     * @return
+     * @param content O conteúdo a ser assinado
+     * @return O conteúdo assinado
      */
     abstract public byte[] doSign(byte[] content);
 
