@@ -48,13 +48,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DERIA5String;
-import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERPrintableString;
-import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERUTF8String;
+import org.bouncycastle.asn1.DLSequence;
 import sun.security.util.DerValue;
 import sun.security.x509.OtherName;
 
@@ -77,24 +77,26 @@ public class OIDGeneric {
      */
     public static OIDGeneric getInstance(byte[] data) throws IOException, Exception {
         ASN1InputStream is = new ASN1InputStream(data);
-        DERSequence sequence = (DERSequence) is.readObject();
-        DERObjectIdentifier oid = (DERObjectIdentifier) sequence.getObjectAt(0);
-        DERTaggedObject tag = (DERTaggedObject) sequence.getObjectAt(1);
+        DLSequence sequence = (DLSequence) is.readObject();
+        ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
+        DERTaggedObject taggedObject = (DERTaggedObject) sequence.getObjectAt(1);
+        DERTaggedObject taggedObject2 = (DERTaggedObject) taggedObject.getObject();
+
         DEROctetString octet = null;
         DERPrintableString print = null;
         DERUTF8String utf8 = null;
         DERIA5String ia5 = null;
 
         try {
-            octet = (DEROctetString) DEROctetString.getInstance(tag);
+            octet = (DEROctetString) taggedObject2.getObject();
         } catch (Exception e) {
             try {
-                print = DERPrintableString.getInstance(tag);
+                print = (DERPrintableString) taggedObject2.getObject();
             } catch (Exception e1) {
                 try {
-                    utf8 = DERUTF8String.getInstance(tag);
+                    utf8 = (DERUTF8String) taggedObject2.getObject();
                 } catch (Exception e2) {
-                    ia5 = DERIA5String.getInstance(tag);
+                    ia5 = (DERIA5String) taggedObject2.getObject();
                 }
             }
         }

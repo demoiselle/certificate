@@ -54,7 +54,6 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DEROctetString;
-import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
@@ -476,13 +475,12 @@ public class BasicCertificate {
      */
     public String getAuthorityKeyIdentifier() throws IOException {
         // TODO - Precisa validar este metodo com a RFC
-        DERSequence seq = (DERSequence) getExtensionValue(Extension.authorityKeyIdentifier.getId());
-        if (seq == null || seq.size() == 0) {
+        DLSequence sequence = (DLSequence) getExtensionValue(Extension.authorityKeyIdentifier.getId());
+        if (sequence == null || sequence.size() == 0) {
             return null;
         }
-        DERTaggedObject tag = (DERTaggedObject) seq.getObjectAt(0);
-        DEROctetString oct = (DEROctetString) DEROctetString.getInstance(tag);
-
+        DERTaggedObject taggedObject = (DERTaggedObject) sequence.getObjectAt(0);
+        DEROctetString oct = (DEROctetString) taggedObject.getObject();
         return toString(oct.getOctets());
     }
 
