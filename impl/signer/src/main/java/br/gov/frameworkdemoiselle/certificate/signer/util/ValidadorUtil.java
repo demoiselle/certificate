@@ -64,8 +64,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
-import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -164,7 +164,7 @@ public class ValidadorUtil {
             asn1InputStream2.close();
             DLSequence derSequence = (DLSequence) aSN1Primitive2;
             DLSequence derObject3 = (DLSequence) derSequence.getObjectAt(0).toASN1Primitive();
-            DERObjectIdentifier objectIdentifier = (DERObjectIdentifier) derObject3.getObjectAt(0);
+            ASN1ObjectIdentifier objectIdentifier = (ASN1ObjectIdentifier) derObject3.getObjectAt(0);
             String identificador = objectIdentifier.toString();
 
             if (!(identificador.startsWith("2.16.76.1.2.1.") || identificador.startsWith("2.16.76.1.2.2.") || identificador.startsWith("2.16.76.1.2.3.") || identificador.startsWith("2.16.76.1.2.4."))) {

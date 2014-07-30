@@ -65,6 +65,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,9 +76,11 @@ import java.util.Map;
 import java.util.Set;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Set;
-import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.DERSet;
+import org.bouncycastle.asn1.DERUTCTime;
 import org.bouncycastle.asn1.cms.AttributeTable;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSAbsentContent;
@@ -211,7 +214,7 @@ public class CAdESSigner implements PKCS7Signer {
                     ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
                     for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
                         DERSequence sequence = iterator.nextElement();
-                        DERObjectIdentifier policyIdentifier = (DERObjectIdentifier) sequence.getObjectAt(0);
+                        ASN1ObjectIdentifier policyIdentifier = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
                         String policyOID = policyIdentifier.getId();
                         SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
                         if (signaturePolicy != null) {
@@ -351,7 +354,7 @@ public class CAdESSigner implements PKCS7Signer {
             return null;
         }
         AttributeTable table = null;
-        Hashtable<DERObjectIdentifier, org.bouncycastle.asn1.cms.Attribute> attributes = new Hashtable<DERObjectIdentifier, org.bouncycastle.asn1.cms.Attribute>();
+        Hashtable<ASN1ObjectIdentifier, org.bouncycastle.asn1.cms.Attribute> attributes = new Hashtable<ASN1ObjectIdentifier, org.bouncycastle.asn1.cms.Attribute>();
         for (Attribute attribute : collection) {
             org.bouncycastle.asn1.cms.Attribute bcAttribute = this.transformAttribute(attribute);
             attributes.put(bcAttribute.getAttrType(), bcAttribute);
@@ -453,6 +456,8 @@ public class CAdESSigner implements PKCS7Signer {
         if (this.certificateChain == null || this.certificateChain.length <= 1) {
             this.certificateChain = CAManager.getInstance().getCertificateChainArray(this.certificate);
         }
+
+        org.bouncycastle.asn1.cms.Attribute signatureTimeStamp = new org.bouncycastle.asn1.cms.Attribute(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, new DERSet(new DERUTCTime(new Date())));
 
         //Adiciona o atributo SignaturePolicyIdentifier
         SignaturePolicyIdentifier signaturePolicyIdentifier = new SignaturePolicyIdentifier();

@@ -65,8 +65,8 @@ import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Set;
+import org.bouncycastle.asn1.ASN1UTCTime;
 import org.bouncycastle.asn1.DERSet;
-import org.bouncycastle.asn1.DERUTCTime;
 import org.bouncycastle.asn1.cms.AttributeTable;
 import org.bouncycastle.asn1.cms.CMSAttributes;
 import org.bouncycastle.asn1.cms.ContentInfo;
@@ -205,7 +205,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
                 org.bouncycastle.asn1.cms.Attribute attributeSigningTime = signedAttributesTable.get(CMSAttributes.signingTime);
                 ASN1Set valorDateSigner = attributeSigningTime.getAttrValues();
                 DERSet derSet = (DERSet) valorDateSigner.toASN1Primitive();
-                DERUTCTime utcTime = (DERUTCTime) derSet.getObjectAt(0);
+                ASN1UTCTime utcTime = (ASN1UTCTime) derSet.getObjectAt(0);
                 Date dataSigner = utcTime.getAdjustedDate();
 
                 //Para a versão 2.0, o período para assinatura desta PA é de 26/12/2011 a 21/06/2023.
