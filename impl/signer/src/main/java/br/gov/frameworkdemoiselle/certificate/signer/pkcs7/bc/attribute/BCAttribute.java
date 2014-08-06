@@ -52,7 +52,7 @@ public abstract class BCAttribute implements Attribute {
     public BCAttribute(Attribute attribute) {
         this.attribute = attribute;
         if (this.attribute == null) {
-            throw new SignerException("Attribute is null");
+            throw new SignerException("O atributo é nulo");
         }
     }
 
