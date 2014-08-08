@@ -44,9 +44,11 @@ public enum BCAdapter {
 
     MessageDigest(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.MessageDigest.class, BCMessageDigest.class),
     SigningTime(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningTime.class, BCSigningTime.class),
-    SignaturePolicyIdentifier(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier.class, BCSignaturePolicyIdentifier.class), FileName(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.FileName.class, BCFileName.class),
+    SignaturePolicyIdentifier(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier.class, BCSignaturePolicyIdentifier.class),
+    FileName(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.FileName.class, BCFileName.class),
     SigningCertificate(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate.class, BCSigningCertificate.class),
-    SigningCertificateV2(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2.class, BCSigningCertificateV2.class), SignerLocation(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignerLocation.class, BCSignerLocation.class);
+    SigningCertificateV2(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2.class, BCSigningCertificateV2.class),
+    SignerLocation(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignerLocation.class, BCSignerLocation.class);
 
     private Class<? extends Attribute> attributeClass;
     private Class<? extends BCAttribute> bcAttributeClass;
