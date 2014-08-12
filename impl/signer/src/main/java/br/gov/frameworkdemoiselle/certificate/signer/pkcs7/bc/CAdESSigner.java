@@ -532,12 +532,9 @@ public class CAdESSigner implements PKCS7Signer {
             byte[] result = cmsSignedData.getEncoded();
             return result;
 
-        } catch (CMSException | IOException | OperatorCreationException ex) {
+        } catch (CMSException | IOException | OperatorCreationException | CertificateEncodingException ex) {
             throw new SignerException(ex);
-        } catch (CertificateEncodingException ex) {
-            logger.info(ex.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -552,11 +549,11 @@ public class CAdESSigner implements PKCS7Signer {
         sha1WithRSAEncryption("1.2.840.113549.1.1.5", "SHA1withRSA"),
         sha256WithRSAEncryption("1.2.840.113549.1.1.11", "SHA256withRSA");
 
-        private final String oid;
+        private final String identifier;
         private final String algorithmName;
 
-        private AlgorithmNames(String oid, String name) {
-            this.oid = oid;
+        private AlgorithmNames(String identifier, String name) {
+            this.identifier = identifier;
             this.algorithmName = name;
         }
 

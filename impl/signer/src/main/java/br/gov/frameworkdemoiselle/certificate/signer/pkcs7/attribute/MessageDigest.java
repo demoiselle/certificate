@@ -51,13 +51,13 @@ public class MessageDigest implements SignedAttribute {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageDigest.class);
 
-    private final String oid = "1.2.840.113549.1.9.4";
+    private final String identifier = "1.2.840.113549.1.9.4";
     private byte[] content = null;
     private SignaturePolicy signaturePolicy = null;
 
     @Override
     public String getOID() {
-        return oid;
+        return identifier;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MessageDigest implements SignedAttribute {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue());
             byte[] hash = md.digest(content);
-            return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(new DEROctetString(hash)));
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new DEROctetString(hash)));
         } catch (NoSuchAlgorithmException ex) {
             logger.info(ex.getMessage());
         }

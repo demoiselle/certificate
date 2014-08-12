@@ -56,10 +56,14 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.IssuerSerial;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SigningCertificate implements SignedAttribute {
 
-    private final String oid = "1.2.840.113549.1.9.16.2.12";
+    private static final Logger logger = LoggerFactory.getLogger(SigningCertificate.class);
+
+    private final String identifier = "1.2.840.113549.1.9.16.2.12";
     private Certificate[] certificates = null;
 
     @Override
@@ -69,7 +73,7 @@ public class SigningCertificate implements SignedAttribute {
 
     @Override
     public String getOID() {
-        return oid;
+        return identifier;
     }
 
     @Override
@@ -85,7 +89,7 @@ public class SigningCertificate implements SignedAttribute {
             ASN1Integer serial = new ASN1Integer(cert.getSerialNumber());
             IssuerSerial issuerSerial = new IssuerSerial(issuer, serial);
             ESSCertID essCertId = new ESSCertID(hash, issuerSerial);
-            return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(DERNull.INSTANCE)}));
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(DERNull.INSTANCE)}));
 
         } catch (CertificateEncodingException ex) {
             throw new SignerException(ex.getMessage());
