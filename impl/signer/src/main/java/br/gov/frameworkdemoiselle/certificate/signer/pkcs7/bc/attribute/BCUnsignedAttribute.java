@@ -37,7 +37,7 @@
 
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute;
 
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedOrUnsignedAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
 
 /**
@@ -45,7 +45,7 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAtt
  */
 public abstract class BCUnsignedAttribute extends BCAttribute implements UnsignedAttribute {
 
-	public BCUnsignedAttribute(Attribute attribute) {
+	public BCUnsignedAttribute(SignedOrUnsignedAttribute attribute) {
 		super(attribute);
 	}
 

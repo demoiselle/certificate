@@ -41,29 +41,33 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.factory;
 
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
-import java.util.Iterator;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedOrUnsignedAttribute;
 import java.util.ServiceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AttributeFactory {
 
+    private static final Logger logger = LoggerFactory.getLogger(AttributeFactory.class);
+
     public static final AttributeFactory instance = new AttributeFactory();
 
-    public static final AttributeFactory getInstance() {
+    public static AttributeFactory getInstance() {
         return AttributeFactory.instance;
     }
 
-    public Attribute factory(String attributeOID) {
-
-        ServiceLoader<Attribute> loader = ServiceLoader.load(Attribute.class);
+    public SignedOrUnsignedAttribute factory(String attributeOID) {
+        logger.info("Consultando o atributo com OID [{}]", attributeOID);
+        ServiceLoader<SignedOrUnsignedAttribute> loader = ServiceLoader.load(SignedOrUnsignedAttribute.class);
         if (loader != null) {
-            for (Iterator<Attribute> iterator = loader.iterator(); iterator.hasNext();) {
-                Attribute attribute = iterator.next();
-
+            for (SignedOrUnsignedAttribute attribute : loader) {
                 if (attribute.getOID().equalsIgnoreCase(attributeOID)) {
+                    logger.info("Retornando o atributo {}", attribute.getClass().getName());
                     return attribute;
                 }
             }
+        } else {
+            logger.info("Atributo com OID [{}] nao foi localizado.", attributeOID);
         }
         return null;
     }

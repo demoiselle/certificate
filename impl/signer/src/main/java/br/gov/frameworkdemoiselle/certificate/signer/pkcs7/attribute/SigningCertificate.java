@@ -36,11 +36,18 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERSet;
+import org.bouncycastle.asn1.cms.Attribute;
 
 public class SigningCertificate implements SignedAttribute {
 
     private final X509Certificate certificate;
+    private final String oid = "1.2.840.113549.1.9.16.2.12";
 
     public SigningCertificate() {
         this.certificate = null;
@@ -52,11 +59,17 @@ public class SigningCertificate implements SignedAttribute {
 
     @Override
     public String getOID() {
-        return "1.2.840.113549.1.9.16.2.12";
+        return oid;
     }
 
     @Override
-    public X509Certificate getValue() {
-        return this.certificate;
+    public Attribute getValue() {
+        return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet());
     }
+
+    @Override
+    public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
+
+    }
+
 }

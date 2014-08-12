@@ -43,16 +43,15 @@ import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedOrUnsignedAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.factory.AttributeFactory;
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.AlgAndLength;
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.CertificateTrustPoint;
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.ObjectIdentifier;
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
+import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.Provider;
@@ -66,21 +65,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.ASN1Set;
-import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.DERSet;
-import org.bouncycastle.asn1.DERUTCTime;
+import org.bouncycastle.asn1.ASN1UTCTime;
 import org.bouncycastle.asn1.cms.AttributeTable;
-import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSAbsentContent;
@@ -112,23 +106,23 @@ public class CAdESSigner implements PKCS7Signer {
     private Certificate certificateChain[];
     private boolean attached = false;
     private SignaturePolicy signaturePolicy = null;
-    private Map<Class<? extends Attribute>, Collection<Attribute>> attributes;
+    private Map<Class<? extends SignedOrUnsignedAttribute>, Collection<SignedOrUnsignedAttribute>> attributes;
     private Collection<IValidator> certificateValidators = null;
     private boolean defaultCertificateValidators = true;
 
     public CAdESSigner() {
         this.pkcs1.setAlgorithm((String) null);
-        this.setSignaturePolicy(new ADRBCMS_1_0());
+//        this.setSignaturePolicy(new ADRBCMS_1_0());
     }
 
     @Override
-    public void addAttribute(Attribute attribute) {
+    public void addAttribute(SignedOrUnsignedAttribute attribute) {
         if (this.attributes == null) {
             this.attributes = new HashMap<>();
         }
         if (attribute != null) {
-            Class<? extends Attribute> clazz = getTypeAttribute(attribute);
-            Collection<Attribute> collection = this.attributes.get(clazz);
+            Class<? extends SignedOrUnsignedAttribute> clazz = getTypeAttribute(attribute);
+            Collection<SignedOrUnsignedAttribute> collection = this.attributes.get(clazz);
             if (collection == null) {
                 collection = new HashSet<>();
             }
@@ -138,8 +132,8 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     @Override
-    public void addAttributes(Collection<Attribute> attributes) {
-        for (Attribute attribute : attributes) {
+    public void addAttributes(Collection<SignedOrUnsignedAttribute> attributes) {
+        for (SignedOrUnsignedAttribute attribute : attributes) {
             this.addAttribute(attribute);
         }
     }
@@ -167,11 +161,8 @@ public class CAdESSigner implements PKCS7Signer {
      */
     @Override
     public boolean check(byte[] content, byte[] signed) {
-
         Security.addProvider(new BouncyCastleProvider());
-
         CMSSignedData cmsSignedData = null;
-
         try {
             if (content == null) {
                 cmsSignedData = new CMSSignedData(signed);
@@ -200,32 +191,42 @@ public class CAdESSigner implements PKCS7Signer {
 
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certificateHolder))) {
                     verified++;
+                    logger.info("Validada a assinatura digital de sequencia [{}]", verified);
                 }
 
-                //Realiza a verificação dos atributos
+                //Realiza a verificação dos atributos assinados
+                logger.info("Efetuando a verificação dos atributos assinados");
                 AttributeTable signedAttributes = signer.getSignedAttributes();
-                if (signedAttributes == null) {
+                if (signedAttributes.size() == 0) {
                     throw new SignerException("O pacote PKCS7 não contém atributos assinados.");
                 }
 
-                // Valida a política de assinatura
-                org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new ASN1ObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
-                if (signaturePolicyIdentifierAttribute != null) {
-                    ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
-                    for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
-                        DERSequence sequence = iterator.nextElement();
-                        ASN1ObjectIdentifier policyIdentifier = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
-                        String policyOID = policyIdentifier.getId();
-                        SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
-                        if (signaturePolicy != null) {
-                            signaturePolicy.validate(content, signed);
-                        } else {
-                            logger.warn("Não existe validador para a política " + policyOID);
-                        }
-                    }
-                } else {
-                    throw new SignerException("Formato ICP-Brasil inválido. Não existe uma política de assinatura.");
+                AttributeTable unsignedAttributes = signer.getUnsignedAttributes();
+                if (unsignedAttributes.size() == 0) {
+                    logger.info("O pacote PKCS7 não contem atributos nao assinados.");
                 }
+
+                //Mostra a hora da assinatura
+                logger.info("yyMMddHHmmssz : {}", (((ASN1UTCTime) signedAttributes.get(new ASN1ObjectIdentifier("1.2.840.113549.1.9.5")).getAttrValues().getObjectAt(0)).getTime()));
+
+                // Valida a política de assinatura
+//                org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new ASN1ObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
+//                if (signaturePolicyIdentifierAttribute != null) {
+//                    ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
+//                    for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
+//                        DERSequence sequence = iterator.nextElement();
+//                        ASN1ObjectIdentifier policyIdentifier = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
+//                        String policyOID = policyIdentifier.getId();
+//                        SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
+//                        if (signaturePolicy != null) {
+//                            signaturePolicy.validate(content, signed);
+//                        } else {
+//                            logger.warn("Não existe validador para a política " + policyOID);
+//                        }
+//                    }
+//                } else {
+//                    throw new SignerException("Formato ICP-Brasil inválido. Não existe uma política de assinatura.");
+//                }
             } catch (OperatorCreationException | java.security.cert.CertificateException ex) {
                 throw new SignerException(ex);
             } catch (CMSException ex) {
@@ -233,7 +234,7 @@ public class CAdESSigner implements PKCS7Signer {
             }
         }
 
-        logger.info("Verificadas {0} assinaturas.", verified);
+        logger.info("Verificada(s) {} assinatura(s).", verified);
 
         return true;
     }
@@ -254,7 +255,7 @@ public class CAdESSigner implements PKCS7Signer {
 
     @Override
     public String getAlgorithm() {
-        return this.signaturePolicy.getSignerAlgorithm().getAlgorithm();
+        return this.signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue();
     }
 
     /**
@@ -305,10 +306,10 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     @Override
-    public Collection<Attribute> getAttributes() {
-        Collection<Attribute> result = new ArrayList<>();
-        Set<Class<? extends Attribute>> keys = this.attributes.keySet();
-        for (Class<? extends Attribute> key : keys) {
+    public Collection<SignedOrUnsignedAttribute> getAttributes() {
+        Collection<SignedOrUnsignedAttribute> result = new ArrayList<>();
+        Set<Class<? extends SignedOrUnsignedAttribute>> keys = this.attributes.keySet();
+        for (Class<? extends SignedOrUnsignedAttribute> key : keys) {
             result.addAll(this.attributes.get(key));
         }
         return result;
@@ -336,7 +337,7 @@ public class CAdESSigner implements PKCS7Signer {
         return this.pkcs1.getPublicKey();
     }
 
-    private Class<? extends Attribute> getTypeAttribute(Attribute attribute) {
+    private Class<? extends SignedOrUnsignedAttribute> getTypeAttribute(SignedOrUnsignedAttribute attribute) {
         if (attribute instanceof UnsignedAttribute) {
             return UnsignedAttribute.class;
         } else if (attribute instanceof SignedAttribute) {
@@ -349,37 +350,35 @@ public class CAdESSigner implements PKCS7Signer {
         return this.defaultCertificateValidators;
     }
 
-    private AttributeTable mountAttributeTable(Collection<Attribute> collection) {
-        if (collection == null || collection.isEmpty()) {
-            return null;
-        }
-        AttributeTable table = null;
-        Hashtable<ASN1ObjectIdentifier, org.bouncycastle.asn1.cms.Attribute> attributes = new Hashtable<ASN1ObjectIdentifier, org.bouncycastle.asn1.cms.Attribute>();
-        for (Attribute attribute : collection) {
-            org.bouncycastle.asn1.cms.Attribute bcAttribute = this.transformAttribute(attribute);
-            attributes.put(bcAttribute.getAttrType(), bcAttribute);
-        }
-
-        if (attributes.size() > 0) {
-            table = new AttributeTable(attributes);
-        }
-        return table;
-    }
-
-    private AttributeTable mountSignedTable() {
-        if (this.attributes != null && this.attributes.size() > 0) {
-            return this.mountAttributeTable(this.attributes.get(SignedAttribute.class));
-        }
-        return null;
-    }
-
-    private AttributeTable mountUnsignedTable() {
-        if (this.attributes != null && this.attributes.size() > 0) {
-            return this.mountAttributeTable(this.attributes.get(UnsignedAttribute.class));
-        }
-        return null;
-    }
-
+//    private AttributeTable mountAttributeTable(Collection<Attribute> collection) {
+//        if (collection == null || collection.isEmpty()) {
+//            return null;
+//        }
+//        AttributeTable table = null;
+//        Hashtable<ASN1ObjectIdentifier, org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute> attributes = new Hashtable<>();
+//        for (SignedOrUnsignedAttribute attribute : collection) {
+//            org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute bcAttribute = this.transformAttribute(attribute);
+//            attributes.put(bcAttribute.getAttrType(), bcAttribute);
+//        }
+//
+//        if (attributes.size() > 0) {
+//            table = new AttributeTable(attributes);
+//        }
+//        return table;
+//    }
+//    private AttributeTable mountSignedTable() {
+//        if (this.attributes != null && this.attributes.size() > 0) {
+//            return this.mountAttributeTable(this.attributes.get(SignedAttribute.class));
+//        }
+//        return null;
+//    }
+//
+//    private AttributeTable mountUnsignedTable() {
+//        if (this.attributes != null && this.attributes.size() > 0) {
+//            return this.mountAttributeTable(this.attributes.get(UnsignedAttribute.class));
+//        }
+//        return null;
+//    }
     @Override
     public void setAlgorithm(SignerAlgorithmEnum algorithm) {
         this.pkcs1.setAlgorithm(algorithm);
@@ -424,14 +423,6 @@ public class CAdESSigner implements PKCS7Signer {
         this.pkcs1.setPublicKey(publicKey);
     }
 
-    @Override
-    public void setSignaturePolicy(SignaturePolicy signaturePolicy) {
-        if (signaturePolicy == null) {
-            return;
-        }
-        this.signaturePolicy = signaturePolicy;
-    }
-
     /**
      * Método de assinatura de dados e geração do pacote PKCS7 Assina apenas com
      * o conteúdo do tipo DATA: OID ContentType 1.2.840.113549.1.9.3 = OID Data
@@ -446,58 +437,74 @@ public class CAdESSigner implements PKCS7Signer {
      */
     @Override
     public byte[] doSign(byte[] content) {
-
-        Security.addProvider(new BouncyCastleProvider());
-
-        if (this.certificate == null && this.certificateChain != null && this.certificateChain.length > 0) {
-            this.certificate = (X509Certificate) this.certificateChain[0];
-        }
-
-        if (this.certificateChain == null || this.certificateChain.length <= 1) {
-            this.certificateChain = CAManager.getInstance().getCertificateChainArray(this.certificate);
-        }
-
-        org.bouncycastle.asn1.cms.Attribute signatureTimeStamp = new org.bouncycastle.asn1.cms.Attribute(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, new DERSet(new DERUTCTime(new Date())));
-
-        //Adiciona o atributo SignaturePolicyIdentifier
-        SignaturePolicyIdentifier signaturePolicyIdentifier = new SignaturePolicyIdentifier();
-        signaturePolicyIdentifier.setSignaturePolicyId(this.signaturePolicy.getSignaturePolicyId());
-        this.addAttribute(signaturePolicyIdentifier);
-
-        boolean addSigningCertificateAttribute = true;
-        for (Attribute attribute : this.getAttributes()) {
-            if (attribute instanceof SigningCertificate) {
-                addSigningCertificateAttribute = false;
-                break;
-            }
-        }
-        if (addSigningCertificateAttribute) {
-            SigningCertificate signingCertificateAttribute = this.signaturePolicy.getSigningCertificateAttribute(this.certificate);
-            this.addAttribute(signingCertificateAttribute);
-        }
-
-        this.setCertificate((X509Certificate) certificateChain[0]);
-        if (certificateChain.length == 1) {
-            throw new SignerException("Impossivel extrair a cadeia de confianca do certificado");
-        }
-
-        // Valida o certificado usando a politica de certificacao
-        this.signaturePolicy.validate(this.certificate, this.pkcs1.getPrivateKey());
-
         try {
+            Security.addProvider(new BouncyCastleProvider());
+
+            //Completa os certificados ausentes da cadeia, se houver
+            if (this.certificate == null && this.certificateChain != null && this.certificateChain.length > 0) {
+                this.certificate = (X509Certificate) this.certificateChain[0];
+            }
+
+            if (this.certificateChain == null || this.certificateChain.length <= 1) {
+                this.certificateChain = CAManager.getInstance().getCertificateChainArray(this.certificate);
+            }
+
+            AttributeFactory attributeFactory = AttributeFactory.getInstance();
+
+            //Consulta e adiciona os atributos assinados
+            ASN1EncodableVector signedAttributes = new ASN1EncodableVector();
+
+            if (signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedSignedAttr().getObjectIdentifiers() != null) {
+                for (ObjectIdentifier oi : signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedSignedAttr().getObjectIdentifiers()) {
+
+                    SignedOrUnsignedAttribute sua = attributeFactory.factory(oi.getValue());
+                    sua.initialize(this.pkcs1.getPrivateKey(), certificateChain, content, signaturePolicy);
+                    signedAttributes.add(sua.getValue());
+                }
+            }
+
+            //Consulta e adiciona os atributos não assinados
+            ASN1EncodableVector unsignedAttributes = new ASN1EncodableVector();
+
+            if (signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers() != null) {
+                for (ObjectIdentifier oi : signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
+
+                    SignedOrUnsignedAttribute sua = attributeFactory.factory(oi.getValue());
+                    sua.initialize(this.pkcs1.getPrivateKey(), certificateChain, content, signaturePolicy);
+                    logger.info(attributeFactory.factory(oi.getValue()).getClass().getName());
+                }
+            }
+
             //Monta a tabela de atributos assinados e não assinados
-            AttributeTable signedAttributesTable = this.mountSignedTable();
-            AttributeTable unsignedAttributesTable = this.mountUnsignedTable();
+            AttributeTable signedAttributesTable = new AttributeTable(signedAttributes);
+            AttributeTable unsignedAttributesTable = new AttributeTable(unsignedAttributes);
 
             // Create the table table generator that will added to the Signer builder
             CMSAttributeTableGenerator signedAttributeGenerator = new DefaultSignedAttributeTableGenerator(signedAttributesTable);
             CMSAttributeTableGenerator unsignedAttributeGenerator = new SimpleAttributeTableGenerator(unsignedAttributesTable);
 
+            //Recupera o algoritmo e o tamanho minimo da chave
+            AlgAndLength algAndLength = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getAlgorithmConstraintSet().getSignerAlgorithmConstraints().getAlgAndLengths().iterator().next();
+
+            logger.info("AlgID........... {}", algAndLength.getAlgID().getValue());
+            logger.info("Alg Name........ {}", AlgorithmNames.getAlgorithmName(algAndLength.getAlgID().getValue()));
+            logger.info("MinKeyLength.... {}", algAndLength.getMinKeyLength());
+
+            //Recupera o(s) certificado(s) de confianca
+            Collection<CertificateTrustPoint> ctp = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSigningCertTrustCondition().getSignerTrustTrees().getCertificateTrustPoints();
+            for (CertificateTrustPoint certificateTrustPoint : ctp) {
+                logger.info(certificateTrustPoint.getTrustpoint().getSubjectDN().toString());
+            }
+
+            //Recupera a data de validade da politica
+            Date nb = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotBefore().getDate();
+            Date na = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotAfter().getDate();
+
             CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
             gen.addCertificates(this.generatedCertStore());
 
-            SignerInfoGenerator signerInfoGenerator = new JcaSimpleSignerInfoGeneratorBuilder().setSignedAttributeGenerator(signedAttributeGenerator).
-                    setUnsignedAttributeGenerator(unsignedAttributeGenerator).build(this.signaturePolicy.getSignerAlgorithm().name(), this.pkcs1.getPrivateKey(), this.certificate);
+            SignerInfoGenerator signerInfoGenerator = new JcaSimpleSignerInfoGeneratorBuilder().setSignedAttributeGenerator(signedAttributeGenerator).setUnsignedAttributeGenerator(unsignedAttributeGenerator).build(AlgorithmNames.getAlgorithmName(algAndLength.getAlgID().getValue()), this.pkcs1.getPrivateKey(), this.certificate);
+
             gen.addSignerInfoGenerator(signerInfoGenerator);
 
             CMSTypedData cmsTypedData;
@@ -515,13 +522,51 @@ public class CAdESSigner implements PKCS7Signer {
             byte[] result = cmsSignedData.getEncoded();
             return result;
 
-        } catch (CMSException | IOException | OperatorCreationException | CertificateEncodingException ex) {
+        } catch (CMSException | IOException | OperatorCreationException ex) {
             throw new SignerException(ex);
+        } catch (CertificateEncodingException ex) {
+            logger.info(ex.getMessage());
         }
+        return null;
     }
 
-    private org.bouncycastle.asn1.cms.Attribute transformAttribute(Attribute attribute) {
-        BCAttribute adapter = BCAdapter.factoryBCAttribute(attribute);
-        return new org.bouncycastle.asn1.cms.Attribute(adapter.getObjectIdentifier(), adapter.getValue());
+//    private org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute transformAttribute(SignedOrUnsignedAttribute attribute) {
+//        BCAttribute adapter = BCAdapter.factoryBCAttribute(attribute);
+//        return new org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute(adapter.getObjectIdentifier(), adapter.getValue());
+//    }
+    @Override
+    public void setSignaturePolicy(PolicyFactory.Policies signaturePolicy) {
+        PolicyFactory policyFactory = PolicyFactory.getInstance();
+        br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy sp = policyFactory.loadPolicy(signaturePolicy);
+        this.signaturePolicy = sp;
+    }
+
+    private enum AlgorithmNames {
+
+        sha1WithRSAEncryption("1.2.840.113549.1.1.5", "SHA1withRSA"),
+        sha256WithRSAEncryption("1.2.840.113549.1.1.11", "SHA256withRSA");
+
+        private final String oid;
+        private final String algorithmName;
+
+        private AlgorithmNames(String oid, String name) {
+            this.oid = oid;
+            this.algorithmName = name;
+        }
+
+        public static String getAlgorithmName(String oid) {
+
+            switch (oid) {
+                case "1.2.840.113549.1.1.5": {
+                    return sha1WithRSAEncryption.algorithmName;
+                }
+                case "1.2.840.113549.1.1.11": {
+                    return sha256WithRSAEncryption.algorithmName;
+                }
+                default: {
+                    return sha1WithRSAEncryption.algorithmName;
+                }
+            }
+        }
     }
 }

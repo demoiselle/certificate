@@ -37,19 +37,18 @@
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute;
 
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedOrUnsignedAttribute;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.ASN1Set;
 
 /**
  * Conversao de atributos do componente para BouncyCastle
  *
  */
-public abstract class BCAttribute implements Attribute {
+public abstract class BCAttribute implements SignedOrUnsignedAttribute {
 
-    private Attribute attribute = null;
+    private SignedOrUnsignedAttribute attribute = null;
 
-    public BCAttribute(Attribute attribute) {
+    public BCAttribute(SignedOrUnsignedAttribute attribute) {
         this.attribute = attribute;
         if (this.attribute == null) {
             throw new SignerException("O atributo é nulo");
@@ -63,7 +62,7 @@ public abstract class BCAttribute implements Attribute {
         return null;
     }
 
-    public Attribute getAttribute() {
+    public SignedOrUnsignedAttribute getAttribute() {
         return this.attribute;
     }
 
@@ -71,8 +70,5 @@ public abstract class BCAttribute implements Attribute {
     public String getOID() {
         return this.attribute.getOID();
     }
-
-    @Override
-    abstract public ASN1Set getValue();
 
 }

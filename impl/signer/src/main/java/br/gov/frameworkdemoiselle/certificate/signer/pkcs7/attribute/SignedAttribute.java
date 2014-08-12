@@ -40,6 +40,6 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 /**
  * Padroniza os atributos assinados.
  */
-public interface SignedAttribute extends Attribute {
+public interface SignedAttribute extends SignedOrUnsignedAttribute {
 
 }

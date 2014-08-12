@@ -46,7 +46,6 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyExcept
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
@@ -278,6 +277,7 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
 
     @Override
     public SigningCertificate getSigningCertificateAttribute(X509Certificate certificate) {
-        return new SigningCertificateV2(certificate);
+//        return new SigningCertificateV2(certificate);
+        return null;
     }
 }
