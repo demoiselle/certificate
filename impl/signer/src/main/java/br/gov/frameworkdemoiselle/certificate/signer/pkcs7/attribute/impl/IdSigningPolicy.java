@@ -34,56 +34,34 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
+package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
 
-public class SigningTime implements SignedAttribute {
+public class IdSigningPolicy implements SignedAttribute {
 
-    private Date date = new Date();
+    private String oid = "1.2.840.113549.1.9.16.2.15";
+    private SignaturePolicy signaturePolicy = null;
 
     @Override
     public String getOID() {
-        return "1.2.840.113549.1.9.5";
-    }
-
-    public SigningTime() {
-
-    }
-
-    public SigningTime(Date date) {
-        this.date = date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setDate(int year, int month, int day, int hour, int min, int sec) {
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, min);
-        calendar.set(Calendar.SECOND, sec);
-        this.date = calendar.getTime();
+        return oid;
     }
 
     @Override
     public Attribute getValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyInfo().getSignPolicyIdentifier().getValue())));
     }
 
     @Override
     public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.signaturePolicy = signaturePolicy;
     }
 
 }

@@ -34,8 +34,9 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
+package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -48,17 +49,16 @@ import org.slf4j.LoggerFactory;
 public class ContentType implements SignedAttribute {
 
     private static final Logger logger = LoggerFactory.getLogger(ContentType.class);
-
-    private String oid = "1.2.840.113549.1.9.3";
+    private final String identifier = "1.2.840.113549.1.9.3";
 
     @Override
     public String getOID() {
-        return oid;
+        return identifier;
     }
 
     @Override
     public Attribute getValue() {
-        return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(new ASN1ObjectIdentifier(contentType.data.getOid())));
+        return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new ASN1ObjectIdentifier(contentType.data.getOid())));
     }
 
     @Override

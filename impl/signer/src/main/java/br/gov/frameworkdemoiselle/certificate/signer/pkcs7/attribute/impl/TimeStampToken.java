@@ -34,42 +34,31 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
+package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
+import br.gov.frameworkdemoiselle.timestamp.TimestampGenerator;
+import br.gov.frameworkdemoiselle.timestamp.enumeration.ConnectionType;
+import br.gov.frameworkdemoiselle.timestamp.exception.TimestampException;
+import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
-import org.bouncycastle.asn1.ASN1Encodable;
-import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.DERNull;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
-import org.bouncycastle.asn1.ess.ESSCertID;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.GeneralName;
-import org.bouncycastle.asn1.x509.GeneralNames;
-import org.bouncycastle.asn1.x509.IssuerSerial;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SigningCertificate implements SignedAttribute {
+public class TimeStampToken implements UnsignedAttribute {
 
-    private static final Logger logger = LoggerFactory.getLogger(SigningCertificate.class);
-
-    private final String identifier = "1.2.840.113549.1.9.16.2.12";
+    private static final Logger logger = LoggerFactory.getLogger(TimeStampToken.class);
+    private final String identifier = "1.2.840.113549.1.9.16.2.14";
+    private PrivateKey privateKey = null;
     private Certificate[] certificates = null;
-
-    @Override
-    public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
-        this.certificates = certificates;
-    }
+    byte[] content = null;
 
     @Override
     public String getOID() {
@@ -77,21 +66,23 @@ public class SigningCertificate implements SignedAttribute {
     }
 
     @Override
-    public Attribute getValue() {
-        try {
-            X509Certificate cert = (X509Certificate) certificates[0];
-            Digest digest = DigestFactory.getInstance().factoryDefault();
-            digest.setAlgorithm(DigestAlgorithmEnum.SHA_1);
-            byte[] hash = digest.digest(cert.getEncoded());
-            X500Name dirName = new X500Name(cert.getSubjectDN().getName());
-            GeneralName name = new GeneralName(dirName);
-            GeneralNames issuer = new GeneralNames(name);
-            ASN1Integer serial = new ASN1Integer(cert.getSerialNumber());
-            IssuerSerial issuerSerial = new IssuerSerial(issuer, serial);
-            ESSCertID essCertId = new ESSCertID(hash, issuerSerial);
-            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(DERNull.INSTANCE)}));
+    public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
+        this.privateKey = privateKey;
+        this.certificates = certificates;
+        this.content = content;
+    }
 
-        } catch (CertificateEncodingException ex) {
+    @Override
+    public Attribute getValue() throws SignerException {
+        try {
+            TimestampGenerator timestampGen = new TimestampGenerator();
+            byte[] request = timestampGen.createRequest(content, privateKey, certificates, DigestAlgorithmEnum.SHA_256);
+            byte[] response = timestampGen.doTimestamp(request, ConnectionType.SOCKET);
+            timestampGen.validate(response, content);
+            logger.info(timestampGen.getTimestamp().toString());
+
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet());
+        } catch (TimestampException | IOException ex) {
             throw new SignerException(ex.getMessage());
         }
     }

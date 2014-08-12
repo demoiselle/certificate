@@ -34,38 +34,49 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
+package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class SignaturePolicyIdentifier implements SignedAttribute {
+public class MessageDigest implements SignedAttribute {
 
-    private SignaturePolicyId signaturePolicyId = null;
+    private static final Logger logger = LoggerFactory.getLogger(MessageDigest.class);
+
+    private final String identifier = "1.2.840.113549.1.9.4";
+    private byte[] content = null;
+    private SignaturePolicy signaturePolicy = null;
 
     @Override
     public String getOID() {
-        return "1.2.840.113549.1.9.16.2.15";
-    }
-
-    public SignaturePolicyId getSignaturePolicyId() {
-        return signaturePolicyId;
-    }
-
-    public void setSignaturePolicyId(SignaturePolicyId signaturePolicyId) {
-        this.signaturePolicyId = signaturePolicyId;
+        return identifier;
     }
 
     @Override
     public Attribute getValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue());
+            byte[] hash = md.digest(content);
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new DEROctetString(hash)));
+        } catch (NoSuchAlgorithmException ex) {
+            logger.info(ex.getMessage());
+        }
+        return null;
     }
 
     @Override
     public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.content = content;
+        this.signaturePolicy = signaturePolicy;
     }
 
 }
