@@ -41,11 +41,8 @@ import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
 import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
@@ -93,12 +90,11 @@ import org.bouncycastle.util.Store;
  * ICP-BRASIL - DOC-ICP-15.03 - Versão 2.0 - 05 de abril de 2010
  *
  */
-public class ADRBCMS_2_0 implements SignaturePolicy {
+public class ADRBCMS_2_0 {
 
     private static final Logger logger = Logger.getLogger(ADRBCMS_2_0.class.getName());
     private final int keySize = 2048;
 
-    @Override
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
         signaturePolicyId.setHash(new byte[]{});
@@ -108,11 +104,10 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
         return signaturePolicyId;
     }
 
-    @Override
     public void validate(byte[] content, byte[] contentSigned) {
 
         if (contentSigned == null || contentSigned.length == 0) {
-            throw new SignaturePolicyException("O conteúdo assinado está vazio");
+            throw new SignerException("O conteúdo assinado está vazio");
         }
 
         //Validando a integridade do arquivo
@@ -246,7 +241,6 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
      * @param certificate O certificado a ser validado
      * @param privateKey A chave privada a ser validada
      */
-    @Override
     public void validate(X509Certificate certificate, PrivateKey privateKey) {
 
         // O tamanho mínimo de chaves para criação de assinaturas segundo estaPA é de:
@@ -270,13 +264,11 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
         // TODO Implementar a validação do caminho de certificação para o certificado digital a ser utilizado na assinatura
     }
 
-    @Override
     public SignerAlgorithmEnum getSignerAlgorithm() {
         return SignerAlgorithmEnum.SHA256withRSA;
     }
 
-    @Override
-    public SigningCertificate getSigningCertificateAttribute(X509Certificate certificate) {
-        return new SigningCertificate(certificate);
-    }
+//    public SigningCertificate getSigningCertificateAttribute(X509Certificate certificate) {
+//        return new SigningCertificate(certificate);
+//    }
 }
