@@ -38,7 +38,7 @@
 package br.gov.frameworkdemoiselle.certificate.signer.factory;
 
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.CAdESSigner;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.impl.CAdESSigner;
 
 /**
  * Fábrica especializada em fabricar objetos da interface {@link PKCS7Signer}

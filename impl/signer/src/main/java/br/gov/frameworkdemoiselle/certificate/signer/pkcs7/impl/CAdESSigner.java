@@ -34,7 +34,7 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc;
+package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.impl;
 
 import br.gov.frameworkdemoiselle.certificate.IValidator;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
@@ -119,14 +119,6 @@ public class CAdESSigner implements PKCS7Signer {
         this.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
     }
 
-//    public void addCertificateValidator(IValidator validator) {
-//        if (this.certificateValidators == null) {
-//            this.certificateValidators = new ArrayList<>();
-//        }
-//        if (!this.certificateValidators.contains(validator)) {
-//            this.certificateValidators.add(validator);
-//        }
-//    }
     /**
      * A validação se basea apenas em assinaturas com um assinante apenas.
      * Valida apenas com o conteúdo do tipo DATA: OID ContentType
@@ -205,25 +197,6 @@ public class CAdESSigner implements PKCS7Signer {
                 if (attributeMessageDigest == null) {
                     throw new SignerException("O pacote PKCS7 não contém o atributo \"MessageDigest\"");
                 }
-
-                // Valida a política de assinatura
-//                org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new ASN1ObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
-//                if (signaturePolicyIdentifierAttribute != null) {
-//                    ASN1Set valueAttribute = signaturePolicyIdentifierAttribute.getAttrValues();
-//                    for (Enumeration<DERSequence> iterator = valueAttribute.getObjects(); iterator.hasMoreElements();) {
-//                        DERSequence sequence = iterator.nextElement();
-//                        ASN1ObjectIdentifier policyIdentifier = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
-//                        String policyOID = policyIdentifier.getId();
-//                        SignaturePolicy signaturePolicy = SignaturePolicyFactory.getInstance().factory(policyOID);
-//                        if (signaturePolicy != null) {
-//                            signaturePolicy.validate(content, signed);
-//                        } else {
-//                            logger.warn("Não existe validador para a política " + policyOID);
-//                        }
-//                    }
-//                } else {
-//                    throw new SignerException("Formato ICP-Brasil inválido. Não existe uma política de assinatura.");
-//                }
             } catch (OperatorCreationException | java.security.cert.CertificateException ex) {
                 throw new SignerException(ex);
             } catch (CMSException ex) {
