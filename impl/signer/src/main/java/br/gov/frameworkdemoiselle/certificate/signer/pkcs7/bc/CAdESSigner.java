@@ -61,10 +61,13 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAKey;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -74,7 +77,10 @@ import java.util.Set;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1UTCTime;
+import org.bouncycastle.asn1.cms.Attribute;
 import org.bouncycastle.asn1.cms.AttributeTable;
+import org.bouncycastle.asn1.cms.CMSAttributes;
+import org.bouncycastle.asn1.cms.ContentInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSAbsentContent;
@@ -208,6 +214,23 @@ public class CAdESSigner implements PKCS7Signer {
 
                 //Mostra a hora da assinatura
                 logger.info("yyMMddHHmmssz : {}", (((ASN1UTCTime) signedAttributes.get(new ASN1ObjectIdentifier("1.2.840.113549.1.9.5")).getAttrValues().getObjectAt(0)).getTime()));
+
+                logger.info("Iniciando a validacao dos atributos");
+                //Valida o atributo ContentType
+                Attribute attributeContentType = signedAttributes.get(CMSAttributes.contentType);
+                if (attributeContentType == null) {
+                    throw new SignerException("O pacote PKCS7 não contém o atributo \"ContentType\"");
+                }
+
+                if (!attributeContentType.getAttrValues().getObjectAt(0).equals(ContentInfo.data)) {
+                    throw new SignerException("\"ContentType\" não é do tipo \"DATA\"");
+                }
+
+                //Validando o atributo MessageDigest
+                Attribute attributeMessageDigest = signedAttributes.get(CMSAttributes.messageDigest);
+                if (attributeMessageDigest == null) {
+                    throw new SignerException("O pacote PKCS7 não contém o atributo \"MessageDigest\"");
+                }
 
                 // Valida a política de assinatura
 //                org.bouncycastle.asn1.cms.Attribute signaturePolicyIdentifierAttribute = signedAttributes.get(new ASN1ObjectIdentifier((new SignaturePolicyIdentifier()).getOID()));
@@ -426,24 +449,25 @@ public class CAdESSigner implements PKCS7Signer {
             //Consulta e adiciona os atributos assinados
             ASN1EncodableVector signedAttributes = new ASN1EncodableVector();
 
+            logger.info("Identificando os atributos assinados");
             if (signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedSignedAttr().getObjectIdentifiers() != null) {
-                for (ObjectIdentifier oi : signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedSignedAttr().getObjectIdentifiers()) {
+                for (ObjectIdentifier objectIdentifier : signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedSignedAttr().getObjectIdentifiers()) {
 
-                    SignedOrUnsignedAttribute sua = attributeFactory.factory(oi.getValue());
-                    sua.initialize(this.pkcs1.getPrivateKey(), certificateChain, content, signaturePolicy);
-                    signedAttributes.add(sua.getValue());
+                    SignedOrUnsignedAttribute signedOrUnsignedAttribute = attributeFactory.factory(objectIdentifier.getValue());
+                    signedOrUnsignedAttribute.initialize(this.pkcs1.getPrivateKey(), certificateChain, content, signaturePolicy);
+                    signedAttributes.add(signedOrUnsignedAttribute.getValue());
                 }
             }
 
             //Consulta e adiciona os atributos não assinados
             ASN1EncodableVector unsignedAttributes = new ASN1EncodableVector();
-
+            logger.info("Identificando os atributos não assinados");
             if (signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers() != null) {
-                for (ObjectIdentifier oi : signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
+                for (ObjectIdentifier objectIdentifier : signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
 
-                    SignedOrUnsignedAttribute sua = attributeFactory.factory(oi.getValue());
-                    sua.initialize(this.pkcs1.getPrivateKey(), certificateChain, content, signaturePolicy);
-                    logger.info(attributeFactory.factory(oi.getValue()).getClass().getName());
+                    SignedOrUnsignedAttribute signedOrUnsignedAttribute = attributeFactory.factory(objectIdentifier.getValue());
+                    signedOrUnsignedAttribute.initialize(this.pkcs1.getPrivateKey(), certificateChain, content, signaturePolicy);
+                    unsignedAttributes.add(signedOrUnsignedAttribute.getValue());
                 }
             }
 
@@ -462,16 +486,31 @@ public class CAdESSigner implements PKCS7Signer {
             logger.info("Alg Name........ {}", AlgorithmNames.getAlgorithmName(algAndLength.getAlgID().getValue()));
             logger.info("MinKeyLength.... {}", algAndLength.getMinKeyLength());
 
-            //Recupera o(s) certificado(s) de confianca
+            //Recupera o tamanho minimo da chave para validacao
+            logger.info("Validando o tamanho da chave");
+            if (((RSAKey) certificate.getPublicKey()).getModulus().bitLength() < algAndLength.getMinKeyLength()) {
+                throw new SignerException("O tamanho mínimo da chave  deve ser de ".concat(algAndLength.getMinKeyLength().toString()).concat(" bits"));
+            }
+
+            //Recupera o(s) certificado(s) de confianca para validacao
             Collection<CertificateTrustPoint> ctp = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSigningCertTrustCondition().getSignerTrustTrees().getCertificateTrustPoints();
             for (CertificateTrustPoint certificateTrustPoint : ctp) {
-                logger.info(certificateTrustPoint.getTrustpoint().getSubjectDN().toString());
+                logger.info("Trust Point... {}", certificateTrustPoint.getTrustpoint().getSubjectDN().toString());
             }
 
             //Recupera a data de validade da politica para validacao
+            logger.info("Verificando o período de validade da politica");
             Date dateNotBefore = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotBefore().getDate();
             Date dateNotAfter = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotAfter().getDate();
 
+            Date actualDate = new GregorianCalendar().getTime();
+
+            if (actualDate.before(dateNotBefore) || actualDate.after(dateNotAfter)) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - hh:mm:ss");
+                throw new SignerException("Esta política é válida somente entre ".concat(sdf.format(dateNotBefore)).concat(" e ").concat(sdf.format(dateNotBefore)));
+            }
+
+            //Realiza a assinatura do conteudo
             CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
             gen.addCertificates(this.generatedCertStore());
 
