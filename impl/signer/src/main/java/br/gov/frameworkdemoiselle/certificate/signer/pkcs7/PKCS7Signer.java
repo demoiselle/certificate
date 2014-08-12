@@ -37,11 +37,8 @@
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7;
 
 import br.gov.frameworkdemoiselle.certificate.signer.Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedOrUnsignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory.Policies;
 import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
-import java.util.Collection;
 
 /**
  * Especificação básica para implementação de assinaturas digitais Formato
@@ -49,21 +46,12 @@ import java.util.Collection;
  */
 public interface PKCS7Signer extends Signer {
 
-    abstract public void setCertificate(X509Certificate certificate);
-
     abstract public void setCertificates(Certificate certificate[]);
 
     abstract public void setAttached(boolean attached);
 
-//    abstract public void setSignaturePolicy(SignaturePolicy signaturePolicy);
     abstract public void setSignaturePolicy(Policies signaturePolicy);
 
-    abstract public void addAttribute(SignedOrUnsignedAttribute attribute);
-
-    abstract public void addAttributes(Collection<SignedOrUnsignedAttribute> attributes);
-
     abstract public byte[] getAttached(byte[] signed, boolean validate);
-
-    abstract public Collection<SignedOrUnsignedAttribute> getAttributes();
 
 }

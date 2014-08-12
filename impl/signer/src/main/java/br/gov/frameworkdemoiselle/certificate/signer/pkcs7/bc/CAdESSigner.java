@@ -68,12 +68,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1UTCTime;
@@ -118,30 +115,7 @@ public class CAdESSigner implements PKCS7Signer {
 
     public CAdESSigner() {
         this.pkcs1.setAlgorithm((String) null);
-//        this.setSignaturePolicy(new ADRBCMS_1_0());
-    }
-
-    @Override
-    public void addAttribute(SignedOrUnsignedAttribute attribute) {
-        if (this.attributes == null) {
-            this.attributes = new HashMap<>();
-        }
-        if (attribute != null) {
-            Class<? extends SignedOrUnsignedAttribute> clazz = getTypeAttribute(attribute);
-            Collection<SignedOrUnsignedAttribute> collection = this.attributes.get(clazz);
-            if (collection == null) {
-                collection = new HashSet<>();
-            }
-            collection.add(attribute);
-            this.attributes.put(clazz, collection);
-        }
-    }
-
-    @Override
-    public void addAttributes(Collection<SignedOrUnsignedAttribute> attributes) {
-        for (SignedOrUnsignedAttribute attribute : attributes) {
-            this.addAttribute(attribute);
-        }
+        this.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
     }
 
     public void addCertificateValidator(IValidator validator) {
@@ -213,7 +187,7 @@ public class CAdESSigner implements PKCS7Signer {
                 }
 
                 //Mostra a hora da assinatura
-                logger.info("yyMMddHHmmssz : {}", (((ASN1UTCTime) signedAttributes.get(new ASN1ObjectIdentifier("1.2.840.113549.1.9.5")).getAttrValues().getObjectAt(0)).getTime()));
+                logger.info("UTCTime yyMMddHHmmssz : {}", (((ASN1UTCTime) signedAttributes.get(new ASN1ObjectIdentifier("1.2.840.113549.1.9.5")).getAttrValues().getObjectAt(0)).getTime()));
 
                 logger.info("Iniciando a validacao dos atributos");
                 //Valida o atributo ContentType
@@ -330,16 +304,6 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     @Override
-    public Collection<SignedOrUnsignedAttribute> getAttributes() {
-        Collection<SignedOrUnsignedAttribute> result = new ArrayList<>();
-        Set<Class<? extends SignedOrUnsignedAttribute>> keys = this.attributes.keySet();
-        for (Class<? extends SignedOrUnsignedAttribute> key : keys) {
-            result.addAll(this.attributes.get(key));
-        }
-        return result;
-    }
-
-    @Override
     public PrivateKey getPrivateKey() {
         return this.pkcs1.getPrivateKey();
     }
@@ -387,11 +351,6 @@ public class CAdESSigner implements PKCS7Signer {
     @Override
     public void setAttached(boolean attached) {
         this.attached = attached;
-    }
-
-    @Override
-    public void setCertificate(X509Certificate certificate) {
-        this.certificate = certificate;
     }
 
     @Override
