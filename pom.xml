@@ -61,8 +61,10 @@
         <module>parent/certificate</module>
         <module>impl/applet</module>
         <module>impl/core</module>
-        <module>impl/criptography</module>
         <module>impl/signer</module>
+        <module>impl/policy</module>
+        <module>impl/timestamp</module>
+        <module>impl/criptography</module>
         <module>impl/ca-icp-brasil</module>
         <module>impl/ca-icp-brasil-homologacao</module>
     </modules>
