@@ -68,6 +68,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -118,15 +119,14 @@ public class CAdESSigner implements PKCS7Signer {
         this.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
     }
 
-    public void addCertificateValidator(IValidator validator) {
-        if (this.certificateValidators == null) {
-            this.certificateValidators = new ArrayList<>();
-        }
-        if (!this.certificateValidators.contains(validator)) {
-            this.certificateValidators.add(validator);
-        }
-    }
-
+//    public void addCertificateValidator(IValidator validator) {
+//        if (this.certificateValidators == null) {
+//            this.certificateValidators = new ArrayList<>();
+//        }
+//        if (!this.certificateValidators.contains(validator)) {
+//            this.certificateValidators.add(validator);
+//        }
+//    }
     /**
      * A validação se basea apenas em assinaturas com um assinante apenas.
      * Valida apenas com o conteúdo do tipo DATA: OID ContentType
@@ -452,10 +452,15 @@ public class CAdESSigner implements PKCS7Signer {
             }
 
             //Recupera o(s) certificado(s) de confianca para validacao
+            Collection<X509Certificate> trustedCAs = new HashSet<X509Certificate>();
+
             Collection<CertificateTrustPoint> ctp = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSigningCertTrustCondition().getSignerTrustTrees().getCertificateTrustPoints();
             for (CertificateTrustPoint certificateTrustPoint : ctp) {
                 logger.info("Trust Point... {}", certificateTrustPoint.getTrustpoint().getSubjectDN().toString());
+                trustedCAs.add(certificateTrustPoint.getTrustpoint());
             }
+            //Efetua a validacao das cadeias do certificado baseado na politica
+            CAManager.getInstance().validateRootCAs(trustedCAs, certificate);
 
             //Recupera a data de validade da politica para validacao
             logger.info("Verificando o período de validade da politica");

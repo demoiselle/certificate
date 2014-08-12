@@ -66,7 +66,7 @@ public class CAdESSignerTest {
             PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
             signer.setCertificates(ks.getCertificateChain(alias));
             signer.setPrivateKey((PrivateKey) ks.getKey(alias, null));
-            signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_2_1);
+            signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
             signer.setAttached(true);
 
             /* Realiza a assinatura do conteudo */
