@@ -36,25 +36,35 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERNull;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
+import org.bouncycastle.asn1.ess.ESSCertID;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.asn1.x509.IssuerSerial;
 
 public class SigningCertificate implements SignedAttribute {
 
-    private final X509Certificate certificate;
     private final String oid = "1.2.840.113549.1.9.16.2.12";
+    private Certificate[] certificates = null;
 
-    public SigningCertificate() {
-        this.certificate = null;
-    }
-
-    public SigningCertificate(X509Certificate certificate) {
-        this.certificate = certificate;
+    @Override
+    public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
+        this.certificates = certificates;
     }
 
     @Override
@@ -64,12 +74,21 @@ public class SigningCertificate implements SignedAttribute {
 
     @Override
     public Attribute getValue() {
-        return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet());
+        try {
+            X509Certificate cert = (X509Certificate) certificates[0];
+            Digest digest = DigestFactory.getInstance().factoryDefault();
+            digest.setAlgorithm(DigestAlgorithmEnum.SHA_1);
+            byte[] hash = digest.digest(cert.getEncoded());
+            X500Name dirName = new X500Name(cert.getSubjectDN().getName());
+            GeneralName name = new GeneralName(dirName);
+            GeneralNames issuer = new GeneralNames(name);
+            ASN1Integer serial = new ASN1Integer(cert.getSerialNumber());
+            IssuerSerial issuerSerial = new IssuerSerial(issuer, serial);
+            ESSCertID essCertId = new ESSCertID(hash, issuerSerial);
+            return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(DERNull.INSTANCE)}));
+
+        } catch (CertificateEncodingException ex) {
+            throw new SignerException(ex.getMessage());
+        }
     }
-
-    @Override
-    public void initialize(PrivateKey privateKey, Certificate[] certificates, byte[] content, SignaturePolicy signaturePolicy) {
-
-    }
-
 }

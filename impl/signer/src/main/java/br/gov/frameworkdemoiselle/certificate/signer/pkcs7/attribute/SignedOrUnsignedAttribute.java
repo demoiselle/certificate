@@ -36,6 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -72,6 +73,6 @@ public interface SignedOrUnsignedAttribute {
      *
      * @return O atributo.
      */
-    public Attribute getValue();
+    public Attribute getValue() throws SignerException;
 
 }

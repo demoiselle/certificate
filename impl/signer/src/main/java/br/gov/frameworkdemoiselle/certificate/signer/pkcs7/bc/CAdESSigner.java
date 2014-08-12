@@ -273,15 +273,16 @@ public class CAdESSigner implements PKCS7Signer {
      * exista
      *
      * @param signed O conteudo assinado
-     * @param validate Extrai validando a assinatura, em caso verdadeiro.
+     * @param validateOnExtract Extrai validando a assinatura, em caso
+     * verdadeiro.
      * @return O conteudo original
      */
     @Override
-    public byte[] getAttached(byte[] signed, boolean validate) {
+    public byte[] getAttached(byte[] signed, boolean validateOnExtract) {
 
         byte[] result = null;
 
-        if (validate) {
+        if (validateOnExtract) {
             this.check(null, signed);
         }
 
@@ -350,35 +351,6 @@ public class CAdESSigner implements PKCS7Signer {
         return this.defaultCertificateValidators;
     }
 
-//    private AttributeTable mountAttributeTable(Collection<Attribute> collection) {
-//        if (collection == null || collection.isEmpty()) {
-//            return null;
-//        }
-//        AttributeTable table = null;
-//        Hashtable<ASN1ObjectIdentifier, org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute> attributes = new Hashtable<>();
-//        for (SignedOrUnsignedAttribute attribute : collection) {
-//            org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute bcAttribute = this.transformAttribute(attribute);
-//            attributes.put(bcAttribute.getAttrType(), bcAttribute);
-//        }
-//
-//        if (attributes.size() > 0) {
-//            table = new AttributeTable(attributes);
-//        }
-//        return table;
-//    }
-//    private AttributeTable mountSignedTable() {
-//        if (this.attributes != null && this.attributes.size() > 0) {
-//            return this.mountAttributeTable(this.attributes.get(SignedAttribute.class));
-//        }
-//        return null;
-//    }
-//
-//    private AttributeTable mountUnsignedTable() {
-//        if (this.attributes != null && this.attributes.size() > 0) {
-//            return this.mountAttributeTable(this.attributes.get(UnsignedAttribute.class));
-//        }
-//        return null;
-//    }
     @Override
     public void setAlgorithm(SignerAlgorithmEnum algorithm) {
         this.pkcs1.setAlgorithm(algorithm);
@@ -496,15 +468,14 @@ public class CAdESSigner implements PKCS7Signer {
                 logger.info(certificateTrustPoint.getTrustpoint().getSubjectDN().toString());
             }
 
-            //Recupera a data de validade da politica
-            Date nb = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotBefore().getDate();
-            Date na = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotAfter().getDate();
+            //Recupera a data de validade da politica para validacao
+            Date dateNotBefore = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotBefore().getDate();
+            Date dateNotAfter = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getSigningPeriod().getNotAfter().getDate();
 
             CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
             gen.addCertificates(this.generatedCertStore());
 
             SignerInfoGenerator signerInfoGenerator = new JcaSimpleSignerInfoGeneratorBuilder().setSignedAttributeGenerator(signedAttributeGenerator).setUnsignedAttributeGenerator(unsignedAttributeGenerator).build(AlgorithmNames.getAlgorithmName(algAndLength.getAlgID().getValue()), this.pkcs1.getPrivateKey(), this.certificate);
-
             gen.addSignerInfoGenerator(signerInfoGenerator);
 
             CMSTypedData cmsTypedData;
@@ -530,10 +501,6 @@ public class CAdESSigner implements PKCS7Signer {
         return null;
     }
 
-//    private org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute transformAttribute(SignedOrUnsignedAttribute attribute) {
-//        BCAttribute adapter = BCAdapter.factoryBCAttribute(attribute);
-//        return new org.bouncycastle.asn1.cms.SignedOrUnsignedAttribute(adapter.getObjectIdentifier(), adapter.getValue());
-//    }
     @Override
     public void setSignaturePolicy(PolicyFactory.Policies signaturePolicy) {
         PolicyFactory policyFactory = PolicyFactory.getInstance();
