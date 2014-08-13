@@ -3,3 +3,5 @@
 /.classpath
 /.settings
 /.externalToolBuilders
+/impl/policy/target/
+/impl/timestamp/target/
