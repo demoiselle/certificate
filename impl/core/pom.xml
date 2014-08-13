@@ -37,7 +37,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>demoiselle-certificate-core</artifactId>
     <packaging>jar</packaging>
 
@@ -49,9 +48,7 @@
     </parent>
 
     <name>Demoiselle Certificate Core</name>
-    <description>
-        Demoiselle Certificate Component
-    </description>
+    <description>Demoiselle Certificate Component</description>
     <url>http://www.frameworkdemoiselle.gov.br</url>
 
     <licenses>
