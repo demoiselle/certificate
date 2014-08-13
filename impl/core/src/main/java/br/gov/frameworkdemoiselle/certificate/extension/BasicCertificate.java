@@ -47,8 +47,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -63,8 +61,12 @@ import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.PolicyInformation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BasicCertificate {
+
+    private static final Logger logger = LoggerFactory.getLogger(BasicCertificate.class);
 
     public static final String OID_A1_CERTIFICATE = "2.16.76.1.2.1";
     public static final String OID_A2_CERTIFICATE = "2.16.76.1.2.2";
@@ -74,7 +76,6 @@ public class BasicCertificate {
     public static final String OID_S2_CERTIFICATE = "2.16.76.1.2.102";
     public static final String OID_S3_CERTIFICATE = "2.16.76.1.2.103";
     public static final String OID_S4_CERTIFICATE = "2.16.76.1.2.104";
-    private static final Logger logger = Logger.getLogger(BasicCertificate.class.getName());
 
     private X509Certificate certificate = null;
     private ICPBRSubjectAlternativeNames subjectAlternativeNames = null;
@@ -517,7 +518,7 @@ public class BasicCertificate {
         CRLDistPoint crlDistPoint = CRLDistPoint.getInstance(primitive);
         DistributionPoint[] distributionPoints = crlDistPoint.getDistributionPoints();
 
-        logger.log(Level.INFO, "Analizando os pontos de distribuição");
+        logger.info("Analizando os pontos de distribuição");
         for (DistributionPoint distributionPoint : distributionPoints) {
             DistributionPointName dpn = distributionPoint.getDistributionPoint();
             // Look for URIs in fullName
@@ -528,7 +529,7 @@ public class BasicCertificate {
                         if (genName.getTagNo() == GeneralName.uniformResourceIdentifier) {
                             String url = DERIA5String.getInstance(genName.getName()).getString();
                             crlUrls.add(url);
-                            logger.log(Level.INFO, "Adicionando a url {0}", url);
+                            logger.info("Adicionando a url {}", url);
                         }
                     }
                 }

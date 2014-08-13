@@ -37,13 +37,13 @@
 package br.gov.frameworkdemoiselle.policy.engine.factory;
 
 import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory.Policies;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PolicyFactoryTest {
 
-    private static final Logger logger = Logger.getLogger(PolicyFactoryTest.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PolicyFactoryTest.class);
 
     @Test
     public void testLoadPolicy() {
@@ -51,7 +51,7 @@ public class PolicyFactoryTest {
         Policies[] policies = PolicyFactory.Policies.values();
 
         for (Policies policy : policies) {
-            logger.log(Level.INFO, factory.loadPolicy(policy).toString());
+            logger.info(factory.loadPolicy(policy).toString());
         }
     }
 
@@ -61,7 +61,7 @@ public class PolicyFactoryTest {
     @Test
     public void testLoadLPA() {
         PolicyFactory factory = PolicyFactory.getInstance();
-        logger.log(Level.INFO, factory.loadLPA().toString());
+        logger.info(factory.loadLPA().toString());
     }
 
     /**
@@ -70,6 +70,6 @@ public class PolicyFactoryTest {
     @Test
     public void testLoadLPAv2() {
         PolicyFactory factory = PolicyFactory.getInstance();
-        logger.log(Level.INFO, factory.loadLPAv2().toString());
+        logger.info(factory.loadLPAv2().toString());
     }
 }
