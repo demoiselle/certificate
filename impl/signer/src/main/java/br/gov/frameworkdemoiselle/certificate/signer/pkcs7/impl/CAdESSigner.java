@@ -205,7 +205,7 @@ public class CAdESSigner implements PKCS7Signer {
         }
 
         logger.info("Verificada(s) {} assinatura(s).", verified);
-
+        //TODO Efetuar o parsing da estrutura CMS
         return true;
     }
 

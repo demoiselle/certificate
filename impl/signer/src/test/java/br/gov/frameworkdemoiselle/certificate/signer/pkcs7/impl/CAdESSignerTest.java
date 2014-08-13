@@ -38,7 +38,7 @@ public class CAdESSignerTest {
     public void testSignAndVerifySignature() {
         try {
             String configName = "/home/07721825741/drivers.config";
-            String password = "G4bizinh4";
+            String password = "";
 
             Provider p = new sun.security.pkcs11.SunPKCS11(configName);
             Security.addProvider(p);
