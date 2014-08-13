@@ -3,6 +3,15 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
     <revision>
+        <revnumber>2.0.0</revnumber>
+        <date>13/08/2014</date>
+        <authorinitials>hmp</authorinitials>
+        <revremark>
+            Criação do componente de motor de politicas,
+            Criação do componente de carimbo de tempo,
+            implementação da política de carimbo de tempo</revremark>
+    </revision>
+    <revision>
         <revnumber>1.0.7</revnumber>
         <date>15/04/2014</date>
         <authorinitials>hmp</authorinitials>
