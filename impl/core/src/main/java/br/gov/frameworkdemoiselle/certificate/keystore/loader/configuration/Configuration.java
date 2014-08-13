@@ -123,14 +123,14 @@ public class Configuration {
             try {
                 this.addDriver(driver, map.get(driver));
             } catch (Throwable error) {
-                Configuration.logger.error(DRIVER_ERROR_LOAD + " " + driver, error);
+                logger.error(DRIVER_ERROR_LOAD + " " + driver);
             }
         }
 
         try {
             this.getPKCS11DriverFromVariable();
         } catch (Throwable error) {
-            Configuration.logger.error(DRIVER_ERROR_LOAD, error);
+            logger.error(DRIVER_ERROR_LOAD);
         }
 
     }
@@ -195,7 +195,7 @@ public class Configuration {
             throw new KeyStoreLoaderException(Configuration.PATH_INVALID);
         }
 
-        Configuration.logger.debug("Adicionando o driver " + name + "::" + fileName + " na lista de drivers");
+        logger.debug("Adicionando o driver " + name + "::" + fileName + " na lista de drivers");
         this.drivers.put(name, fileName);
 
     }
@@ -275,7 +275,7 @@ public class Configuration {
      * valor. Prioridade para as variaveis de ambiente.
      *
      * @param key Chave de localizacao da variavel
-     * @return O conteudo definida em uma das variaveis. NULL se nenhuma
+     * @Creturn O conteudo definida em uma das variaveis. NULL se nenhuma
      * variavel for definida
      */
     private String getContentFromVariables(String key) {
