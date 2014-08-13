@@ -71,13 +71,18 @@ public class SignaturePolicy {
         }
 
         builder.append("==============================================================").append("\n");
-        for (ObjectIdentifier oi : this.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
-            builder.append("OID de atributos nao assinados...: ").append(oi.getValue()).append("\n");
+
+        if (this.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers() != null) {
+            for (ObjectIdentifier oi : this.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getSignerRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
+                builder.append("OID de atributos nao assinados...: ").append(oi.getValue()).append("\n");
+            }
         }
 
-        builder.append("==============================================================").append("\n");
-        for (ObjectIdentifier oi : this.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getVerifierRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
-            builder.append("OID de atributos nao assinados...: ").append(oi.getValue()).append("\n");
+        if (this.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getVerifierRules().getMandatedUnsignedAttr().getObjectIdentifiers() != null) {
+            builder.append("==============================================================").append("\n");
+            for (ObjectIdentifier oi : this.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getSignerAndVeriferRules().getVerifierRules().getMandatedUnsignedAttr().getObjectIdentifiers()) {
+                builder.append("OID de atributos nao assinados...: ").append(oi.getValue()).append("\n");
+            }
         }
 
         return builder.toString();

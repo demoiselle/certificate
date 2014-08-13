@@ -39,10 +39,8 @@ package br.gov.frameworkdemoiselle.policy.engine.factory;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.LPA;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -83,23 +81,7 @@ public class PolicyFactory {
     }
 
     private ASN1Primitive readANS1FromStream(InputStream is) {
-
-        BufferedInputStream bis = new BufferedInputStream(is);
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-
-        try {
-
-            byte[] input = new byte[64 * 1024];
-            while (bis.available() > 0) {
-                bytesOut.write(bis.read());
-            }
-            bis.close();
-        } catch (IOException ex) {
-            Logger.getLogger(PolicyFactory.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        ASN1InputStream asn1is = new ASN1InputStream(bytesOut.toByteArray());
-        //ASN1InputStream asn1is = new ASN1InputStream(is);
+        ASN1InputStream asn1is = new ASN1InputStream(is);
         ASN1Primitive primitive = null;
         try {
             primitive = asn1is.readObject();

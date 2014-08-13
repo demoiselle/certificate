@@ -36,6 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.policy.engine.factory;
 
+import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory.Policies;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -47,24 +48,28 @@ public class PolicyFactoryTest {
     @Test
     public void testLoadPolicy() {
         PolicyFactory factory = PolicyFactory.getInstance();
-        logger.log(Level.INFO, factory.loadPolicy(PolicyFactory.Policies.AD_RC_CADES_2_1).toString());
+        Policies[] policies = PolicyFactory.Policies.values();
+
+        for (Policies policy : policies) {
+            logger.log(Level.INFO, factory.loadPolicy(policy).toString());
+        }
     }
-//
-//    /**
-//     * Test of loadLPA method, of class PolicyFactory.
-//     */
-//    @Test
-//    public void testLoadLPA() {
-//        PolicyFactory factory = PolicyFactory.getInstance();
-//        logger.log(Level.INFO, factory.loadLPA().toString());
-//    }
-//
-//    /**
-//     * Test of loadLPAv2 method, of class PolicyFactory.
-//     */
-//    @Test
-//    public void testLoadLPAv2() {
-//        PolicyFactory factory = PolicyFactory.getInstance();
-//        logger.log(Level.INFO, factory.loadLPAv2().toString());
-//    }
+
+    /**
+     * Test of loadLPA method, of class PolicyFactory.
+     */
+    @Test
+    public void testLoadLPA() {
+        PolicyFactory factory = PolicyFactory.getInstance();
+        logger.log(Level.INFO, factory.loadLPA().toString());
+    }
+
+    /**
+     * Test of loadLPAv2 method, of class PolicyFactory.
+     */
+    @Test
+    public void testLoadLPAv2() {
+        PolicyFactory factory = PolicyFactory.getInstance();
+        logger.log(Level.INFO, factory.loadLPAv2().toString());
+    }
 }
