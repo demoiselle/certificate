@@ -3,19 +3,19 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="policy-configuracao">
 
-    <title>Configuração do Demoiselle Policy</title>
+    <title>Configuração do Demoiselle Policy Engine</title>
 
     <section>
         <title>Instalação do componente</title>
         <para>
-            Para instalar o componente <emphasis>Demoiselle Policy</emphasis>
+            Para instalar o componente <emphasis>Demoiselle Policy Engine</emphasis>
             na aplicação, basta adicionar a sua dependência no arquivo <filename>pom.xml</filename>
             do projeto gerenciado pelo Maven:
         </para>
         <programlisting role="XML"><![CDATA[
         <dependency>
             <groupId>br.gov.frameworkdemoiselle.component</groupId>
-            <artifactId>demoiselle-certificate-signer</artifactId>
+            <artifactId>demoiselle-certificate-policy-engine</artifactId>
             <version>2.0.0</version>
         </dependency>]]>
         </programlisting>
