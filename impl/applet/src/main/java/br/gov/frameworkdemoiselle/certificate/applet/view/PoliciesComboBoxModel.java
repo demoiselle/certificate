@@ -11,14 +11,14 @@ import javax.swing.ComboBoxModel;
 public class PoliciesComboBoxModel extends AbstractListModel implements ComboBoxModel {
 
     String[] Politicas = {
-        "POLITICA ICP-BRASIL COM REFERENCIA BASICA CMS, versao 1.0",
-        "POLITICA ICP-BRASIL COM REFERENCIA BASICA CMS, versao 1.1",
-        "POLITICA ICP-BRASIL COM REFERENCIA BASICA CMS, versao 2.0",
-        "POLITICA ICP-BRASIL COM REFERENCIA BASICA CMS, versao 2.1",
-        "POLITICA ICP-BRASIL COM REFERENCIA DO TEMPO CMS, versao 1.0",
-        "POLITICA ICP-BRASIL COM REFERENCIA DO TEMPO CMS, versao 1.1",
-        "POLITICA ICP-BRASIL COM REFERENCIA DO TEMPO CMS, versao 2.0",
-        "POLITICA ICP-BRASIL COM REFERENCIA DO TEMPO CMS, versao 2.1"
+        "Política ICP-BRASIL com referência básica CMS, versão 1.0",
+        "Política ICP-BRASIL com referência básica CMS, versão 1.1",
+        "Política ICP-BRASIL com referência básica CMS, versão 2.0",
+        "Política ICP-BRASIL com referência básica CMS, versão 2.1",
+        "Política ICP-BRASIL com referência do tempo CMS, versão 1.0",
+        "Política ICP-BRASIL com referência do tempo CMS, versão 1.1",
+        "Política ICP-BRASIL com referência do tempo CMS, versão 2.0",
+        "Política ICP-BRASIL com referência do tempo CMS, versão 2.1"
     };
 
     String selection = null;

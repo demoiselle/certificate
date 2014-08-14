@@ -121,7 +121,7 @@ public class JKeyStorePanel extends JPanel {
             certificatesLabel.setText(AppletConfig.CONFIG_DIALOG_LABEL_TABLE.getValue());
             Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
             TitledBorder title = BorderFactory.createTitledBorder(loweredetched, certificatesLabel.getText());
-            title.setTitleJustification(TitledBorder.LEFT);
+            title.setTitleJustification(TitledBorder.CENTER);
             title.setTitleFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             this.setBorder(title);
 
@@ -136,6 +136,7 @@ public class JKeyStorePanel extends JPanel {
                 table.setRowSelectionInterval(0, 0);
             }
 
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
             table.getTableHeader().setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             table.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             table.setBounds(AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_X.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt());
