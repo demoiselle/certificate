@@ -55,7 +55,7 @@ public class PinCallbackHandler implements CallbackHandler {
                 final PasswordCallback callback = (PasswordCallback) callbacks[i];
                 JPasswordField passwordField = new JPasswordField();
                 passwordField.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
-                passwordField.setEchoChar('.');
+                passwordField.setEchoChar('*');
                 Object[] obj = {"Por favor, digite o pin do Certificado Digital: \n", passwordField};
                 Object stringArray[] = {"Confirmar", "Cancelar"};
 

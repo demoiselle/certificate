@@ -74,6 +74,7 @@ public abstract class AbstractAppletExecute implements AppletExecute {
      * ICPBrasil
      *
      * @param keystore Keystore do dispositivo
+     * @param alias
      * @param isValid Indica se o certificado sera validado
      * @return
      * @throws KeyStoreException
