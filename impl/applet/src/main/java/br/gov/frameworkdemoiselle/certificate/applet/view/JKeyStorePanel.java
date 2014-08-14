@@ -66,12 +66,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
-/**
- * JPanel especializada para obtencao do KeyStore de um dispositivo usb ou
- *
- * @author SUPST/STCTA
- *
- */
 public class JKeyStorePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -301,5 +295,9 @@ public class JKeyStorePanel extends JPanel {
      */
     public Dimension getDimension() {
         return new Dimension(AppletConfig.CONFIG_DIALOG_DIMENSION_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_DIMENSION_HEIGHT.getValueInt());
+    }
+
+    public int getPolicySelected() {
+        return this.policiesList.getSelectedIndex();
     }
 }

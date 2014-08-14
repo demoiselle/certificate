@@ -304,4 +304,8 @@ public class JKeyStoreDialog extends JDialog {
         return table.getRowCount();
     }
 
+    public int getPolicySelected() {
+        return policiesList.getSelectedIndex();
+    }
+
 }

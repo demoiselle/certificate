@@ -63,32 +63,6 @@ import org.w3c.dom.html.HTMLInputElement;
  */
 public abstract class AbstractAppletExecute implements AppletExecute {
 
-    @Override
-    public abstract void execute(KeyStore keystore, String alias, Applet applet);
-
-    @Override
-    public abstract void cancel(KeyStore keystore, String alias, Applet applet);
-
-    /**
-     * Retorn o objeto carregado com as informacoes do certificado ao formato
-     * ICPBrasil
-     *
-     * @param keystore Keystore do dispositivo
-     * @param alias
-     * @param isValid Indica se o certificado sera validado
-     * @return
-     * @throws KeyStoreException
-     */
-    public ICPBrasilCertificate getICPBrasilCertificate(KeyStore keystore, String alias, boolean isValid) throws KeyStoreException {
-        if (alias == null || alias.isEmpty()) {
-            alias = keystore.aliases().nextElement();
-        }
-        X509Certificate x509 = (X509Certificate) keystore.getCertificateChain(alias)[0];
-        CertificateManager cm = new CertificateManager(x509, isValid);
-        ICPBrasilCertificate cert = cm.load(ICPBrasilCertificate.class);
-        return cert;
-    }
-
     /**
      * Modifica um elemento do formulario html a partir da applet
      *
@@ -202,5 +176,31 @@ public abstract class AbstractAppletExecute implements AppletExecute {
             result = e2.getMessage();
         }
         return result;
+    }
+
+    @Override
+    public abstract void execute(KeyStore keystore, String alias, int policyselected, Applet applet);
+
+    @Override
+    public abstract void cancel(KeyStore keystore, String alias, int policyselected, Applet applet);
+
+    /**
+     * Retorn o objeto carregado com as informacoes do certificado ao formato
+     * ICPBrasil
+     *
+     * @param keystore Keystore do dispositivo
+     * @param alias
+     * @param isValid Indica se o certificado sera validado
+     * @return
+     * @throws KeyStoreException
+     */
+    public ICPBrasilCertificate getICPBrasilCertificate(KeyStore keystore, String alias, boolean isValid) throws KeyStoreException {
+        if (alias == null || alias.isEmpty()) {
+            alias = keystore.aliases().nextElement();
+        }
+        X509Certificate x509 = (X509Certificate) keystore.getCertificateChain(alias)[0];
+        CertificateManager cm = new CertificateManager(x509, isValid);
+        ICPBrasilCertificate cert = cm.load(ICPBrasilCertificate.class);
+        return cert;
     }
 }
