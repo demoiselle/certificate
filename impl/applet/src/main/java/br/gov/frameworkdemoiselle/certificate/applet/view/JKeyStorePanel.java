@@ -89,19 +89,19 @@ public class JKeyStorePanel extends JPanel {
     private boolean loaded = false;
 
     /**
+     * Construtor. Aciona a inicializacao dos demais componentes
+     */
+    public JKeyStorePanel() {
+        init();
+    }
+
+    /**
      * Indica se o keystore foi carregado com sucesso.
      *
      * @return True, se for carregado com sucesso. False se contrario.
      */
     public boolean isLoaded() {
         return loaded;
-    }
-
-    /**
-     * Construtor. Aciona a inicializacao dos demais componentes
-     */
-    public JKeyStorePanel() {
-        init();
     }
 
     /**
@@ -136,7 +136,6 @@ public class JKeyStorePanel extends JPanel {
                 table.setRowSelectionInterval(0, 0);
             }
 
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
             table.getTableHeader().setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             table.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             table.setBounds(AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_X.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt());
