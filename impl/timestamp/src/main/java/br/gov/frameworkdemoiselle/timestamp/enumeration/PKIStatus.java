@@ -10,14 +10,16 @@ package br.gov.frameworkdemoiselle.timestamp.enumeration;
  */
 public enum PKIStatus {
 
-    granted(0, "Granted"),
-    grantedWithMods(1, "Granted With Mods"),
-    rejection(2, "Rejection"),
-    waiting(3, "Waiting"),
-    revocationWarning(4, "Revocation Warning"),
-    revocationNotification(5, "Revocation Notification");
-    private int id;
-    private String message;
+    granted(0, "O token de carimbo de tempo está presente, conforme solicitado."),
+    grantedWithMods(1, "O token de carimbo de tempo está presente com modificações."),
+    rejection(2, "O token de carimbo de tempo foi rejeitado."),
+    waiting(3, "O token de carimbo de tempo está aguardando."),
+    revocationWarning(4, "A revogação de tempo ocorrerá em breve."),
+    revocationNotification(5, "A revogação de tempo ocorreu."),
+    unknownPKIStatus(6, "O status retornado é desconhecido.");
+
+    private final int id;
+    private final String message;
 
     private PKIStatus(int id, String message) {
         this.id = id;

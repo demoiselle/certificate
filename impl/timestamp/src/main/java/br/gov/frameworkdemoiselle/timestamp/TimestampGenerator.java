@@ -158,6 +158,7 @@ public class TimestampGenerator {
                 }
                 case 1: {
                     logger.info(PKIStatus.grantedWithMods.getMessage());
+                    break;
                 }
                 case 2: {
                     logger.info(PKIStatus.rejection.getMessage());
@@ -174,6 +175,10 @@ public class TimestampGenerator {
                 case 5: {
                     logger.info(PKIStatus.revocationNotification.getMessage());
                     throw new TimestampException(PKIStatus.revocationNotification.getMessage());
+                }
+                default: {
+                    logger.info(PKIStatus.unknownPKIStatus.getMessage());
+                    throw new TimestampException(PKIStatus.unknownPKIStatus.getMessage());
                 }
             }
 
