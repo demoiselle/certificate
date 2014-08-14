@@ -82,8 +82,7 @@ public class JKeyStorePanel extends JPanel {
     private final JButton runButton = new JButton();
     private final JButton cancelButton = new JButton();
     private final JComboBox policiesList = new JComboBox();
-    private JTable table = new JTable();
-    ;
+    private final JTable table = new JTable();
     private KeyStore keystore = null;
     private ListaCertificadosModel listaCertificadosModel = null;
     private boolean loaded = false;
@@ -180,6 +179,7 @@ public class JKeyStorePanel extends JPanel {
             policiesList.setBounds(AppletConfig.CONFIG_DIALOG_COMBO_POLICY_X.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_HEIGHT.getValueInt());
             PoliciesComboBoxModel policiesComboBoxModel = new PoliciesComboBoxModel();
             policiesList.setModel(policiesComboBoxModel);
+            policiesList.setSelectedIndex(0);
 
             this.add(scrollPane, null);
             this.add(runButton, null);

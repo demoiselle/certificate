@@ -55,6 +55,7 @@ import java.awt.event.KeyListener;
 import java.security.KeyStore;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -77,10 +78,12 @@ public class JKeyStoreDialog extends JDialog {
     private static final long serialVersionUID = 1L;
 
     private final JLabel certificatesLabel = new JLabel();
+    private final JLabel policiesLabel = new JLabel();
     private final JScrollPane scrollPane = new JScrollPane();
     private final JButton runButton = new JButton();
     private final JButton cancelButton = new JButton();
-    private JTable table = null;
+    private final JComboBox policiesList = new JComboBox();
+    private final JTable table = new JTable();
     private KeyStore keystore = null;
     private ListaCertificadosModel listaCertificadosModel = null;
     private boolean loaded = false;
@@ -114,15 +117,14 @@ public class JKeyStoreDialog extends JDialog {
             this.setLayout(null);
             this.setSize(getDimension());
 
-            // Label
-            this.setTitle(AppletConfig.CONFIG_DIALOG_LABEL_TABLE.getValue());
+            // Label da tabela de certificados
+            certificatesLabel.setText(AppletConfig.CONFIG_DIALOG_LABEL_TABLE.getValue());
             Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
             TitledBorder title = BorderFactory.createTitledBorder(loweredetched, certificatesLabel.getText());
-            title.setTitleJustification(TitledBorder.LEFT);
+            title.setTitleJustification(TitledBorder.CENTER);
             title.setTitleFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
 
             // Configura a Tabela de Certificados
-            table = new JTable();
             listaCertificadosModel = new ListaCertificadosModel();
             listaCertificadosModel.populate(this.getKeyStore());
             table.setModel(listaCertificadosModel);
@@ -133,12 +135,10 @@ public class JKeyStoreDialog extends JDialog {
                 table.setRowSelectionInterval(0, 0);
             }
 
+            table.getTableHeader().setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             table.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
-
             table.setBounds(AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_X.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt());
-
             table.setMinimumSize(new Dimension(AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt()));
-
             table.setRowHeight(AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_ROW_HEIGHT.getValueInt());
             table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -157,27 +157,35 @@ public class JKeyStoreDialog extends JDialog {
 
             // Configura o Painel
             scrollPane.setBounds(AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_X.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt());
-
             scrollPane.setViewportView(table);
 
             // botao Run
             runButton.setText(AppletConfig.LABEL_DIALOG_BUTTON_RUN.getValue());
-
             runButton.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
-
             runButton.setBounds(new Rectangle(AppletConfig.CONFIG_DIALOG_BUTTON_RUN_X.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_RUN_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_RUN_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_RUN_HEIGHT.getValueInt()));
 
             // botao Cancel
             cancelButton.setText(AppletConfig.LABEL_DIALOG_BUTTON_CANCEL.getValue());
-
             cancelButton.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
-
             cancelButton.setBounds(new Rectangle(AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_X.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_HEIGHT.getValueInt()));
+
+            //Label da lista de politicas
+            policiesLabel.setText(AppletConfig.CONFIG_DIALOG_LABEL_POLICY.getValue());
+            policiesLabel.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
+            policiesLabel.setBounds(AppletConfig.CONFIG_DIALOG_LABEL_POLICY_X.getValueInt(), AppletConfig.CONFIG_DIALOG_LABEL_POLICY_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_LABEL_POLICY_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_LABEL_POLICY_HEIGHT.getValueInt());
+
+            //Combo da lista de politicas
+            policiesList.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
+            policiesList.setBounds(AppletConfig.CONFIG_DIALOG_COMBO_POLICY_X.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_HEIGHT.getValueInt());
+            PoliciesComboBoxModel policiesComboBoxModel = new PoliciesComboBoxModel();
+            policiesList.setModel(policiesComboBoxModel);
+            policiesList.setSelectedIndex(0);
 
             this.add(scrollPane, null);
             this.add(runButton, null);
             this.add(cancelButton, null);
-            this.setModal(true);
+            this.add(policiesLabel, null);
+            this.add(policiesList, null);
 
         } catch (Throwable e) {
             e.printStackTrace();
