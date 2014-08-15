@@ -20,7 +20,7 @@
 <dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-criptography</artifactId>
-	<version>1.0.7</version>
+	<version>2.0.0</version>
 </dependency>]]></programlisting>
     </section>
 

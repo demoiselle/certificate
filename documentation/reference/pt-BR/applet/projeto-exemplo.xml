@@ -160,29 +160,14 @@ public class App extends AbstractAppletExecute {
             Segue o código do formulário html.
         </para>
 
-        <programlisting role="HTML"><![CDATA[<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+        <programlisting role="HTML"><![CDATA[
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="/demoiselle-certificate-applet-customizada-web/resources/styles/default.css" rel="stylesheet" type="text/css"/>
         <title>Projeto Exemplo</title>
-        <style type="text/css">
-            table.padrao {
-                background-color: #eeeeee;
-            }
-
-            td.padrao {
-                font-family: "Arial";
-                font-size: 12px;
-            }
-
-            input.padrao {
-                font-family: "Arial";
-                font-size: 14px;
-                background-color: #F8F8F8;
-                border: 1px solid #E8E8E8;
-            }
-        </style>
     </head>
 
     <script type="text/javascript">
@@ -192,53 +177,74 @@ public class App extends AbstractAppletExecute {
     </script>
 
     <body>
-        <form id="mainForm" name="mainForm" method="post" action="FileUploadServlet">
-            <table align="center" border="0" cellspacing="5" cellpadding="1" class="padrao">
+        <form id="mainForm" name="mainForm" method="post" action="">
+            <table>
                 <tr>
-                    <td align="center"><applet codebase="http://localhost:8080/demoiselle-certificate-applet-customizada-web/" code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=470 height=310 MAYSCRIPT
-                    	archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
-                        demoiselle-certificate-applet-1.0.7-assinado.jar,
-                        demoiselle-certificate-core-1.0.7-assinado.jar,
-                        demoiselle-certificate-criptography-1.0.7-assinado.jar,
-                        demoiselle-certificate-signer-1.0.7-assinado.jar,
-                        demoiselle-certificate-ca-icpbrasil-1.0.7-assinado.jar,
-                        demoiselle-certificate-ca-icpbrasil-homologacao-1.0.7-assinado.jar,
-                        bcmail-jdk15-1.45-assinado.jar,
-                        bcprov-jdk15-1.45-assinado.jar,
-                        log4j-1.2.15-assinado.jar,
-                        slf4j-api-1.6.1-assinado.jar",
-                        plugin-1.0-assinado.jar>
+                    <td align="center">
+                        <applet codebase="http://localhost:8080/demoiselle-certificate-applet-customizada-web/"
+                                code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=480 height=350 MAYSCRIPT
+                                archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
+                                demoiselle-certificate-applet-2.0.0-assinado.jar,
+                                demoiselle-certificate-core-2.0.0-assinado.jar,
+                                demoiselle-certificate-signer-2.0.0-assinado.jar,
+                                demoiselle-certificate-policy-engine-2.0.0-assinado.jar,
+                                demoiselle-certificate-timestamp-2.0.0-assinado.jar,
+                                demoiselle-certificate-criptography-2.0.0-assinado.jar,
+                                demoiselle-certificate-ca-icpbrasil-2.0.0-assinado.jar,
+                                demoiselle-certificate-ca-icpbrasil-homologacao-2.0.0-assinado.jar,
+                                bcprov-jdk15on-1.51-assinado.jar,
+                                bcpkix-jdk15on-1.51-assinado.jar,
+                                bcmail-jdk15on-1.51-assinado.jar,
+                                log4j-1.2.17-assinado.jar,
+                                slf4j-api-1.6.1-assinado.jar,
+                                slf4j-log4j12-1.6.1-assinado.jar,
+                                plugin-assinado.jar">
 
                             <param name="factory.applet.action" value="br.gov.frameworkdemoiselle.App" />
                             <param name="applet.javascript.postaction.failure" value="foo" />
+                            <param name="label.dialog.button.run" value="Assinar" />
+
+                            <param name="config.dialog.button-run.height" value="40" />
+                            <param name="config.dialog.button-cancel.height" value="40" />
+                            <param name="config.dialog.table.certificates.x" value="15" />
+                            <param name="config.dialog.table.certificates.y" value= "30"/>
+                            <param name="config.dialog.table.certificates.width" value="440" />
+                            <param name="config.dialog.table.certificates.height" value="210" />
+                            No Applet
                         </applet>
                     <td>
                 </tr>
                 <tr>
                     <td>
-                        <table align="center" border="0" cellspacing="0" cellpadding="5" class="padrao">
+                        <table>
                             <tr>
-                                <td class="padrao">CPF:</td>
-                                <td><input class="padrao" type="text" name="cpf" value="" size="11"></td>
+                                <td>Documento:</td>
+                                <td><input type="file" name="documento" value=""></td>
                             </tr>
                             <tr>
-                                <td class="padrao">Nome:</td>
-                                <td><input class="padrao" type="text" name="nome" value="" size="30"></td>
+                                <td>CPF:</td>
+                                <td><input type="text" name="cpf" value="" size="11"></td>
                             </tr>
                             <tr>
-                                <td class="padrao">Email:</td>
-                                <td><input class="padrao" type="text" name="email" value="" size="30"></td>
+                                <td >Nome:</td>
+                                <td><input type="text" name="nome" value="" size="30"></td>
                             </tr>
                             <tr>
-                                <td class="padrao">Nascimento:</td>
-                                <td><input class="padrao" type="text" name="nascimento" value="" size="8"></td>
+                                <td >Email:</td>
+                                <td><input type="text" name="email" value="" size="30"></td>
+                            </tr>
+                            <tr>
+                                <td >Nascimento:</td>
+                                <td><input type="text" name="nascimento" value="" size="8"></td>
                             </tr>
                         </table>
                 </tr>
             </table>
         </form>
     </body>
-</html>]]></programlisting>
+</html>
+
+]]></programlisting>
 
     </section>
 
