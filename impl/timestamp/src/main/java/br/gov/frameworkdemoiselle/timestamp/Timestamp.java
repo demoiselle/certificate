@@ -1,9 +1,11 @@
 package br.gov.frameworkdemoiselle.timestamp;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
 import org.bouncycastle.tsp.TimeStampToken;
 import org.bouncycastle.util.Store;
 import org.bouncycastle.util.encoders.Base64;
@@ -23,6 +25,21 @@ public class Timestamp {
 
     Timestamp(TimeStampToken timeStampToken) {
         this.timeStampToken = timeStampToken;
+    }
+
+    /**
+     * Retorna um fluxo de byte codificado ASN. 1 que representa o objeto
+     * codificado.
+     *
+     * @return
+     */
+    public byte[] getCodificado() {
+        try {
+            return timeStampToken.getEncoded();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Timestamp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public String getPolitica() {
@@ -61,7 +78,7 @@ public class Timestamp {
         return timeStampToken.getSignedAttributes().toHashtable();
     }
 
-    public Map getatributosNaoAssinados() {
+    public Map getAtributosNaoAssinados() {
         return timeStampToken.getUnsignedAttributes().toHashtable();
     }
 
