@@ -64,7 +64,6 @@ import org.slf4j.LoggerFactory;
 public class SigningCertificateV2 implements SignedAttribute {
 
     private static final Logger logger = LoggerFactory.getLogger(SigningCertificateV2.class);
-
     private final String identifier = "1.2.840.113549.1.9.16.2.47";
     private Certificate[] certificates = null;
 

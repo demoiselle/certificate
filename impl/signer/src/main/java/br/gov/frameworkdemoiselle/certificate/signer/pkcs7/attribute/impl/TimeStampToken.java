@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
 import org.slf4j.Logger;
@@ -79,9 +80,7 @@ public class TimeStampToken implements UnsignedAttribute {
             byte[] request = timestampGen.createRequest(content, privateKey, certificates, DigestAlgorithmEnum.SHA_256);
             byte[] response = timestampGen.doTimestamp(request, ConnectionType.SOCKET);
             timestampGen.validate(response, content);
-            logger.info(timestampGen.getTimestamp().toString());
-
-            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet());
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(timestampGen.getTimestamp().getCodificado())));
         } catch (TimestampException | IOException ex) {
             throw new SignerException(ex.getMessage());
         }

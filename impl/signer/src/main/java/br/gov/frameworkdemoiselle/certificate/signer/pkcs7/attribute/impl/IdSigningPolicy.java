@@ -46,7 +46,7 @@ import org.bouncycastle.asn1.cms.Attribute;
 
 public class IdSigningPolicy implements SignedAttribute {
 
-    private String oid = "1.2.840.113549.1.9.16.2.15";
+    private final String oid = "1.2.840.113549.1.9.16.2.15";
     private SignaturePolicy signaturePolicy = null;
 
     @Override
