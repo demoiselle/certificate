@@ -40,8 +40,6 @@ import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCAFactory;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCAFactory;
-
-
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -141,9 +139,7 @@ public class CAManager {
         try {
             certificate.verify(ca.getPublicKey());
             return true;
-        } catch (SignatureException error) {
-            return false;
-        } catch (InvalidKeyException error) {
+        } catch (SignatureException | InvalidKeyException ex) {
             return false;
         } catch (CertificateException error) {
             throw new CAManagerException("Algum erro ocorreu com o certificado informado", error);

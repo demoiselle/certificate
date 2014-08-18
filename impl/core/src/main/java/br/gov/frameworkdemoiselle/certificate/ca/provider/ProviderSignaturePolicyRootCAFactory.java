@@ -38,26 +38,25 @@ package br.gov.frameworkdemoiselle.certificate.ca.provider;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.ServiceLoader;
 
 public class ProviderSignaturePolicyRootCAFactory {
 
     private static final ProviderSignaturePolicyRootCAFactory instance = new ProviderSignaturePolicyRootCAFactory();
 
-    private ProviderSignaturePolicyRootCAFactory() {
-    }
-
     public static ProviderSignaturePolicyRootCAFactory getInstance() {
         return ProviderSignaturePolicyRootCAFactory.instance;
     }
 
+    private ProviderSignaturePolicyRootCAFactory() {
+
+    }
+
     public Collection<ProviderSignaturePolicyRootCA> factory(String signaturePolicyOID) {
-        Collection<ProviderSignaturePolicyRootCA> result = new HashSet<ProviderSignaturePolicyRootCA>();
+        Collection<ProviderSignaturePolicyRootCA> result = new HashSet<>();
         ServiceLoader<ProviderSignaturePolicyRootCA> loader = ServiceLoader.load(ProviderSignaturePolicyRootCA.class);
         if (loader != null) {
-            for (Iterator<ProviderSignaturePolicyRootCA> iterator = loader.iterator(); iterator.hasNext();) {
-                ProviderSignaturePolicyRootCA provider = iterator.next();
+            for (ProviderSignaturePolicyRootCA provider : loader) {
                 if (signaturePolicyOID.equalsIgnoreCase(provider.getSignaturePolicyOID())) {
                     result.add(provider);
                 }

@@ -172,14 +172,14 @@ public class OIDGeneric {
      * @param fields Campos do certificado
      */
     protected void initialize(Object[] fields) {
+        //TODO fazer alteracao para contemplar o novo tamanho de campo do RG
+
         int tmp = 0;
 
         for (int i = 0; i < fields.length; i += 2) {
             String key = (String) fields[i];
             int size = ((Integer) fields[i + 1]);
-
             properties.put(key, data.substring(tmp, Math.min(tmp + size, data.length())));
-
             tmp += size;
         }
     }
