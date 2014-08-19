@@ -36,17 +36,15 @@
  */
 package br.gov.frameworkdemoiselle.certificate.keystore.loader.factory;
 
-import java.io.File;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration.Configuration;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.DriverKeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.FileSystemKeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.MSKeyStoreLoader;
+import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KeyStoreLoaderFactory {
 
@@ -104,16 +102,15 @@ public class KeyStoreLoaderFactory {
     public static KeyStoreLoader factoryKeyStoreLoader(Class<? extends KeyStoreLoader> clazz) {
 
         if (clazz == null) {
-            throw new KeyStoreLoaderException("Parameter clazz can not be null");
+            throw new KeyStoreLoaderException("O parametro \"clazz\" nao pode ser nulo");
         }
-
         KeyStoreLoader result = null;
 
         try {
             result = clazz.newInstance();
 
-        } catch (Throwable error) {
-            throw new KeyStoreLoaderException("Error on create instance of " + clazz.getCanonicalName());
+        } catch (IllegalAccessException | InstantiationException error) {
+            throw new KeyStoreLoaderException("Erro na criacao da instancia de " + clazz.getCanonicalName());
         }
         return result;
     }
