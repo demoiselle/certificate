@@ -17,6 +17,9 @@
                 <listitem>
                     <para>Implementação da política de carimbo de tempo</para>
                 </listitem>
+                <listitem>
+                    <para>Atualização das cadeias de certificados</para>
+                </listitem>
             </itemizedlist>
         </revremark>
     </revision>
