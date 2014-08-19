@@ -36,26 +36,32 @@
  */
 package br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.security.KeyStore;
-import java.security.Provider;
-import java.security.Security;
-import java.util.Formatter;
-import java.util.Map;
-import java.util.Set;
-
-import javax.security.auth.Subject;
-import javax.security.auth.callback.CallbackHandler;
-
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.DriverNotAvailableException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.InvalidPinException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.PKCS11NotFoundException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration.Configuration;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Provider;
+import java.security.Security;
+import java.security.cert.CertificateException;
+import java.util.Formatter;
+import java.util.Map;
+import java.util.Set;
+import javax.security.auth.Subject;
+import javax.security.auth.callback.CallbackHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementação de KeyStoreLoader baseado em drivers do sistema operacional. É
@@ -64,13 +70,13 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration.Conf
  */
 public class DriverKeyStoreLoader implements KeyStoreLoader {
 
+    private static final Logger logger = LoggerFactory.getLogger(DriverKeyStoreLoader.class);
     private static final String PINNUMBER_INVALID = "PIN access to token can not be null or invalid";
     private static final String DRIVER_LOAD_ERROR = "Error on load a module PKCS#11";
     private static final String DRIVERS_EMPTY = "No driver are available";
     private static final String DRIVERS_NOT_COMPATIBLE = "No driver in the list is compatible with your hardware";
     private static final String PKCS11_KEYSTORE_TYPE = "PKCS11";
     private static final String PKCS11_CONTENT_CONFIG_FILE = "name = %s\nlibrary = %s";
-
     private CallbackHandler callback;
 
     @Override
@@ -113,15 +119,15 @@ public class DriverKeyStoreLoader implements KeyStoreLoader {
             keyStore = KeyStore.getInstance(PKCS11_KEYSTORE_TYPE, pkcs11Provider.getName());
             keyStore.load(null, null);
 
-        } catch (Exception e) {
-            if (e.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
-                throw new InvalidPinException(PINNUMBER_INVALID, e);
+        } catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException | KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException ex) {
+            if (ex.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
+                throw new InvalidPinException(PINNUMBER_INVALID, ex);
             }
 
-            if (e.getCause().toString().equals("javax.security.auth.login.LoginException")) {
-                throw new InvalidPinException(PINNUMBER_INVALID, e);
+            if (ex.getCause().toString().equals("javax.security.auth.login.LoginException")) {
+                throw new InvalidPinException(PINNUMBER_INVALID, ex);
             } else {
-                throw new PKCS11NotFoundException(DRIVER_LOAD_ERROR, e);
+                throw new PKCS11NotFoundException(DRIVER_LOAD_ERROR, ex);
             }
         }
         return keyStore;
@@ -140,15 +146,15 @@ public class DriverKeyStoreLoader implements KeyStoreLoader {
             keyStore = KeyStore.getInstance(PKCS11_KEYSTORE_TYPE, pkcs11Provider.getName());
             keyStore.load(null, null);
 
-        } catch (Exception e) {
-            if (e.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
-                throw new InvalidPinException(PINNUMBER_INVALID, e);
+        } catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException | KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException ex) {
+            if (ex.getCause().toString().equals("javax.security.auth.login.FailedLoginException")) {
+                throw new InvalidPinException(PINNUMBER_INVALID, ex);
             }
 
-            if (e.getCause().toString().equals("javax.security.auth.login.LoginException")) {
-                throw new InvalidPinException(PINNUMBER_INVALID, e);
+            if (ex.getCause().toString().equals("javax.security.auth.login.LoginException")) {
+                throw new InvalidPinException(PINNUMBER_INVALID, ex);
             } else {
-                throw new PKCS11NotFoundException(DRIVER_LOAD_ERROR, e);
+                throw new PKCS11NotFoundException(DRIVER_LOAD_ERROR, ex);
             }
         }
         return keyStore;
