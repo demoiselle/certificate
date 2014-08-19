@@ -106,7 +106,6 @@ config.dialog.combo.policy.x=15
 config.dialog.combo.policy.y=270
 config.dialog.combo.policy.width=440
 config.dialog.combo.policy.height=25
-
 ]]></programlisting>
     </section>
 </chapter>
