@@ -69,7 +69,7 @@ Is CN=Framework Demoiselle, OU=Demoiselle, O=Demoiselle, L=Rio de Janeiro, ST=RJ
     </section>
 
     <section>
-        <title>Assinando um jar com certificado auto-assinado</title>
+        <title>Assinando um artefato com um certificado auto-assinado</title>
 
         <para>
             Neste momento a ferramenta <emphasis>jarsigner</emphasis> será utilizada para assinar todos os jars da aplicação. Portanto será necessário informar a localização do
