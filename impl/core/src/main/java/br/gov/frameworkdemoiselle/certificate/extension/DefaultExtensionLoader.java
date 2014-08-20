@@ -36,12 +36,11 @@
  */
 package br.gov.frameworkdemoiselle.certificate.extension;
 
+import br.gov.frameworkdemoiselle.certificate.CertificateException;
+import br.gov.frameworkdemoiselle.certificate.IOIDExtensionLoader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.security.cert.X509Certificate;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.certificate.IOIDExtensionLoader;
 
 public class DefaultExtensionLoader implements IOIDExtensionLoader {
 
@@ -52,42 +51,42 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
 
             Object keyValue;
 
-            BasicCertificate cert = new BasicCertificate(x509);
+            BasicCertificate basicCertificate = new BasicCertificate(x509);
 
             switch (annotation.type()) {
                 case CRL_URL:
                     try {
-                        keyValue = cert.getCRLDistributionPoint();
+                        keyValue = basicCertificate.getCRLDistributionPoint();
                     } catch (IOException e1) {
                         throw new CertificateException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
                 case SERIAL_NUMBER:
-                    keyValue = cert.getSerialNumber();
+                    keyValue = basicCertificate.getSerialNumber();
                     break;
                 case ISSUER_DN:
                     try {
-                        keyValue = cert.getCertificateIssuerDN().toString();
+                        keyValue = basicCertificate.getCertificateIssuerDN().toString();
                     } catch (IOException e1) {
                         throw new CertificateException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
                 case SUBJECT_DN:
                     try {
-                        keyValue = cert.getCertificateSubjectDN().toString();
+                        keyValue = basicCertificate.getCertificateSubjectDN().toString();
                     } catch (IOException e1) {
                         throw new CertificateException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
                 case KEY_USAGE:
-                    keyValue = cert.getICPBRKeyUsage().toString();
+                    keyValue = basicCertificate.getICPBRKeyUsage().toString();
                     break;
                 case PATH_LENGTH:
-                    keyValue = cert.getPathLength();
+                    keyValue = basicCertificate.getPathLength();
                     break;
                 case AUTHORITY_KEY_IDENTIFIER:
                     try {
-                        keyValue = cert.getAuthorityKeyIdentifier();
+                        keyValue = basicCertificate.getAuthorityKeyIdentifier();
                     } catch (IOException e1) {
                         throw new CertificateException("Error on get value to field " + field.getName(), e1);
                     }
@@ -95,20 +94,20 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
 
                 case SUBJECT_KEY_IDENTIFIER:
                     try {
-                        keyValue = cert.getSubjectKeyIdentifier();
+                        keyValue = basicCertificate.getSubjectKeyIdentifier();
                     } catch (IOException e1) {
                         throw new CertificateException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
 
                 case BEFORE_DATE:
-                    keyValue = cert.getBeforeDate();
+                    keyValue = basicCertificate.getBeforeDate();
                     break;
                 case AFTER_DATE:
-                    keyValue = cert.getAfterDate();
+                    keyValue = basicCertificate.getAfterDate();
                     break;
                 case CERTIFICATION_AUTHORITY:
-                    keyValue = cert.isCertificadoAc();
+                    keyValue = basicCertificate.isCertificadoAc();
                     break;
 
                 default:
@@ -118,7 +117,7 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
             try {
                 field.setAccessible(true);
                 field.set(object, keyValue);
-            } catch (Exception e) {
+            } catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
                 throw new CertificateException("Error on load value in field " + field.getName(), e);
             }
         }
