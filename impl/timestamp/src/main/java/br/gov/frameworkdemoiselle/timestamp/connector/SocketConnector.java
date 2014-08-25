@@ -22,8 +22,8 @@ public class SocketConnector implements Connector {
 
     private String hostname = "";
     private int port;
-    OutputStream out = null;
-    Socket socket = null;
+    private OutputStream out = null;
+    private Socket socket = null;
 
     @Override
     public InputStream connect(byte[] content) {
@@ -31,7 +31,7 @@ public class SocketConnector implements Connector {
             logger.info("Envia a solicitacao para o servidor TSA");
             socket = new Socket(hostname, port);
 
-            logger.info("Conectado? {}", socket.isConnected());
+            logger.info("Conectado [{}] na url [{}] e porta [{}]", new Object[]{socket.isConnected(), hostname, port});
 
             logger.info("Escrevendo no socket");
             // A "direct TCP-based TSA message" consists of:length (32-bits), flag (8-bits), value
@@ -44,7 +44,7 @@ public class SocketConnector implements Connector {
             logger.info("Obtendo o response");
             return socket.getInputStream();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("FALHOUUUUU");
         }
         return null;
     }
