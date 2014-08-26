@@ -8,8 +8,13 @@
     <partintro>
         <para>
             O componente
-            <emphasis>Demoiselle Signer</emphasis> foi desenvolvido para atender às necessidades de assinatura digital no âmbito da ICP-Brasil.
+            <emphasis>Demoiselle Policy</emphasis> foi desenvolvido para automatizar a configuração das diretrizes de cada política de assinatura determinada pela ICP-Brasil.
         </para>
+
+        <para>
+            For further information, refer to <ulink url="http://www.iti.gov.br/icp-brasil/repositorio/144-icp-brasil/repositorio/3974-artefatos-de-assinatura-digital" />.
+        </para>
+
     </partintro>
 
     <!-- capítulos -->

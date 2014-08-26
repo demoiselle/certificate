@@ -38,7 +38,7 @@ CertificateManager cm = new CertificateManager(x509, validator1, validator2, val
     <programlisting role="JAVA"><![CDATA[
 /* Neste caso os validadores padrao nao serao carregados. */
 CertificateManager cm = new CertificateManager(x509, false, validator1, validator2, validatorN);]]></programlisting>
-
+    e
     <para>
         É possível também criar um CertificateManager e passar um arquivo do tipo PEM que represente um objeto X509Certificate, conforme mostrado abaixo.
     </para>
@@ -57,24 +57,32 @@ CertificateManager cm = new CertificateManager(pinNumber);]]></programlisting>
 
     <section>
         <title>O Certificado Digital</title>
+
+        <para>
+            Os certificados no formato X.509 podem conter várias informações armazenadas que podem ser obtidas através de um OID (Object Identifier). OID são usados
+            extensivamente em certificados de formato X.509, como por exemplo, para designar algoritmos criptográficos empregados, políticas de
+            certificação e campos de
+            extensão. Cada autoridade certificadora pode definir um conjunto de OID para armazenar suas informações. O componente de segurança implementa extensões de OID
+            para ICP-Brasil e Default.
+        </para>
+
         <section>
-            <title>Extração de Informações</title>
+            <title>Extração de informações utilizando as classes</title>
 
             <para>
-                Os certificados no formato X.509 podem conter várias informações armazenadas que podem ser obtidas através de um OID (Object Identifier). OID são usados
-                extensivamente em certificados de formato X.509, como por exemplo, para designar algoritmos criptográficos empregados, políticas de
-                certificação e campos de
-                extensão. Cada autoridade certificadora pode definir um conjunto de OID para armazenar suas informações. O componente de segurança implementa extensões de OID
-                para ICP-Brasil e Default.
+                ...
             </para>
+        </section>
+
+        <section>
+            <title>Extração de informações com anotações</title>
 
             <para>
                 Para extrair informações basta criar uma classe com os atributos que se deseja preencher com informações do certificado X.509. Cada atributo deve ser anotado com
                 o seu OIDExtension. Para executar a carga das informações basta passar a classe/objeto para o CertificateManager.
             </para>
 
-            <programlisting role="JAVA"><![CDATA[
-class Cert {
+            <programlisting role="JAVA"><![CDATA[class Cert {
 
         @ICPBrasilExtension(type=ICPBrasilExtensionType.CPF)
         private String cpf;
@@ -103,10 +111,8 @@ class Cert {
                 Em seguida basta efetuar o carregamento da classe.
             </para>
 
-            <programlisting role="JAVA"><![CDATA[
-CertificateManager cm = new CertificateManager(x509);
+            <programlisting role="JAVA"><![CDATA[CertificateManager cm = new CertificateManager(x509);
 Cert cert = cm.load(Cert.class);]]></programlisting>
-
 
             <section>
                 <title>DefaultExtension</title>
