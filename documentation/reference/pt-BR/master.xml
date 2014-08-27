@@ -26,14 +26,14 @@
     <!-- Demoiselle Core -->
     <xi:include href="core/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <!-- Demoiselle Signer -->
-    <xi:include href="signer/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-
     <!-- Demoiselle Policy -->
     <xi:include href="policy/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <!-- Demoiselle Timestamp -->
     <xi:include href="timestamp/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <!-- Demoiselle Signer -->
+    <xi:include href="signer/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <!-- Demoiselle Criptography -->
     <xi:include href="criptography/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />

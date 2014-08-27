@@ -12,7 +12,8 @@
         </para>
 
         <para>
-            For further information, refer to <ulink url="http://www.iti.gov.br/icp-brasil/repositorio/144-icp-brasil/repositorio/3974-artefatos-de-assinatura-digital" />.
+            Ele serve de suporte para o componente de assinatura digital, fornecendo todas as regras da política definidas nos arquivos DER (Distinguished Encoding Rules) disponibilizados em
+            <ulink url="http://www.iti.gov.br/icp-brasil/repositorio/144-icp-brasil/repositorio/3974-artefatos-de-assinatura-digital">artefatos de assinatura digital</ulink> no site do ITI.
         </para>
 
     </partintro>
