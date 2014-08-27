@@ -8,12 +8,19 @@
     <partintro>
         <para>
             O componente
-            <emphasis>Demoiselle Timestamp</emphasis> foi desenvolvido para atender às necessidades de assinatura digital no âmbito da ICP-Brasil.
+            <emphasis>Demoiselle Timestamp</emphasis> foi desenvolvido para fornecer acesso ao servidor de carimbo de tempo do SERPRO. Através deplo, podemos fazer requisições de data e hora
+            para artafatos que necessitem de uma referência temporal reconhecida.
         </para>
 
-        <important>
-            ...
-        </important>
+        <para>
+            Ele foi projetado para apoiar o componente de assinatura digital nas políticas de referência temporal e superiores, mas não está limitado a ele, podendo ser utilizado em
+            projetos de forma independente.
+
+            <important>
+                Para que seja possível efetuar o consumo de carimbos de tempo do servidor do SERPRO, é necessário que o solicitante tenha o seu certificado digital cadastrado
+                no servidor. Sem este cadastro, o carimbo de tempo será negado e não será possível assinar utilizando políticas que necessitem deste atributo.
+            </important>
+        </para>
     </partintro>
 
     <!-- capítulos -->
