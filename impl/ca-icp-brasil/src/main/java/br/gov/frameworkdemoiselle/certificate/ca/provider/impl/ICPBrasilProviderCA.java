@@ -37,8 +37,12 @@
 package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +54,7 @@ public class ICPBrasilProviderCA implements ProviderCA {
     @Override
     public Collection<X509Certificate> getCAs() {
         KeyStore keyStore = this.getKeyStore();
-        List<X509Certificate> result = new ArrayList<X509Certificate>();
+        List<X509Certificate> result = new ArrayList<>();
         try {
             for (Enumeration<String> e = keyStore.aliases(); e.hasMoreElements();) {
                 String alias = e.nextElement();
@@ -58,8 +62,8 @@ public class ICPBrasilProviderCA implements ProviderCA {
                 result.add(root);
 
             }
-        } catch (Throwable error) {
-            throw new ICPBrasilProviderCAException("Error on load certificates from default keystore", error);
+        } catch (KeyStoreException ex) {
+            throw new ICPBrasilProviderCAException("Error on load certificates from default keystore", ex);
         }
         return result;
     }
@@ -73,8 +77,8 @@ public class ICPBrasilProviderCA implements ProviderCA {
             InputStream is = ICPBrasilProviderCA.class.getClassLoader().getResourceAsStream("icpbrasil.jks");
             keyStore = KeyStore.getInstance("JKS");
             keyStore.load(is, "changeit".toCharArray());
-        } catch (Throwable error) {
-            throw new ICPBrasilProviderCAException("KeyStore default not loaded.", error);
+        } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
+            throw new ICPBrasilProviderCAException("KeyStore default not loaded.", ex);
         }
         return keyStore;
     }
