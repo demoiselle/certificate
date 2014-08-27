@@ -52,6 +52,7 @@ import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.CertificateTrustPoint;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.ObjectIdentifier;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory;
+import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory.Policies;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.Provider;
@@ -71,7 +72,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1UTCTime;
@@ -105,18 +105,19 @@ import org.slf4j.LoggerFactory;
 public class CAdESSigner implements PKCS7Signer {
 
     private static final Logger logger = LoggerFactory.getLogger(CAdESSigner.class);
+
     private final PKCS1Signer pkcs1 = PKCS1Factory.getInstance().factoryDefault();
     private X509Certificate certificate;
     private Certificate certificateChain[];
     private boolean attached = false;
     private SignaturePolicy signaturePolicy = null;
-    private Map<Class<? extends SignedOrUnsignedAttribute>, Collection<SignedOrUnsignedAttribute>> attributes;
-    private Collection<IValidator> certificateValidators = null;
     private boolean defaultCertificateValidators = true;
+    private Collection<IValidator> certificateValidators = null;
 
     public CAdESSigner() {
         this.pkcs1.setAlgorithm((String) null);
-        this.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
+        this.setSignaturePolicy(Policies.AD_RB_CADES_2_1);
+
     }
 
     /**
@@ -415,7 +416,7 @@ public class CAdESSigner implements PKCS7Signer {
             AlgAndLength algAndLength = signaturePolicy.getSignPolicyInfo().getSignatureValidationPolicy().getCommonRules().getAlgorithmConstraintSet().getSignerAlgorithmConstraints().getAlgAndLengths().iterator().next();
 
             logger.info("AlgID........... {}", algAndLength.getAlgID().getValue());
-            logger.info("Alg Name........ {}", AlgorithmNames.getAlgorithmName(algAndLength.getAlgID().getValue()));
+            logger.info("Alg Name........ {}", AlgorithmNames.getAlgorithmNameByOID(algAndLength.getAlgID().getValue()));
             logger.info("MinKeyLength.... {}", algAndLength.getMinKeyLength());
 
             //Recupera o tamanho minimo da chave para validacao
@@ -451,7 +452,7 @@ public class CAdESSigner implements PKCS7Signer {
             CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
             gen.addCertificates(this.generatedCertStore());
 
-            SignerInfoGenerator signerInfoGenerator = new JcaSimpleSignerInfoGeneratorBuilder().setSignedAttributeGenerator(signedAttributeGenerator).setUnsignedAttributeGenerator(unsignedAttributeGenerator).build(AlgorithmNames.getAlgorithmName(algAndLength.getAlgID().getValue()), this.pkcs1.getPrivateKey(), this.certificate);
+            SignerInfoGenerator signerInfoGenerator = new JcaSimpleSignerInfoGeneratorBuilder().setSignedAttributeGenerator(signedAttributeGenerator).setUnsignedAttributeGenerator(unsignedAttributeGenerator).build(AlgorithmNames.getAlgorithmNameByOID(algAndLength.getAlgID().getValue()), this.pkcs1.getPrivateKey(), this.certificate);
             gen.addSignerInfoGenerator(signerInfoGenerator);
 
             CMSTypedData cmsTypedData;
@@ -494,17 +495,21 @@ public class CAdESSigner implements PKCS7Signer {
             this.algorithmName = name;
         }
 
-        public static String getAlgorithmName(String oid) {
+        private String getAlgorithmName() {
+            return algorithmName;
+        }
+
+        public static String getAlgorithmNameByOID(String oid) {
 
             switch (oid) {
                 case "1.2.840.113549.1.1.5": {
-                    return sha1WithRSAEncryption.algorithmName;
+                    return sha1WithRSAEncryption.getAlgorithmName();
                 }
                 case "1.2.840.113549.1.1.11": {
-                    return sha256WithRSAEncryption.algorithmName;
+                    return sha256WithRSAEncryption.getAlgorithmName();
                 }
                 default: {
-                    return sha1WithRSAEncryption.algorithmName;
+                    return sha1WithRSAEncryption.getAlgorithmName();
                 }
             }
         }
