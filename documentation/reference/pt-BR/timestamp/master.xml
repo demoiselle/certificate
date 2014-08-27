@@ -8,7 +8,7 @@
     <partintro>
         <para>
             O componente
-            <emphasis>Demoiselle Timestamp</emphasis> foi desenvolvido para fornecer acesso ao servidor de carimbo de tempo do SERPRO. Através deplo, podemos fazer requisições de data e hora
+            <emphasis>Demoiselle Timestamp</emphasis> foi desenvolvido para fornecer acesso ao servidor de carimbo de tempo do SERPRO. Através dele, podemos fazer requisições de data e hora
             para artafatos que necessitem de uma referência temporal reconhecida.
         </para>
 
