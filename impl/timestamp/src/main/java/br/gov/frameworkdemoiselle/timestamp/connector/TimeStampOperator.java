@@ -44,7 +44,6 @@ import br.gov.frameworkdemoiselle.timestamp.Timestamp;
 import br.gov.frameworkdemoiselle.timestamp.enumeration.ConnectionType;
 import br.gov.frameworkdemoiselle.timestamp.enumeration.PKIFailureInfo;
 import br.gov.frameworkdemoiselle.timestamp.enumeration.PKIStatus;
-import br.gov.frameworkdemoiselle.timestamp.exception.TimestampException;
 import br.gov.frameworkdemoiselle.timestamp.signer.RequestSigner;
 import br.gov.frameworkdemoiselle.timestamp.utils.TimeStampConfig;
 import java.io.FileInputStream;
@@ -222,23 +221,23 @@ public class TimeStampOperator {
                 }
                 case 2: {
                     logger.info(PKIStatus.rejection.getMessage());
-                    throw new TimestampException(PKIStatus.rejection.getMessage());
+                    throw new CertificateCoreException(PKIStatus.rejection.getMessage());
                 }
                 case 3: {
                     logger.info(PKIStatus.waiting.getMessage());
-                    throw new TimestampException(PKIStatus.waiting.getMessage());
+                    throw new CertificateCoreException(PKIStatus.waiting.getMessage());
                 }
                 case 4: {
                     logger.info(PKIStatus.revocationWarning.getMessage());
-                    throw new TimestampException(PKIStatus.revocationWarning.getMessage());
+                    throw new CertificateCoreException(PKIStatus.revocationWarning.getMessage());
                 }
                 case 5: {
                     logger.info(PKIStatus.revocationNotification.getMessage());
-                    throw new TimestampException(PKIStatus.revocationNotification.getMessage());
+                    throw new CertificateCoreException(PKIStatus.revocationNotification.getMessage());
                 }
                 default: {
                     logger.info(PKIStatus.unknownPKIStatus.getMessage());
-                    throw new TimestampException(PKIStatus.unknownPKIStatus.getMessage());
+                    throw new CertificateCoreException(PKIStatus.unknownPKIStatus.getMessage());
                 }
             }
 
@@ -282,7 +281,7 @@ public class TimeStampOperator {
             this.setTimestamp(new Timestamp(timeStampToken));
 
             if (timeStampToken == null) {
-                throw new TimestampException("O Token retornou nulo.");
+                throw new CertificateCoreException("O Token retornou nulo.");
             }
             connector.close();
 
@@ -292,7 +291,7 @@ public class TimeStampOperator {
             //Retorna o carimbo de tempo gerado
             return timestamp.getCodificado();
 
-        } catch (TimestampException | IOException | NumberFormatException | TSPException e) {
+        } catch (CertificateCoreException | TSPException | IOException e) {
             throw new CertificateCoreException(e.getMessage());
         }
     }

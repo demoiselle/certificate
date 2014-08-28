@@ -36,7 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.timestamp.utils;
 
-import br.gov.frameworkdemoiselle.timestamp.exception.TimestampException;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -78,7 +78,7 @@ public class Utils {
      * @param arquivo Caminho do arquivo
      * @return Os bytes do arquivo
      */
-    public static byte[] readContent(String arquivo) throws TimestampException {
+    public static byte[] readContent(String arquivo) throws CertificateCoreException {
         try {
             File file = new File(arquivo);
             InputStream is = new FileInputStream(file);
@@ -87,9 +87,9 @@ public class Utils {
             is.close();
             return result;
         } catch (FileNotFoundException ex) {
-            throw new TimestampException(ex.getMessage(), ex.getCause());
+            throw new CertificateCoreException(ex.getMessage(), ex.getCause());
         } catch (IOException ex) {
-            throw new TimestampException(ex.getMessage(), ex.getCause());
+            throw new CertificateCoreException(ex.getMessage(), ex.getCause());
         }
     }
 
@@ -99,7 +99,7 @@ public class Utils {
      * @param conteudo O conteudo a ser escrito em disco
      * @param arquivo O caminho e nome do arquivo
      */
-    public static void writeContent(byte[] conteudo, String arquivo) throws TimestampException {
+    public static void writeContent(byte[] conteudo, String arquivo) throws CertificateCoreException {
         try {
             File file = new File(arquivo);
             OutputStream os = new FileOutputStream(file);
@@ -107,7 +107,7 @@ public class Utils {
             os.flush();
             os.close();
         } catch (IOException ex) {
-            throw new TimestampException(ex.getMessage(), ex.getCause());
+            throw new CertificateCoreException(ex.getMessage(), ex.getCause());
         }
     }
 }
