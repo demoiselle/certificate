@@ -82,11 +82,11 @@ public class TimeStampToken implements UnsignedAttribute {
             proxy.initialize(content, privateKey, certificates);
 
             //Obtem o carimbo de tempo atraves do servidor TSA
-            byte[] retorno = proxy.generateTimeStamp();
+            byte[] response = proxy.generateTimeStamp();
 
             //Valida o carimbo de tempo
-            proxy.validateTimeStamp(retorno);
-            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(retorno)));
+            proxy.validateTimeStamp(content, response);
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(response)));
         } catch (IOException | SecurityException ex) {
             throw new SignerException(ex.getMessage());
         } catch (IllegalArgumentException | SignerException ex) {

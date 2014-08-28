@@ -58,13 +58,24 @@ import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cms.CMSException;
+import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.SignerInformation;
+import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
+import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.tsp.TSPAlgorithms;
 import org.bouncycastle.tsp.TSPException;
 import org.bouncycastle.tsp.TimeStampRequest;
 import org.bouncycastle.tsp.TimeStampRequestGenerator;
 import org.bouncycastle.tsp.TimeStampResponse;
 import org.bouncycastle.tsp.TimeStampToken;
+import org.bouncycastle.util.Store;
 import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -286,8 +297,60 @@ public class TimeStampOperator {
         }
     }
 
+    /**
+     * Efetua a validacao de um carimbo de tempo
+     *
+     * @param content
+     * @param response O carimbo de tempo a ser validado
+     *
+     */
+    public void validate(byte[] content, byte[] response) throws CertificateCoreException {
+        try {
+            TimeStampToken timeStampToken = new TimeStampToken(new CMSSignedData(response));
+            CMSSignedData s = timeStampToken.toCMSSignedData();
+
+            int verified = 0;
+
+            Store certStore = s.getCertificates();
+            SignerInformationStore signers = s.getSignerInfos();
+            Collection<SignerInformation> c = signers.getSigners();
+            Iterator it = c.iterator();
+
+            while (it.hasNext()) {
+                SignerInformation signer = (SignerInformation) it.next();
+                Collection certCollection = certStore.getMatches(signer.getSID());
+                Iterator certIt = certCollection.iterator();
+                X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
+                if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
+                    verified++;
+                }
+                cert.getExtension(new ASN1ObjectIdentifier("2.5.29.31")).getExtnValue();
+            }
+
+            logger.info("Assinaturas Verificadas....: {}", verified);
+
+            //Valida o hash  incluso no carimbo de tempo com hash do arquivo carimbado
+            Digest digest = DigestFactory.getInstance().factoryDefault();
+            digest.setAlgorithm(DigestAlgorithmEnum.SHA_256);
+            digest.digest(content);
+
+            if (Arrays.equals(digest.digest(content), timeStampToken.getTimeStampInfo().getMessageImprintDigest())) {
+                logger.info("Hash do documento conferido com sucesso.");
+            } else {
+                throw new CertificateCoreException("O documento fornecido nao corresponde ao do carimbo de tempo!");
+            }
+
+        } catch (TSPException | IOException | CMSException | OperatorCreationException | CertificateException ex) {
+            throw new CertificateCoreException(ex.getMessage());
+        }
+    }
+
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
 }

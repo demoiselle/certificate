@@ -50,6 +50,6 @@ public interface TimeStampGenerator {
 
     byte[] generateTimeStamp() throws CertificateCoreException;
 
-    void validateTimeStamp(byte[] response) throws CertificateCoreException;
+    void validateTimeStamp(byte[] content, byte[] response) throws CertificateCoreException;
 
 }

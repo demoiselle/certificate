@@ -36,32 +36,11 @@
  */
 package br.gov.frameworkdemoiselle.timestamp;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
 import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.timestamp.connector.TimeStampOperator;
-import java.io.IOException;
 import java.security.PrivateKey;
-import java.security.Security;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cms.CMSException;
-import org.bouncycastle.cms.CMSSignedData;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.SignerInformationStore;
-import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.tsp.TSPException;
-import org.bouncycastle.tsp.TimeStampToken;
-import org.bouncycastle.util.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,66 +74,17 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
     }
 
     /**
-     * Efetua a validacao de um carimbo de tempo
-     *
-     * @param response O carimbo de tempo a ser validado
-     *
-     */
-    public void validate(byte[] response) throws CertificateCoreException {
-        try {
-            Security.addProvider(new BouncyCastleProvider());
-            TimeStampToken timeStampToken = new TimeStampToken(new CMSSignedData(response));
-            CMSSignedData s = timeStampToken.toCMSSignedData();
-
-            int verified = 0;
-
-            Store certStore = s.getCertificates();
-            SignerInformationStore signers = s.getSignerInfos();
-            Collection c = signers.getSigners();
-            Iterator it = c.iterator();
-
-            while (it.hasNext()) {
-                SignerInformation signer = (SignerInformation) it.next();
-                Collection certCollection = certStore.getMatches(signer.getSID());
-                Iterator certIt = certCollection.iterator();
-                X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
-                if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
-                    verified++;
-                }
-
-                cert.getExtension(new ASN1ObjectIdentifier("2.5.29.31")).getExtnValue();
-            }
-
-            logger.info("Assinaturas Verificadas....: {}", verified);
-            this.timestamp = new Timestamp(timeStampToken);
-        } catch (TSPException | IOException | CMSException | OperatorCreationException | CertificateException ex) {
-            throw new CertificateCoreException(ex.getMessage());
-        }
-    }
-
-    /**
      * Valida um carimnbo de tempo e o documento original
      *
+     * @param content o conteudo original
      * @param response O carimbo de tempo a ser validado
      *
      */
     @Override
-    public void validateTimeStamp(byte[] response) throws CertificateCoreException {
+    public void validateTimeStamp(byte[] content, byte[] response) throws CertificateCoreException {
 
         //Valida a assinatura digital do carimbo de tempo
-        this.validate(response);
-
-        //Valida o hash  incluso no carimbo de tempo com hash do arquivo carimbado
-        Digest digest = DigestFactory.getInstance().factoryDefault();
-        digest.setAlgorithm(DigestAlgorithmEnum.SHA_256);
-        digest.digest(content);
-
-        if (Arrays.equals(digest.digest(content), this.timestamp.getMessageImprintDigest())) {
-            logger.info("Digest do documento conferido com sucesso.");
-        } else {
-            throw new CertificateCoreException("O documento fornecido nao corresponde ao do carimbo de tempo!");
-        }
-
+        TimeStampOperator timeStampOperator = new TimeStampOperator();
+        timeStampOperator.validate(content, response);
     }
-
 }
