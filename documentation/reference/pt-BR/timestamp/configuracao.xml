@@ -21,4 +21,88 @@
         </programlisting>
     </section>
 
+    <section>
+        <title>Implementando uma solução customizada de carimbo de tempo</title>
+        <para>
+            Este componente fornece uma implmentação de referência para acesso ao servidor de carimbo de tempo do SERPRO, mas podem ocorrer casos em que é necessário que
+            o acesso seja feito a outro servidor, ou mesmo o modo de acesso precisa ser alterado, como por exemplo utilizando REST ou HTTP.
+
+            Para criar esta implementação, devemos criar uma class chamada <code>TimestampGeneratorImpl</code>, que deve estar no pacote
+            <code>br.gov.frameworkdemoiselle.timestamp</code>. A estrutura completa deve ficar conforme abaixo.
+
+            <itemizedlist>
+                <listitem>
+                    <code>br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl</code>
+                </listitem>
+            </itemizedlist>
+
+            Esta classe deve implementar a interface <code>TimeStampGenerator</code>, localizada no pacote <code>br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute</code>.
+            Esta interface faz parte do componente <emphasis>Demoiselle Core</emphasis>. Para saber como adicionar o componente ao seu projeto, consulte
+            <xref linkend="core-configuracao" />. A estrutura completa deve ficar conforme abaixo.
+
+            <itemizedlist>
+                <listitem>
+                    <code>br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator</code>
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <para>
+            Abaixo temos a estrutura completa de como a classe deve ficar ao final destes passos. A classe é composta essencialmente de 3 métodos, a saber:
+
+
+            <itemizedlist>
+                <listitem>
+                    <code>initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates)</code>, que deve ser utilizado para efetuar a parametrização inicial
+                    para obtenção do carimbo de tempo. Ele recebe como parâmetros <code>content</code>, que é conteúdo original do arquivo que está sendo carimbado; <code>privateKey</code>,
+                    que é a chave privada a ser utilizada para assinar a requisição, caso necessário; e <code>certificate</code>, que é a cadeia de certificados correspondente à
+                    chave privada utilizada na assinatura da requisição.
+                </listitem>
+                <listitem>
+                    <code>byte[] generateTimeStamp()</code>, que obtém um carimbo de tempo do servidor e retorna a estrutura em bytes para ser utilizada.
+                </listitem>
+                <listitem>
+                    <code>void validateTimeStamp(byte[] response)</code>, que efetua a validação de um carimbo de tempo. ele recebe como parâmetro <code>response</code>, que é
+                    o próprio carimbo de tempo obtido anteriormente.
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <programlisting role="JAVA"><![CDATA[package br.gov.frameworkdemoiselle.timestamp;
+
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+import java.util.logging.Logger;
+
+public class TimestampGeneratorImpl implements TimeStampGenerator {
+
+    private static final Logger LOG = Logger.getLogger(TimestampGeneratorImpl.class.getName());
+
+    @Override
+    public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public byte[] generateTimeStamp() throws CertificateCoreException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void validateTimeStamp(byte[] response) throws CertificateCoreException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+}
+]]></programlisting>
+
+        <para>
+            Após a implementação, o artefato deve ser empacotado como um jar e colocado no lugar do componente padrão de carimbo de tempo, de modo a ser utilizado em conjunto com o
+            componente <emphasis>Demoiselle Signer</emphasis>.
+        </para>
+
+    </section>
+
 </chapter>
