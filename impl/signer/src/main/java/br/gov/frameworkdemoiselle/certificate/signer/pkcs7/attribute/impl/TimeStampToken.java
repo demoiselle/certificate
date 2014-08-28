@@ -37,11 +37,13 @@
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.handler.MyInvocationHandler;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -74,17 +76,20 @@ public class TimeStampToken implements UnsignedAttribute {
     @Override
     public Attribute getValue() throws SignerException {
         try {
-            TimeStampGenerator timestampGen = new TimestampGeneratorImpl();
-            //Inicializa
-            timestampGen.initialize(content, privateKey, certificates);
+            TimeStampGenerator tsg = new TimestampGeneratorImpl();
+            TimeStampGenerator proxy = (TimeStampGenerator) Proxy.newProxyInstance(TimeStampGenerator.class.getClassLoader(), new Class[]{TimeStampGenerator.class}, new MyInvocationHandler(tsg));
+            //Inicializa os valores para o timestmap
+            proxy.initialize(content, privateKey, certificates);
 
-            //Gera o token de carimbo de tempo
-            byte[] retorno = timestampGen.generateTimeStamp();
+            //Obtem o carimbo de tempo atraves do servidor TSA
+            byte[] retorno = proxy.generateTimeStamp();
 
-            //Valida o token de carimbo de tempo
-            timestampGen.validateTimeStamp(retorno);
+            //Valida o carimbo de tempo
+            proxy.validateTimeStamp(retorno);
             return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(retorno)));
-        } catch (IOException ex) {
+        } catch (IOException | SecurityException ex) {
+            throw new SignerException(ex.getMessage());
+        } catch (IllegalArgumentException | SignerException ex) {
             throw new SignerException(ex.getMessage());
         }
     }

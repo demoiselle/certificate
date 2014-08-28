@@ -36,11 +36,10 @@
  */
 package br.gov.frameworkdemoiselle.certificate.extension;
 
+import br.gov.frameworkdemoiselle.certificate.IOIDExtensionLoader;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import java.lang.reflect.Field;
 import java.security.cert.X509Certificate;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.certificate.IOIDExtensionLoader;
 
 public class ICPBrasilExtensionLoader implements IOIDExtensionLoader {
 
@@ -264,17 +263,17 @@ public class ICPBrasilExtensionLoader implements IOIDExtensionLoader {
                         break;
 
                     default:
-                        throw new CertificateException(annotation.type() + " Not Implemented");
+                        throw new CertificateCoreException(annotation.type() + " Not Implemented");
                 }
 
                 try {
                     field.setAccessible(true);
                     field.set(object, keyValue);
                 } catch (Exception e) {
-                    throw new CertificateException("Error on load value in field " + field.getName(), e);
+                    throw new CertificateCoreException("Error on load value in field " + field.getName(), e);
                 }
             } catch (Exception e) {
-                throw new CertificateException("Error trying get Keyvalue " + annotation.type(), e);
+                throw new CertificateCoreException("Error trying get Keyvalue " + annotation.type(), e);
             }
         }
     }

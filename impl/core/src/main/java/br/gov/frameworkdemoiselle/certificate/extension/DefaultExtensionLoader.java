@@ -36,8 +36,8 @@
  */
 package br.gov.frameworkdemoiselle.certificate.extension;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateException;
 import br.gov.frameworkdemoiselle.certificate.IOIDExtensionLoader;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.security.cert.X509Certificate;
@@ -58,7 +58,7 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
                     try {
                         keyValue = basicCertificate.getCRLDistributionPoint();
                     } catch (IOException e1) {
-                        throw new CertificateException("Error on get value to field " + field.getName(), e1);
+                        throw new CertificateCoreException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
                 case SERIAL_NUMBER:
@@ -68,14 +68,14 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
                     try {
                         keyValue = basicCertificate.getCertificateIssuerDN().toString();
                     } catch (IOException e1) {
-                        throw new CertificateException("Error on get value to field " + field.getName(), e1);
+                        throw new CertificateCoreException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
                 case SUBJECT_DN:
                     try {
                         keyValue = basicCertificate.getCertificateSubjectDN().toString();
                     } catch (IOException e1) {
-                        throw new CertificateException("Error on get value to field " + field.getName(), e1);
+                        throw new CertificateCoreException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
                 case KEY_USAGE:
@@ -88,7 +88,7 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
                     try {
                         keyValue = basicCertificate.getAuthorityKeyIdentifier();
                     } catch (IOException e1) {
-                        throw new CertificateException("Error on get value to field " + field.getName(), e1);
+                        throw new CertificateCoreException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
 
@@ -96,7 +96,7 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
                     try {
                         keyValue = basicCertificate.getSubjectKeyIdentifier();
                     } catch (IOException e1) {
-                        throw new CertificateException("Error on get value to field " + field.getName(), e1);
+                        throw new CertificateCoreException("Error on get value to field " + field.getName(), e1);
                     }
                     break;
 
@@ -111,14 +111,14 @@ public class DefaultExtensionLoader implements IOIDExtensionLoader {
                     break;
 
                 default:
-                    throw new CertificateException(annotation.type() + " Not Implemented");
+                    throw new CertificateCoreException(annotation.type() + " Not Implemented");
             }
 
             try {
                 field.setAccessible(true);
                 field.set(object, keyValue);
             } catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
-                throw new CertificateException("Error on load value in field " + field.getName(), e);
+                throw new CertificateCoreException("Error on load value in field " + field.getName(), e);
             }
         }
     }

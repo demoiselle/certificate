@@ -36,10 +36,10 @@
  */
 package br.gov.frameworkdemoiselle.certificate.applet.view;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.applet.config.AppletConfig;
 import br.gov.frameworkdemoiselle.certificate.applet.handler.PinCallbackHandler;
 import br.gov.frameworkdemoiselle.certificate.applet.tiny.Item;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.DriverNotAvailableException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.InvalidPinException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;

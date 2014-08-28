@@ -36,11 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.repository;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -97,7 +98,7 @@ public class RepositoryService {
 
                     try {
                         prop.store(new FileOutputStream(fileIndex), null);
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         throw new CertificateValidatorException("Error on load index file " + fileIndex, e);
                     }
                 }

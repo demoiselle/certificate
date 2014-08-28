@@ -34,13 +34,22 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate;
+package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
-import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
-import java.security.cert.X509Certificate;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 
-public interface IValidator {
+/**
+ *
+ * @author 07721825741
+ */
+public interface TimeStampGenerator {
 
-    public void validate(X509Certificate x509) throws CertificateValidatorException;
+    void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException;
+
+    byte[] generateTimeStamp() throws CertificateCoreException;
+
+    void validateTimeStamp(byte[] response) throws CertificateCoreException;
 
 }

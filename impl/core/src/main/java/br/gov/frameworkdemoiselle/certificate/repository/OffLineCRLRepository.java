@@ -36,7 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.repository;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
 import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;

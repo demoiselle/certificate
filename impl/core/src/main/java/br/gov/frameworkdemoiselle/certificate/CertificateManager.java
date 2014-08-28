@@ -36,6 +36,8 @@
  */
 package br.gov.frameworkdemoiselle.certificate;
 
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.validator.CRLValidator;
 import br.gov.frameworkdemoiselle.certificate.validator.PeriodValidator;
 import java.io.File;
@@ -107,7 +109,7 @@ public class CertificateManager {
                         IOIDExtensionLoader loader = loaderClass.newInstance();
                         loader.load(object, field, x509);
                     } catch (IllegalAccessException | InstantiationException e) {
-                        throw new CertificateException("Error: Could not initialize atribute \"" + field.getName() + "\"", e);
+                        throw new CertificateCoreException("Error: Could not initialize atribute \"" + field.getName() + "\"", e);
                     }
                 }
             }
@@ -119,7 +121,7 @@ public class CertificateManager {
         try {
             object = clazz.newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
-            throw new CertificateException("Error on new instance for " + clazz.getName(), e);
+            throw new CertificateCoreException("Error on new instance for " + clazz.getName(), e);
         }
         load(object);
         return object;

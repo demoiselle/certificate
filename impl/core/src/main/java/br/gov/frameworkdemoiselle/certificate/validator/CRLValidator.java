@@ -36,14 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.validator;
 
-import java.security.cert.X509Certificate;
-import java.util.Collection;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.IValidator;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
 import br.gov.frameworkdemoiselle.certificate.repository.CRLRepository;
 import br.gov.frameworkdemoiselle.certificate.repository.CRLRepositoryFactory;
+import java.security.cert.X509Certificate;
+import java.util.Collection;
 
 public class CRLValidator implements IValidator {
 

@@ -3,7 +3,7 @@ package br.gov.frameworkdemoiselle.timestamp;
 import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.timestamp.connector.Connector;
 import br.gov.frameworkdemoiselle.timestamp.connector.ConnectorFactory;
@@ -42,10 +42,6 @@ import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author 07721825741
- */
 public class TimestampGeneratorImpl implements TimeStampGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(TimestampGeneratorImpl.class);
@@ -60,7 +56,7 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
     private Certificate[] certificates;
 
     @Override
-    public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) {
+    public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
         this.content = content;
         this.privateKey = privateKey;
         this.certificates = certificates;
@@ -100,7 +96,7 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
      * @return O carimbo de tempo retornado pelo servidor
      */
     @Override
-    public byte[] generateTimeStamp() throws SignerException {
+    public byte[] generateTimeStamp() throws CertificateCoreException {
         try {
             byte[] request = this.createRequest();
 
@@ -237,10 +233,10 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
             logger.info(timestamp.toString());
 
             //Retorna o carimbo de tempo gerado
-            return retornoCarimboDeTempo;
+            return timestamp.getCodificado();
 
         } catch (TimestampException | IOException | NumberFormatException | TSPException e) {
-            throw new SignerException(e.getMessage());
+            throw new CertificateCoreException(e.getMessage());
         }
     }
 
@@ -248,13 +244,13 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
      * Efetua a validacao de um carimbo de tempo
      *
      * @param response O carimbo de tempo a ser validado
-     * @throws SignerException
+     * @throws br.gov.frameworkdemoiselle.timestamp.exception.TimestampException
+     *
      */
-    public void validate(byte[] response) throws SignerException {
+    public void validate(byte[] response) throws CertificateCoreException {
         try {
             Security.addProvider(new BouncyCastleProvider());
-            TimeStampResponse tsr = new TimeStampResponse(response);
-            TimeStampToken timeStampToken = tsr.getTimeStampToken();
+            TimeStampToken timeStampToken = new TimeStampToken(new CMSSignedData(response));
             CMSSignedData s = timeStampToken.toCMSSignedData();
 
             int verified = 0;
@@ -279,7 +275,7 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
             logger.info("Assinaturas Verificadas....: {}", verified);
             this.timestamp = new Timestamp(timeStampToken);
         } catch (TSPException | IOException | CMSException | OperatorCreationException | CertificateException ex) {
-            throw new SignerException(ex.getMessage());
+            throw new CertificateCoreException(ex.getMessage());
         }
     }
 
@@ -287,10 +283,11 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
      * Valida um carimnbo de tempo e o documento original
      *
      * @param response O carimbo de tempo a ser validado
-     * @throws SignerException
+     *
      */
     @Override
-    public void validateTimeStamp(byte[] response) throws SignerException {
+    public void validateTimeStamp(byte[] response) throws CertificateCoreException {
+
         //Valida a assinatura digital do carimbo de tempo
         this.validate(response);
 
@@ -302,7 +299,9 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
         if (Arrays.equals(digest.digest(content), this.timestamp.getMessageImprintDigest())) {
             logger.info("Digest do documento conferido com sucesso.");
         } else {
-            throw new SignerException("O documento fornecido nao corresponde ao do carimbo de tempo!");
+            throw new CertificateCoreException("O documento fornecido nao corresponde ao do carimbo de tempo!");
         }
+
     }
+
 }

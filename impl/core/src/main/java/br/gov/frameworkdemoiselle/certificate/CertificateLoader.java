@@ -36,6 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate;
 
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import java.io.File;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -50,26 +51,29 @@ public interface CertificateLoader {
      *
      * @param file O arquivo que contém o certificado
      * @return O certificado carregado
-     * @throws CertificateException Retorna a exceção CertificateException
+     * @throws CertificateCoreException Retorna a exceção
+     * CertificateCoreException
      */
-    public X509Certificate load(File file) throws CertificateException;
+    public X509Certificate load(File file) throws CertificateCoreException;
 
     /**
      * Obtem o certificado A3 a partir de um Token /Smartcard
      *
      * @return O certificado carregado
-     * @throws CertificateException Retorna a exceção CertificateException
+     * @throws CertificateCoreException Retorna a exceção
+     * CertificateCoreException
      */
-    public X509Certificate loadFromToken() throws CertificateException;
+    public X509Certificate loadFromToken() throws CertificateCoreException;
 
     /**
      * Obtem o certificado A3 a partir de um Token /Smartcard
      *
      * @param pinNumber O pin do dispositivo
      * @return O certificado carregado
-     * @throws CertificateException Retorna a exceção CertificateException
+     * @throws CertificateCoreException Retorna a exceção
+     * CertificateCoreException
      */
-    public X509Certificate loadFromToken(String pinNumber) throws CertificateException;
+    public X509Certificate loadFromToken(String pinNumber) throws CertificateCoreException;
 
     /**
      * Obtem o certificado A3 a partir de um Token /Smartcard
@@ -77,24 +81,27 @@ public interface CertificateLoader {
      * @param pinNumber O pin do dispositivo
      * @param alias O apelido associado ao certificado
      * @return O certificado carregado
-     * @throws CertificateException Retorna a exceção CertificateException
+     * @throws CertificateCoreException Retorna a exceção
+     * CertificateCoreException
      */
-    public X509Certificate loadFromToken(String pinNumber, String alias) throws CertificateException;
+    public X509Certificate loadFromToken(String pinNumber, String alias) throws CertificateCoreException;
 
     /**
      * Associa um keystore previamente existente
      *
      * @param keyStore O keystore fornecido
-     * @throws CertificateException Retorna a exceção CertificateException
+     * @throws CertificateCoreException Retorna a exceção
+     * CertificateCoreException
      */
-    public void setKeyStore(KeyStore keyStore) throws CertificateException;
+    public void setKeyStore(KeyStore keyStore) throws CertificateCoreException;
 
     /**
      * Retorna o KeyStore utilizado pelo {@link CertificateLoader}.
      *
      * @return keyStore O keystore fornecido
-     * @throws CertificateException Retorna a exceção CertificateException
+     * @throws CertificateCoreException Retorna a exceção
+     * CertificateCoreException
      */
-    public KeyStore getKeyStore() throws CertificateException;
+    public KeyStore getKeyStore() throws CertificateCoreException;
 
 }

@@ -36,14 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.validator;
 
-import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
-import java.util.Collection;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.IValidator;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManagerException;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
+import java.util.Collection;
 
 public class CAValidator implements IValidator {
 

@@ -34,13 +34,36 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate;
+package br.gov.frameworkdemoiselle.certificate.exception;
 
-import br.gov.frameworkdemoiselle.certificate.exception.CertificateValidatorException;
-import java.security.cert.X509Certificate;
+public class CertificateValidatorException extends RuntimeException {
 
-public interface IValidator {
+    private static final long serialVersionUID = 1L;
 
-    public void validate(X509Certificate x509) throws CertificateValidatorException;
+    /**
+     * Default constructor
+     */
+    public CertificateValidatorException() {
+        super();
+    }
+
+    /**
+     * Constructor with message
+     *
+     * @param message message of exception
+     */
+    public CertificateValidatorException(String message) {
+        super(message);
+    }
+
+    /**
+     * Constructor with message and cause
+     *
+     * @param message message of exception
+     * @param cause cause of exception
+     */
+    public CertificateValidatorException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }
