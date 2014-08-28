@@ -3,6 +3,8 @@ package br.gov.frameworkdemoiselle.timestamp;
 import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.timestamp.connector.Connector;
 import br.gov.frameworkdemoiselle.timestamp.connector.ConnectorFactory;
 import br.gov.frameworkdemoiselle.timestamp.enumeration.ConnectionType;
@@ -44,32 +46,38 @@ import org.slf4j.LoggerFactory;
  *
  * @author 07721825741
  */
-public class TimestampGenerator {
+public class TimestampGeneratorImpl implements TimeStampGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(TimestampGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(TimestampGeneratorImpl.class);
 
     private InputStream inputStream = null;
     private Timestamp timestamp;
     private TimeStampRequest timeStampRequest;
     private TimeStampResponse timeStampResponse;
 
+    private byte[] content;
+    private PrivateKey privateKey;
+    private Certificate[] certificates;
+
+    @Override
+    public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) {
+        this.content = content;
+        this.privateKey = privateKey;
+        this.certificates = certificates;
+    }
+
     /**
      * Cria uma requisição de carimbo de tempo assinada pelo usuario
      *
-     * @param original O conteudo em bytes do arquivo a ser carimbado
-     * @param privateKey
-     * @param certificates
-     * @param digestAlgorithm O algoritmo a ser utilizado para gerar o hash do
-     * documento
      * @return Uma requisicao de carimbo de tempo
      * @throws TimestampException
      * @throws IOException
      */
-    public byte[] createRequest(byte[] original, PrivateKey privateKey, Certificate[] certificates, DigestAlgorithmEnum digestAlgorithm) throws TimestampException, IOException {
+    private byte[] createRequest() throws TimestampException, IOException {
         logger.info("Gerando o digest do conteudo");
         Digest digest = DigestFactory.getInstance().factoryDefault();
-        digest.setAlgorithm(digestAlgorithm);
-        byte[] hashedMessage = digest.digest(original);
+        digest.setAlgorithm(DigestAlgorithmEnum.SHA_256);
+        byte[] hashedMessage = digest.digest(content);
         logger.info(Base64.toBase64String(hashedMessage));
 
         logger.info("Montando a requisicao para o carimbador de tempo");
@@ -89,16 +97,15 @@ public class TimestampGenerator {
      * Envia a requisicao de carimbo de tempo para um servidor de carimbo de
      * tempo
      *
-     * @param request A requisicao de carimbo de tempo
-     * @param connectionType O tipo de conexao que sera utilizada para acessar o
-     * servidor de carimbo de tempo
      * @return O carimbo de tempo retornado pelo servidor
-     * @throws TimestampException
      */
-    public byte[] doTimestamp(byte[] request, ConnectionType connectionType) throws TimestampException {
+    @Override
+    public byte[] generateTimeStamp() throws SignerException {
         try {
+            byte[] request = this.createRequest();
+
             logger.info("Iniciando pedido de carimbo de tempo");
-            Connector connector = ConnectorFactory.buildConnector(connectionType);
+            Connector connector = ConnectorFactory.buildConnector(ConnectionType.SOCKET);
             connector.setHostname("act.serpro.gov.br");
             connector.setPort(318);
 
@@ -139,15 +146,15 @@ public class TimestampGenerator {
             }
 
             // Lendo flag
-            byte[] flagRetorno = new byte[1];
-            inputStream.read(flagRetorno, 0, 1);
+            byte[] retornoFlag = new byte[1];
+            inputStream.read(retornoFlag, 0, 1);
             // tamanho total menos o tamanho da flag
             tamanho -= 1;
 
             // Lendo dados carimbo
-            byte[] carimboRetorno = new byte[tamanho];
-            inputStream.read(carimboRetorno, 0, tamanho);
-            timeStampResponse = new TimeStampResponse(carimboRetorno);
+            byte[] retornoCarimboDeTempo = new byte[tamanho];
+            inputStream.read(retornoCarimboDeTempo, 0, tamanho);
+            timeStampResponse = new TimeStampResponse(retornoCarimboDeTempo);
 
             logger.info("PKIStatus....: {}", timeStampResponse.getStatus());
 
@@ -224,12 +231,16 @@ public class TimestampGenerator {
             if (timeStampToken == null) {
                 throw new TimestampException("O Token retornou nulo.");
             }
-
             connector.close();
-            return carimboRetorno;
+
+            //Imprime os dados do carimbo de tempo
+            logger.info(timestamp.toString());
+
+            //Retorna o carimbo de tempo gerado
+            return retornoCarimboDeTempo;
 
         } catch (TimestampException | IOException | NumberFormatException | TSPException e) {
-            throw new TimestampException(e.getMessage());
+            throw new SignerException(e.getMessage());
         }
     }
 
@@ -237,9 +248,9 @@ public class TimestampGenerator {
      * Efetua a validacao de um carimbo de tempo
      *
      * @param response O carimbo de tempo a ser validado
-     * @throws TimestampException
+     * @throws SignerException
      */
-    public void validate(byte[] response) throws TimestampException {
+    public void validate(byte[] response) throws SignerException {
         try {
             Security.addProvider(new BouncyCastleProvider());
             TimeStampResponse tsr = new TimeStampResponse(response);
@@ -268,7 +279,7 @@ public class TimestampGenerator {
             logger.info("Assinaturas Verificadas....: {}", verified);
             this.timestamp = new Timestamp(timeStampToken);
         } catch (TSPException | IOException | CMSException | OperatorCreationException | CertificateException ex) {
-            throw new TimestampException(ex.getMessage());
+            throw new SignerException(ex.getMessage());
         }
     }
 
@@ -276,31 +287,22 @@ public class TimestampGenerator {
      * Valida um carimnbo de tempo e o documento original
      *
      * @param response O carimbo de tempo a ser validado
-     * @param original O arquivo original a ser validado
-     * @throws TimestampException
+     * @throws SignerException
      */
-    public void validate(byte[] response, byte[] original) throws TimestampException {
+    @Override
+    public void validateTimeStamp(byte[] response) throws SignerException {
         //Valida a assinatura digital do carimbo de tempo
         this.validate(response);
 
         //Valida o hash  incluso no carimbo de tempo com hash do arquivo carimbado
         Digest digest = DigestFactory.getInstance().factoryDefault();
         digest.setAlgorithm(DigestAlgorithmEnum.SHA_256);
-        digest.digest(original);
+        digest.digest(content);
 
-        if (Arrays.equals(digest.digest(original), this.timestamp.getMessageImprintDigest())) {
+        if (Arrays.equals(digest.digest(content), this.timestamp.getMessageImprintDigest())) {
             logger.info("Digest do documento conferido com sucesso.");
         } else {
-            throw new TimestampException("O documento fornecido nao corresponde ao do carimbo de tempo!");
+            throw new SignerException("O documento fornecido nao corresponde ao do carimbo de tempo!");
         }
-    }
-
-    /**
-     * Retorna um carimbo de tempo com seus atributos disponiveis para uso
-     *
-     * @return O carimbo de tempo
-     */
-    public Timestamp getTimestamp() {
-        return timestamp;
     }
 }

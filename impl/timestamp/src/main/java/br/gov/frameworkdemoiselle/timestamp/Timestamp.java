@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import org.bouncycastle.tsp.TimeStampToken;
 import org.bouncycastle.util.Store;
 import org.bouncycastle.util.encoders.Base64;
@@ -37,7 +36,7 @@ public class Timestamp {
         try {
             return timeStampToken.getEncoded();
         } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(Timestamp.class.getName()).log(Level.SEVERE, null, ex);
+            logger.info(ex.getMessage());
         }
         return null;
     }

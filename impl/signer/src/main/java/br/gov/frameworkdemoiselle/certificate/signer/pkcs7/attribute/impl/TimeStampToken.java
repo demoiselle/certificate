@@ -36,13 +36,11 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
-import br.gov.frameworkdemoiselle.timestamp.TimestampGenerator;
-import br.gov.frameworkdemoiselle.timestamp.enumeration.ConnectionType;
-import br.gov.frameworkdemoiselle.timestamp.exception.TimestampException;
+import br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -76,12 +74,17 @@ public class TimeStampToken implements UnsignedAttribute {
     @Override
     public Attribute getValue() throws SignerException {
         try {
-            TimestampGenerator timestampGen = new TimestampGenerator();
-            byte[] request = timestampGen.createRequest(content, privateKey, certificates, DigestAlgorithmEnum.SHA_256);
-            byte[] response = timestampGen.doTimestamp(request, ConnectionType.SOCKET);
-            timestampGen.validate(response, content);
-            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(timestampGen.getTimestamp().getCodificado())));
-        } catch (TimestampException | IOException ex) {
+            TimeStampGenerator timestampGen = new TimestampGeneratorImpl();
+            //Inicializa
+            timestampGen.initialize(content, privateKey, certificates);
+
+            //Gera o token de carimbo de tempo
+            byte[] retorno = timestampGen.generateTimeStamp();
+
+            //Valida o token de carimbo de tempo
+            timestampGen.validateTimeStamp(retorno);
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(retorno)));
+        } catch (IOException ex) {
             throw new SignerException(ex.getMessage());
         }
     }

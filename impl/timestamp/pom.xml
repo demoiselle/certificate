@@ -79,6 +79,11 @@
             <artifactId>demoiselle-certificate-criptography</artifactId>
             <version>1.0.8-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>br.gov.frameworkdemoiselle.component</groupId>
+            <artifactId>demoiselle-certificate-signer</artifactId>
+            <version>1.0.8-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <repositories>
