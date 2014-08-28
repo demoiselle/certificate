@@ -72,31 +72,63 @@
 
 import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
+import br.gov.frameworkdemoiselle.timestamp.connector.TimeStampOperator;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TimestampGeneratorImpl implements TimeStampGenerator {
 
-    private static final Logger LOG = Logger.getLogger(TimestampGeneratorImpl.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(TimestampGeneratorImpl.class);
 
+    private byte[] content;
+    private PrivateKey privateKey;
+    private Certificate[] certificates;
+
+    /**
+     * Inicializa os atributos necessarios para obter o carimbo de tempo
+     *
+     * @param content
+     * @param privateKey
+     * @param certificates
+     * @throws CertificateCoreException
+     */
     @Override
     public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.content = content;
+        this.privateKey = privateKey;
+        this.certificates = certificates;
     }
 
+    /**
+     * Envia a requisicao de carimbo de tempo para um servidor de carimbo de
+     * tempo
+     *
+     * @return O carimbo de tempo retornado pelo servidor
+     */
     @Override
     public byte[] generateTimeStamp() throws CertificateCoreException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TimeStampOperator timeStampOperator = new TimeStampOperator();
+        byte[] request = timeStampOperator.createRequest(privateKey, certificates, content);
+        return timeStampOperator.invoke(request);
     }
 
+    /**
+     * Valida um carimnbo de tempo e o documento original
+     *
+     * @param content o conteudo original
+     * @param response O carimbo de tempo a ser validado
+     *
+     */
     @Override
-    public void validateTimeStamp(byte[] response) throws CertificateCoreException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void validateTimeStamp(byte[] content, byte[] response) throws CertificateCoreException {
 
-}
-]]></programlisting>
+        //Valida a assinatura digital do carimbo de tempo
+        TimeStampOperator timeStampOperator = new TimeStampOperator();
+        timeStampOperator.validate(content, response);
+    }
+}]]></programlisting>
 
         <para>
             Após a implementação, o artefato deve ser empacotado como um jar e colocado no lugar do componente padrão de carimbo de tempo, de modo a ser utilizado em conjunto com o

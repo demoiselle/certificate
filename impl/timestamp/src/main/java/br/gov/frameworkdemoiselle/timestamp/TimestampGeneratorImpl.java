@@ -52,6 +52,14 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
     private PrivateKey privateKey;
     private Certificate[] certificates;
 
+    /**
+     * Inicializa os atributos necessarios para obter o carimbo de tempo
+     *
+     * @param content
+     * @param privateKey
+     * @param certificates
+     * @throws CertificateCoreException
+     */
     @Override
     public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
         this.content = content;
