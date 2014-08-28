@@ -48,7 +48,6 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(TimestampGeneratorImpl.class);
 
-    private Timestamp timestamp;
     private byte[] content;
     private PrivateKey privateKey;
     private Certificate[] certificates;
