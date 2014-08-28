@@ -76,6 +76,7 @@ public class TimeStampToken implements UnsignedAttribute {
     @Override
     public Attribute getValue() throws SignerException {
         try {
+            logger.info("Carregando a implementacao do carimbador de tempo por reflexão");
             TimeStampGenerator tsg = new TimestampGeneratorImpl();
             TimeStampGenerator proxy = (TimeStampGenerator) Proxy.newProxyInstance(TimeStampGenerator.class.getClassLoader(), new Class[]{TimeStampGenerator.class}, new MyInvocationHandler(tsg));
             //Inicializa os valores para o timestmap
