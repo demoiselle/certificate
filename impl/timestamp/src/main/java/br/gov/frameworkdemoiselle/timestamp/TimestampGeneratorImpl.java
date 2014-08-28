@@ -50,7 +50,6 @@ import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Properties;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cms.CMSException;
@@ -74,16 +73,6 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
     private byte[] content;
     private PrivateKey privateKey;
     private Certificate[] certificates;
-    Properties p;
-
-    public TimestampGeneratorImpl() {
-        try {
-            p = new Properties();
-            p.load(this.getClass().getResourceAsStream("/br/gov/frameworkdemoiselle/timestamp/config.properties"));
-        } catch (IOException ex) {
-            logger.info(ex.getMessage());
-        }
-    }
 
     @Override
     public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {

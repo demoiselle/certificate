@@ -36,6 +36,8 @@
  */
 package br.gov.frameworkdemoiselle.timestamp.utils;
 
+import java.io.IOException;
+import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +45,44 @@ import org.slf4j.LoggerFactory;
  *
  * @author 07721825741
  */
-public class Config {
+public class TimeStampConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(Config.class);
+    private static final Logger logger = LoggerFactory.getLogger(TimeStampConfig.class);
 
+    private static TimeStampConfig instance = null;
+
+    /**
+     * Retorna uma instancia de TimeStampConfig
+     *
+     * @return a instância
+     */
+    public static TimeStampConfig getInstance() {
+        if (instance == null) {
+            instance = new TimeStampConfig();
+        }
+        return instance;
+    }
+    private Properties p;
+
+    protected TimeStampConfig() {
+        try {
+            p = new Properties();
+            p.load(this.getClass().getResourceAsStream("/br/gov/frameworkdemoiselle/timestamp/config.properties"));
+        } catch (IOException ex) {
+            logger.info(ex.getMessage());
+
+        }
+    }
+
+    public String getTspHostname() {
+        return p.getProperty("tsp_hostname");
+    }
+
+    public int getTSPPort() {
+        return Integer.parseInt(p.getProperty("tsp_port"));
+    }
+
+    public String getTSPOid() {
+        return p.getProperty("tsp_oid");
+    }
 }

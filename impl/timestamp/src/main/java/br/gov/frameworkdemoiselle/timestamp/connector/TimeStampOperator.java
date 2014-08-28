@@ -46,6 +46,7 @@ import br.gov.frameworkdemoiselle.timestamp.enumeration.PKIFailureInfo;
 import br.gov.frameworkdemoiselle.timestamp.enumeration.PKIStatus;
 import br.gov.frameworkdemoiselle.timestamp.exception.TimestampException;
 import br.gov.frameworkdemoiselle.timestamp.signer.RequestSigner;
+import br.gov.frameworkdemoiselle.timestamp.utils.TimeStampConfig;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +58,6 @@ import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.Properties;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.tsp.TSPAlgorithms;
 import org.bouncycastle.tsp.TSPException;
@@ -81,16 +81,6 @@ public class TimeStampOperator {
     private Timestamp timestamp;
     private TimeStampRequest timeStampRequest;
     private TimeStampResponse timeStampResponse;
-    private Properties p;
-
-    public TimeStampOperator() {
-        try {
-            p = new Properties();
-            p.load(this.getClass().getResourceAsStream("/br/gov/frameworkdemoiselle/timestamp/config.properties"));
-        } catch (IOException ex) {
-            logger.info(ex.getMessage());
-        }
-    }
 
     /**
      * Cria uma requisição de carimbo de tempo assinada pelo usuario
@@ -111,7 +101,7 @@ public class TimeStampOperator {
 
             logger.info("Montando a requisicao para o carimbador de tempo");
             TimeStampRequestGenerator timeStampRequestGenerator = new TimeStampRequestGenerator();
-            timeStampRequestGenerator.setReqPolicy(new ASN1ObjectIdentifier("2.16.76.1.6.2"));
+            timeStampRequestGenerator.setReqPolicy(new ASN1ObjectIdentifier(TimeStampConfig.getInstance().getTSPOid()));
             timeStampRequestGenerator.setCertReq(true);
             timeStampRequest = timeStampRequestGenerator.generate(TSPAlgorithms.SHA256, hashedMessage, BigInteger.valueOf(100));
             byte request[] = timeStampRequest.getEncoded();
@@ -150,6 +140,7 @@ public class TimeStampOperator {
      * Envia a requisicao de carimbo de tempo para um servidor de carimbo de
      * tempo
      *
+     * @param request
      * @return O carimbo de tempo retornado pelo servidor
      */
     public byte[] invoke(byte[] request) throws CertificateCoreException {
@@ -157,8 +148,8 @@ public class TimeStampOperator {
 
             logger.info("Iniciando pedido de carimbo de tempo");
             Connector connector = ConnectorFactory.buildConnector(ConnectionType.SOCKET);
-            connector.setHostname(p.getProperty("tsp_hostname"));
-            connector.setPort(Integer.parseInt(p.getProperty("tsp_port")));
+            connector.setHostname(TimeStampConfig.getInstance().getTspHostname());
+            connector.setPort(TimeStampConfig.getInstance().getTSPPort());
 
             logger.info("Obtendo o response");
             inputStream = connector.connect(request);
