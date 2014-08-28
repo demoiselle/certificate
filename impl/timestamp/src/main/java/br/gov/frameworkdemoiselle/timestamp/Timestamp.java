@@ -22,7 +22,7 @@ public class Timestamp {
 
     private TimeStampToken timeStampToken = null;
 
-    Timestamp(TimeStampToken timeStampToken) {
+    public Timestamp(TimeStampToken timeStampToken) {
         this.timeStampToken = timeStampToken;
     }
 
