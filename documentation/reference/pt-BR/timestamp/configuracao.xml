@@ -30,7 +30,7 @@
         <para>
             Para criar esta implementação customizada, devemos criar uma classe e implementar a interface <code>TimeStampGenerator</code>, localizada no pacote
             <code>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</code>. Esta interface faz parte do componente <emphasis>Demoiselle Core</emphasis>.
-            Para saber como adicionar o componente ao seu projeto, consulte <xref linkend="core-configuracao" />. A estrutura completa deve ficar conforme abaixo.
+            Para saber como adicionar o componente ao seu projeto, consulte <xref linkend="core-configuracao" />.
         </para>
 
         <para>
@@ -47,8 +47,8 @@
                     <code>byte[] generateTimeStamp()</code>, que obtém um carimbo de tempo do servidor e retorna a estrutura em bytes para ser utilizada.
                 </listitem>
                 <listitem>
-                    <code>void validateTimeStamp(byte[] response)</code>, que efetua a validação de um carimbo de tempo. ele recebe como parâmetro <code>response</code>, que é
-                    o próprio carimbo de tempo obtido anteriormente.
+                    <code>void validateTimeStamp(byte[] content, byte[] response)</code>, que efetua a validação de um carimbo de tempo. Ele recebe como parâmetros
+                    <code>content</code> e <code>response</code> que são, respectivamente, o conteúdo original e o próprio carimbo de tempo obtido anteriormente.
                 </listitem>
             </itemizedlist>
         </para>
