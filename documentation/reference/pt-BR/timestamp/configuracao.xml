@@ -12,12 +12,11 @@
             na aplicação, basta adicionar a sua dependência no arquivo <filename>pom.xml</filename>
             do projeto gerenciado pelo Maven:
         </para>
-        <programlisting role="XML"><![CDATA[
-            <dependency>
-                <groupId>br.gov.frameworkdemoiselle.component</groupId>
-                <artifactId>demoiselle-certificate-timestamp</artifactId>
-                <version>2.0.0</version>
-            </dependency>]]>
+        <programlisting role="XML"><![CDATA[<dependency>
+    <groupId>br.gov.frameworkdemoiselle.component</groupId>
+    <artifactId>demoiselle-certificate-timestamp</artifactId>
+    <version>2.0.0</version>
+</dependency>]]>
         </programlisting>
     </section>
 
@@ -26,30 +25,16 @@
         <para>
             Este componente fornece uma implmentação de referência para acesso ao servidor de carimbo de tempo do SERPRO, mas podem ocorrer casos em que é necessário que
             o acesso seja feito a outro servidor, ou mesmo o modo de acesso precisa ser alterado, como por exemplo utilizando REST ou HTTP.
-
-            Para criar esta implementação, devemos criar uma class chamada <code>TimestampGeneratorImpl</code>, que deve estar no pacote
-            <code>br.gov.frameworkdemoiselle.timestamp</code>. A estrutura completa deve ficar conforme abaixo.
-
-            <itemizedlist>
-                <listitem>
-                    <code>br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl</code>
-                </listitem>
-            </itemizedlist>
-
-            Esta classe deve implementar a interface <code>TimeStampGenerator</code>, localizada no pacote <code>br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute</code>.
-            Esta interface faz parte do componente <emphasis>Demoiselle Core</emphasis>. Para saber como adicionar o componente ao seu projeto, consulte
-            <xref linkend="core-configuracao" />. A estrutura completa deve ficar conforme abaixo.
-
-            <itemizedlist>
-                <listitem>
-                    <code>br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator</code>
-                </listitem>
-            </itemizedlist>
         </para>
 
         <para>
-            Abaixo temos a estrutura completa de como a classe deve ficar ao final destes passos. A classe é composta essencialmente de 3 métodos, a saber:
+            Para criar esta implementação customizada, devemos criar uma classe e implementar a interface <code>TimeStampGenerator</code>, localizada no pacote
+            <code>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</code>. Esta interface faz parte do componente <emphasis>Demoiselle Core</emphasis>.
+            Para saber como adicionar o componente ao seu projeto, consulte <xref linkend="core-configuracao" />. A estrutura completa deve ficar conforme abaixo.
+        </para>
 
+        <para>
+            Abaixo temos a implementação padrão do componente de carimbo de tempo que utiliza esta interface. A classe é composta essencialmente de 3 métodos, a saber:
 
             <itemizedlist>
                 <listitem>
@@ -71,7 +56,7 @@
         <programlisting role="JAVA"><![CDATA[package br.gov.frameworkdemoiselle.timestamp;
 
 import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
+import br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.timestamp.connector.TimeStampOperator;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -123,18 +108,46 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
      */
     @Override
     public void validateTimeStamp(byte[] content, byte[] response) throws CertificateCoreException {
-
-        //Valida a assinatura digital do carimbo de tempo
         TimeStampOperator timeStampOperator = new TimeStampOperator();
         timeStampOperator.validate(content, response);
     }
 }]]></programlisting>
 
         <para>
+            A classe <code>br.gov.frameworkdemoiselle.timestamp.connector.TimeStampOperator</code> já possui a implementação necessária para acesso ao carimbo de tempo, facilitando
+            assim a customização do componente.
+        </para>
+
+        <para>
             Após a implementação, o artefato deve ser empacotado como um jar e colocado no lugar do componente padrão de carimbo de tempo, de modo a ser utilizado em conjunto com o
             componente <emphasis>Demoiselle Signer</emphasis>.
         </para>
 
-    </section>
+        <para>
+            Em seguida, devemos editar um arquivo de propriedades do componente <emphasis>Demoiselle Signer</emphasis> para que o nosso componente customizado seja reconhecido. Para
+            isto, abra o arquivo de propriedades <code>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</code> localizado dentro da pasta <code>META-INF.services</code>.
+        </para>
 
+        <para>
+            No conteúdo deste arquivo deve constar a classe de implementação padrão do carimbador de tempo.
+
+            <itemizedlist>
+                <listitem>
+                    <code>br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl</code>
+                </listitem>
+            </itemizedlist>
+
+            Substitua o conteúdo pelo caminho completo da sua classe.
+
+            <itemizedlist>
+                <listitem>
+                    <code>seupacote.suaclasse</code>
+                </listitem>
+            </itemizedlist>
+
+            Após estas alterações, o componente <emphasis>Demoiselle Signer</emphasis> utilizará a sua implementação customizada.
+
+            <important>As alterações dentro do jar do componente <emphasis>Demoiselle Signer</emphasis> devem ser feitas antes do componente ser assinado.</important>
+        </para>
+    </section>
 </chapter>
