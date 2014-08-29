@@ -37,15 +37,13 @@
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.handler.MyInvocationHandler;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
+import br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
-import br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl;
 import java.io.IOException;
-import java.lang.reflect.Proxy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.util.ServiceLoader;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DERSet;
@@ -56,6 +54,9 @@ import org.slf4j.LoggerFactory;
 public class TimeStampToken implements UnsignedAttribute {
 
     private static final Logger logger = LoggerFactory.getLogger(TimeStampToken.class);
+
+    private static final ServiceLoader<TimeStampGenerator> timeStampGenerators = ServiceLoader.load(TimeStampGenerator.class);
+
     private final String identifier = "1.2.840.113549.1.9.16.2.14";
     private PrivateKey privateKey = null;
     private Certificate[] certificates = null;
@@ -76,21 +77,25 @@ public class TimeStampToken implements UnsignedAttribute {
     @Override
     public Attribute getValue() throws SignerException {
         try {
-            logger.info("Carregando a implementacao do carimbador de tempo por reflexão");
-            TimeStampGenerator tsg = new TimestampGeneratorImpl();
-            TimeStampGenerator proxy = (TimeStampGenerator) Proxy.newProxyInstance(TimeStampGenerator.class.getClassLoader(), new Class[]{TimeStampGenerator.class}, new MyInvocationHandler(tsg));
-            //Inicializa os valores para o timestmap
-            proxy.initialize(content, privateKey, certificates);
+            logger.info("Carregando o serviço do carimbador de tempo");
 
-            //Obtem o carimbo de tempo atraves do servidor TSA
-            byte[] response = proxy.generateTimeStamp();
+            if (timeStampGenerators.iterator().hasNext()) {
+                TimeStampGenerator cp = timeStampGenerators.iterator().next();
 
-            //Valida o carimbo de tempo
-            proxy.validateTimeStamp(content, response);
-            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(response)));
-        } catch (IOException | SecurityException ex) {
-            throw new SignerException(ex.getMessage());
-        } catch (IllegalArgumentException | SignerException ex) {
+                //Inicializa os valores para o timestmap
+                cp.initialize(content, privateKey, certificates);
+
+                //Obtem o carimbo de tempo atraves do servidor TSA
+                byte[] response = cp.generateTimeStamp();
+
+                //Valida o carimbo de tempo gerado
+                cp.validateTimeStamp(content, response);
+
+                return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(ASN1Primitive.fromByteArray(response)));
+            } else {
+                throw new SignerException("Não foi localizado nenhum provedor de carimbo de tempo disponível.");
+            }
+        } catch (SecurityException | IOException ex) {
             throw new SignerException(ex.getMessage());
         }
     }

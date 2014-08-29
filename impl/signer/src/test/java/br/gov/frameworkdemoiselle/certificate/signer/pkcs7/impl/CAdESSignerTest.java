@@ -116,9 +116,9 @@ public class CAdESSignerTest {
                 logger.info("A assinatura foi invalidada!");
             }
 
-            FileOutputStream fos = new FileOutputStream(new File("/home/07721825741/helloworld.p7s"));
-            fos.write(signed);
-            fos.close();
+            try (FileOutputStream fos = new FileOutputStream(new File("/home/07721825741/helloworld.p7s"))) {
+                fos.write(signed);
+            }
 
         } catch (KeyStoreException | NoSuchProviderException | IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException ex) {
             Logger.getLogger(CAdESSignerTest.class.getName()).log(Level.SEVERE, null, ex);

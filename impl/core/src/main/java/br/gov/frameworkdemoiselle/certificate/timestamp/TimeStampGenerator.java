@@ -34,36 +34,22 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package br.gov.frameworkdemoiselle.certificate.signer.handler;
+package br.gov.frameworkdemoiselle.certificate.timestamp;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 
-public class MyInvocationHandler implements InvocationHandler {
+/**
+ *
+ * @author 07721825741
+ */
+public interface TimeStampGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyInvocationHandler.class);
+    void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException;
 
-    /**
-     * Object that is being wrapped. In our case it will be an instance of
-     * AdderImplementation.
-     */
-    private Object obj;
+    byte[] generateTimeStamp() throws CertificateCoreException;
 
-    public MyInvocationHandler(Object obj) {
-        this.obj = obj;
-    }
-
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        logger.info("Invocando o metodo {}", method.getName());
-        Object result;
-
-        result = method.invoke(obj, args);
-
-        return result;
-
-    }
+    void validateTimeStamp(byte[] content, byte[] response) throws CertificateCoreException;
 
 }

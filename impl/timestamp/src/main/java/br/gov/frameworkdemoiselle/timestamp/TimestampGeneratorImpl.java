@@ -37,7 +37,7 @@
 package br.gov.frameworkdemoiselle.timestamp;
 
 import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.TimeStampGenerator;
+import br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.timestamp.connector.TimeStampOperator;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
