@@ -36,6 +36,27 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc;
 
+import br.gov.frameworkdemoiselle.certificate.CertificateException;
+import br.gov.frameworkdemoiselle.certificate.CertificateManager;
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.IValidator;
+import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -58,7 +79,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
@@ -73,28 +93,6 @@ import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.certificate.CertificateManager;
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.certificate.IValidator;
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
-import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 
 /**
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
@@ -155,6 +153,9 @@ public class CAdESSigner implements PKCS7Signer {
      * Valida apenas com o conteúdo do tipo DATA: OID ContentType
      * 1.2.840.113549.1.9.3 = OID Data 1.2.840.113549.1.7.1
      *
+     * @param content
+     * @param signed
+     * @return
      * @params content Necessário informar apenas se o pacote PKCS7 NÃO for do
      * tipo ATTACHED. Caso seja do tipo attached, este parâmetro será
      * substituido pelo conteúdo do pacote PKCS7.
@@ -203,9 +204,8 @@ public class CAdESSigner implements PKCS7Signer {
             } catch (CertStoreException exception) {
                 throw new SignerException(exception);
             }
-        } catch (SignerException exception) {
-            throw new SignerException(
-                    "Error on get information about certificates and public keys from a package PKCS7", exception);
+        } catch (SignerException ex) {
+            throw new SignerException("Error on get information about certificates and public keys from a package PKCS7", ex);
         }
 
         try {
@@ -247,15 +247,13 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     private CertStore generatedCertStore() {
-
         CertStore result = null;
-
         try {
             List<Certificate> certificates = new ArrayList<Certificate>();
 
             // TODO Avaliar se pega todos os certificados
-            for (int i = 0; i < certificateChain.length; i++) {
-                certificates.add(certificateChain[i]);
+            for (Certificate certChain : certificateChain) {
+                certificates.add(certChain);
             }
 
             CollectionCertStoreParameters cert = new CollectionCertStoreParameters(certificates);
@@ -357,7 +355,7 @@ public class CAdESSigner implements PKCS7Signer {
     }
 
     private AttributeTable mountAttributeTable(Collection<Attribute> collection) {
-        if (collection == null || collection.size() == 0) {
+        if (collection == null || collection.isEmpty()) {
             return null;
         }
         AttributeTable table = null;
@@ -450,9 +448,11 @@ public class CAdESSigner implements PKCS7Signer {
      *
      * @param content Conteúdo a ser assinado. TODO: Implementar co-assinaturas,
      * informar a política de assinatura
+     * @return
      */
     @Override
     public byte[] signer(byte[] content) {
+        Security.addProvider(new BouncyCastleProvider());
 
         if (this.certificate == null && this.certificateChain != null && this.certificateChain.length > 0) {
             this.certificate = (X509Certificate) this.certificateChain[0];
@@ -464,14 +464,12 @@ public class CAdESSigner implements PKCS7Signer {
             this.certificateChain = CAManager.getInstance().getCertificateChainArray(this.certificate);
         }
 
-        Security.addProvider(new BouncyCastleProvider());
-
+        //Adiciona o atributo de identificacao da politica
         SignaturePolicyIdentifier signaturePolicyIdentifier = new SignaturePolicyIdentifier();
         signaturePolicyIdentifier.setSignaturePolicyId(this.signaturePolicy.getSignaturePolicyId());
-        if (signaturePolicyIdentifier != null) {
-            this.addAttribute(signaturePolicyIdentifier);
-        }
+        this.addAttribute(signaturePolicyIdentifier);
 
+        //Adiciona o astributo certificado de assinatura
         boolean addSigningCertificateAttribute = true;
         for (Attribute attribute : this.getAttributes()) {
             if (attribute instanceof SigningCertificate) {
@@ -480,8 +478,7 @@ public class CAdESSigner implements PKCS7Signer {
             }
         }
         if (addSigningCertificateAttribute) {
-            SigningCertificate signingCertificateAttribute = this.signaturePolicy
-                    .getSigningCertificateAttribute(this.certificate);
+            SigningCertificate signingCertificateAttribute = this.signaturePolicy.getSigningCertificateAttribute(this.certificate);
             this.addAttribute(signingCertificateAttribute);
         }
 
@@ -505,7 +502,9 @@ public class CAdESSigner implements PKCS7Signer {
         CMSSignedDataGenerator signedDataGenerator = new CMSSignedDataGenerator();
         try {
             signedDataGenerator.addCertificatesAndCRLs(this.generatedCertStore());
-        } catch (Exception e) {
+        } catch (CertStoreException e) {
+            throw new SignerException(e);
+        } catch (CMSException e) {
             throw new SignerException(e);
         }
 
@@ -514,8 +513,7 @@ public class CAdESSigner implements PKCS7Signer {
 
         AttributeTable signedTable = this.mountSignedTable();
         AttributeTable unsignedTable = this.mountUnsignedTable();
-        signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID,
-                algorithmHashOID, signedTable, unsignedTable);
+        signedDataGenerator.addSigner(this.pkcs1.getPrivateKey(), this.certificate, algorithmEncryptationOID, algorithmHashOID, signedTable, unsignedTable);
 
         try {
             CMSProcessable processable = null;
@@ -527,7 +525,13 @@ public class CAdESSigner implements PKCS7Signer {
             CMSSignedData signedData = signedDataGenerator.generate(CMSSignedDataGenerator.DATA, processable,
                     this.attached, this.getProviderName(), true);
             result = signedData.getEncoded();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            throw new SignerException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new SignerException(e);
+        } catch (NoSuchProviderException e) {
+            throw new SignerException(e);
+        } catch (CMSException e) {
             throw new SignerException(e);
         }
 
@@ -552,7 +556,7 @@ public class CAdESSigner implements PKCS7Signer {
             BasicCertificate basicCertificate = new BasicCertificate(this.certificate);
             try {
                 List<String> listLCRs = basicCertificate.getCRLDistributionPoint();
-                if (listLCRs == null || listLCRs.size() == 0) {
+                if (listLCRs == null || listLCRs.isEmpty()) {
                     throw new SignerException("Blank LCR distribuition point for certificate.");
                 }
             } catch (IOException error) {
