@@ -59,6 +59,7 @@ import java.security.cert.CertStoreException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -231,8 +232,8 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
             DERSet derSet = (DERSet) valorDateSigner.getDERObject();
             DERUTCTime time = (DERUTCTime) derSet.getObjectAt(0);
             dataSigner = time.getAdjustedDate();
-        } catch (Throwable error) {
-            throw new SignerException("SigningTime error", error);
+        } catch (ParseException ex) {
+            throw new SignerException("SigningTime error", ex);
         }
 
         //Para a versão 1.0, o período para assinatura desta PA é de 31/10/2008 a 31/12/2014.
@@ -259,6 +260,8 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
      * Efetua a validação da politica para um determinado certificado no momento
      * da assinatura
      *
+     * @param certificate
+     * @param privateKey
      */
     @Override
     public void validate(X509Certificate certificate, PrivateKey privateKey) {
