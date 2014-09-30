@@ -47,6 +47,7 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DERNull;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.ess.ESSCertIDv2;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
@@ -82,6 +83,6 @@ public class BCSigningCertificateV2 extends BCSignedAttribute {
         String algorithmHashOID = SignerAlgorithmEnum.getSignerAlgorithmEnum(attribute.getAlgorithmHash()).getOIDAlgorithmHash();
         AlgorithmIdentifier algorithmId = new AlgorithmIdentifier(algorithmHashOID);
         ESSCertIDv2 essCertIDv2 = new ESSCertIDv2(algorithmId, certHash, issuerSerial);
-        return new DERSet(new ASN1Encodable[]{new DERSet(essCertIDv2), new DERSet(new DERNull())});
+        return new DERSet(new DERSequence(new ASN1Encodable[]{new DERSequence(essCertIDv2), new DERSequence(new DERNull())}));
     }
 }

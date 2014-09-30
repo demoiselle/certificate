@@ -78,7 +78,6 @@ public class BCSigningCertificate extends BCSignedAttribute {
         DERInteger serialNumber = new DERInteger(cert.getSerialNumber());
         IssuerSerial issuerSerial = new IssuerSerial(issuer, serialNumber);
         ESSCertID essCertId = new ESSCertID(certHash, issuerSerial);
-        //return new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(new DERNull())});
         return new DERSet(new DERSequence(new ASN1Encodable[]{new DERSequence(essCertId), new DERSequence(new DERNull())}));
     }
 }
