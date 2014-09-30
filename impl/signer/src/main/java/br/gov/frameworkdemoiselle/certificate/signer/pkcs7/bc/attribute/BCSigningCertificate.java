@@ -46,6 +46,7 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERInteger;
 import org.bouncycastle.asn1.DERNull;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.ess.ESSCertID;
 import org.bouncycastle.asn1.x509.GeneralName;
@@ -65,18 +66,19 @@ public class BCSigningCertificate extends BCSignedAttribute {
         X509Certificate cert = attribute.getValue();
         Digest digest = DigestFactory.getInstance().factoryDefault();
         digest.setAlgorithm(DigestAlgorithmEnum.SHA_1);
-        byte[] hash = null;
+        byte[] certHash = null;
         try {
-            hash = digest.digest(cert.getEncoded());
+            certHash = digest.digest(cert.getEncoded());
         } catch (CertificateEncodingException ex) {
             ex.printStackTrace();
         }
         X509Name dirName = new X509Name(cert.getSubjectDN().getName());
         GeneralName name = new GeneralName(dirName);
         GeneralNames issuer = new GeneralNames(name);
-        DERInteger serial = new DERInteger(cert.getSerialNumber());
-        IssuerSerial issuerSerial = new IssuerSerial(issuer, serial);
-        ESSCertID essCertId = new ESSCertID(hash, issuerSerial);
-        return new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(new DERNull())});
+        DERInteger serialNumber = new DERInteger(cert.getSerialNumber());
+        IssuerSerial issuerSerial = new IssuerSerial(issuer, serialNumber);
+        ESSCertID essCertId = new ESSCertID(certHash, issuerSerial);
+        //return new DERSet(new ASN1Encodable[]{new DERSet(essCertId), new DERSet(new DERNull())});
+        return new DERSet(new DERSequence(new ASN1Encodable[]{new DERSequence(essCertId), new DERSequence(new DERNull())}));
     }
 }
