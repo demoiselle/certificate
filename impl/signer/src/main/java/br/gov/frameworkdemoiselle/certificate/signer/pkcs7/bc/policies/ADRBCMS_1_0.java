@@ -96,7 +96,7 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
     @Override
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
-        signaturePolicyId.setHash(new byte[]{-76, 110, 85, 63, -101, 72, 58, -104, 88, 91, -26, -27, -81, 61, -28, 105, -50, -95, -115, -44});
+        signaturePolicyId.setHash(new byte[]{32, -17, -65, -67, 120, -17, -65, -67, 37, 81, 59, -17, -65, -67, -17, -65, -67, 41, 98, 78, 31, 64, -17, -65, -67, 24, 19, -17, -65, -67, 92, -17, -65, -67});
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA1withDSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0);
         signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/twiki/pub/Certificacao/DocIcp/DOC-ICP-15.03.pdf"));

@@ -59,6 +59,7 @@ import java.security.cert.CertStoreException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -99,7 +100,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
         // TODO: Gerar hash do PDF da política
-        signaturePolicyId.setHash(new byte[]{});
+        signaturePolicyId.setHash(new byte[]{83, 17, -17, -65, -67, -17, -65, -67, 85, 102, 92, -17, -65, -67, -17, -65, -67, 8, 94, -17, -65, -67, 28, -17, -65, -67, -17, -65, -67, 63, -17, -65, -67, 52, 28, -17, -65, -67, -17, -65, -67, 30, -17, -65, -67, -17, -65, -67, 29, 62, 86, -17, -65, -67, 95, 106, -17, -65, -67});
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA256withRSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0);
         signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/twiki/pub/Certificacao/DocIcp/DOC-ICP-15.03.pdf"));
@@ -229,7 +230,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
             DERSet derSet = (DERSet) valorDateSigner.getDERObject();
             DERUTCTime time = (DERUTCTime) derSet.getObjectAt(0);
             dataSigner = time.getAdjustedDate();
-        } catch (Throwable error) {
+        } catch (ParseException ex) {
 
         }
 
@@ -258,6 +259,8 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
      * Efetua a validação da politica para um determinado certificado no momento
      * da assinatura
      *
+     * @param certificate
+     * @param privateKey
      */
     @Override
     public void validate(X509Certificate certificate, PrivateKey privateKey) {
