@@ -103,7 +103,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
         signaturePolicyId.setHash(new byte[]{83, 17, -17, -65, -67, -17, -65, -67, 85, 102, 92, -17, -65, -67, -17, -65, -67, 8, 94, -17, -65, -67, 28, -17, -65, -67, -17, -65, -67, 63, -17, -65, -67, 52, 28, -17, -65, -67, -17, -65, -67, 30, -17, -65, -67, -17, -65, -67, 29, 62, 86, -17, -65, -67, 95, 106, -17, -65, -67});
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA256withRSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0);
-        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/twiki/pub/Certificacao/DocIcp/DOC-ICP-15.03.pdf"));
+        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/images/twiki/URL/pub/Certificacao/DocIcp/docs13082012/DOC-ICP-15.03_-_Versao_6.1.pdf"));
         return signaturePolicyId;
     }
 
