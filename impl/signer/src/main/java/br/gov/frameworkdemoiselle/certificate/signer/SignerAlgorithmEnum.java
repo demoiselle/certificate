@@ -61,11 +61,11 @@ public enum SignerAlgorithmEnum {
     /**
      * Definicao de algoritmo padrao.
      */
-    private String algorithm;
-    private String algorithmHash;
-    private String OIDAlgorithmHash;
-    private String algorithmCipher;
-    private String OIDAlgorithmCipher;
+    private final String algorithm;
+    private final String algorithmHash;
+    private final String OIDAlgorithmHash;
+    private final String algorithmCipher;
+    private final String OIDAlgorithmCipher;
 
     private SignerAlgorithmEnum(String algorithm, String algorithmHash, String OIDAlgorithmHash, String algorithmCipher, String OIDAlgorithmCipher) {
         this.algorithm = algorithm;
