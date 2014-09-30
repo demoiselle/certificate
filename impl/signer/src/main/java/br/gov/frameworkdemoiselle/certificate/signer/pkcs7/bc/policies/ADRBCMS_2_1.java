@@ -211,7 +211,7 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
 
         // O atributo signingCertificate deve conter referência apenas ao
         // certificado do signatário.
-        org.bouncycastle.asn1.cms.Attribute signedSigningCertificate = signedAttributesTable.get(new DERObjectIdentifier("1.2.840.113549.1.9.16.2.12"));
+        org.bouncycastle.asn1.cms.Attribute signedSigningCertificate = signedAttributesTable.get(new DERObjectIdentifier("1.2.840.113549.1.9.16.2.47"));
         if (signedSigningCertificate != null) {
             // Uso futuro, para processamento dos valores
             ASN1Set set = signedSigningCertificate.getAttrValues();
