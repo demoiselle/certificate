@@ -1,4 +1,4 @@
 Demoiselle Certificate Components
 =================================
 
-Componente do Demoiselle para uso de certificados digitais
+Components of the Demoiselle Framwork for use of digital certificates
