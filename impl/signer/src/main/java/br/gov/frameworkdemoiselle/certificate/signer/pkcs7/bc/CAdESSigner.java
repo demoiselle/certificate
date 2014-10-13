@@ -101,7 +101,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CAdESSigner implements PKCS7Signer {
 
-    private static final Logger log = LoggerFactory.getLogger(CAdESSigner.class);
+    private static final Logger logger = LoggerFactory.getLogger(CAdESSigner.class);
     private final PKCS1Signer pkcs1 = PKCS1Factory.getInstance().factoryDefault();
     private X509Certificate certificate;
     private Certificate certificateChain[];
@@ -237,7 +237,7 @@ public class CAdESSigner implements PKCS7Signer {
                 if (policy != null) {
                     policy.validate(content, signed);
                 } else {
-                    log.warn("Não existe validador para a política " + policyOID);
+                    logger.warn("Não existe validador para a política " + policyOID);
                 }
             }
         } else {
