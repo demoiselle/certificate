@@ -3,7 +3,22 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
     <revision>
-        <revnumber>1.8.0</revnumber>
+        <revnumber>1.0.9</revnumber>
+        <date>01/10/2014</date>
+        <authorinitials>hmp</authorinitials>
+        <revremark>
+            <itemizedlist>
+                <listitem>
+                    <para>Conformidade com a <ulink url="http://www.iti.gov.br/images/legislacao/resolucoes/RESOLU%C3%87%C3%83O_N_103-_DOC-ICP-04_-_29.04.2014.pdf">Resolução 103 do ITI</ulink></para>
+                </listitem>
+                <listitem>
+                    <para>Inclusão do tratamento do campo RIC (Registro de Identidade Civil)</para>
+                </listitem>
+            </itemizedlist>
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>1.0.8</revnumber>
         <date>01/10/2014</date>
         <authorinitials>hmp</authorinitials>
         <revremark>
