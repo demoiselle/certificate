@@ -36,18 +36,9 @@
  */
 package br.gov.frameworkdemoiselle.certificate.oid;
 
-/**
- *
- * Classe Generica   para   tratamento   de   atributos   de  alguns   atributos
- *   de   Pessoa  Fisica, Pessoa Juridica   e   Equipamento   de   acordo   com
- *   os   padroes  definidos   no  DOC­ICP­04 v2.0 de
- * 18/04/2006, pela ICP­BRASIL
- *
- */
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -56,18 +47,19 @@ import org.bouncycastle.asn1.DERPrintableString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERUTF8String;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import sun.security.util.DerValue;
-import sun.security.x509.OtherName;
-
+/**
+ * Classe Generica   para   tratamento   de   atributos   de  alguns   atributos
+ * de Pessoa  Fisica, Pessoa Juridica   e   Equipamento   de   acordo   com os
+ * padroes definidos no DOC­ICP­04 pela ICP­BRASIL
+ *
+ * @author Humberto Pacheco - SERVICO FEDERAL DE PROCESSAMENTO DE DADOS
+ */
 public class OIDGeneric {
 
-    private String oid = null;
-    private String data = null;
-    protected Map<String, String> properties = new HashMap<String, String>();
-
-    protected OIDGeneric() {
-    }
+    private static final Logger logger = LoggerFactory.getLogger(OIDGeneric.class);
 
     /**
      * Instance for object.
@@ -80,28 +72,28 @@ public class OIDGeneric {
     public static OIDGeneric getInstance(byte[] data) throws IOException, Exception {
         ASN1InputStream is = new ASN1InputStream(data);
         DERSequence sequence = (DERSequence) is.readObject();
-        DERObjectIdentifier oid = (DERObjectIdentifier) sequence.getObjectAt(0);
+        DERObjectIdentifier objectIdentifier = (DERObjectIdentifier) sequence.getObjectAt(0);
         DERTaggedObject tag = (DERTaggedObject) sequence.getObjectAt(1);
-        DEROctetString octet = null;
-        DERPrintableString print = null;
-        DERUTF8String utf8 = null;
-        DERIA5String ia5 = null;
+        DEROctetString octetString = null;
+        DERPrintableString printableString = null;
+        DERUTF8String utf8String = null;
+        DERIA5String ia5String = null;
 
         try {
-            octet = (DEROctetString) DEROctetString.getInstance(tag);
-        } catch (Exception e) {
+            octetString = (DEROctetString) DEROctetString.getInstance(tag);
+        } catch (Exception ex) {
             try {
-                print = DERPrintableString.getInstance(tag);
+                printableString = DERPrintableString.getInstance(tag);
             } catch (Exception e1) {
                 try {
-                    utf8 = DERUTF8String.getInstance(tag);
+                    utf8String = DERUTF8String.getInstance(tag);
                 } catch (Exception e2) {
-                    ia5 = DERIA5String.getInstance(tag);
+                    ia5String = DERIA5String.getInstance(tag);
                 }
             }
         }
 
-        String className = "br.gov.frameworkdemoiselle.certificate.oid.OID_" + oid.getId().replaceAll("[.]", "_");
+        String className = "br.gov.frameworkdemoiselle.certificate.oid.OID_" + objectIdentifier.getId().replaceAll("[.]", "_");
         OIDGeneric oidGenerico;
         try {
             oidGenerico = (OIDGeneric) Class.forName(className).newInstance();
@@ -113,55 +105,28 @@ public class OIDGeneric {
             oidGenerico = new OIDGeneric();
         }
 
-        oidGenerico.oid = oid.getId();
+        oidGenerico.setOid(objectIdentifier.getId());
 
-        if (octet != null) {
-            oidGenerico.data = new String(octet.getOctets());
+        if (octetString != null) {
+            oidGenerico.setData(new String(octetString.getOctets()));
         } else {
-            if (print != null) {
-                oidGenerico.data = print.getString();
+            if (printableString != null) {
+                oidGenerico.setData(printableString.getString());
             } else {
-                if (utf8 != null) {
-                    oidGenerico.data = utf8.getString();
+                if (utf8String != null) {
+                    oidGenerico.setData(utf8String.getString());
                 } else {
-                    oidGenerico.data = ia5.getString();
+                    oidGenerico.setData(ia5String.getString());
                 }
             }
         }
-
         oidGenerico.initialize();
-
         return oidGenerico;
     }
 
-    /**
-     *
-     * @param der -> Certificate DER (sun.security.util.DerValue)
-     * @return OIDGenerico
-     * @throws IOException
-     * @throws Exception
-     */
-    public static OIDGeneric getInstance(DerValue der) throws IOException, Exception {
-        OtherName on = new OtherName(der);
-        String className = "br.gov.frameworkdemoiselle.certificate.oid.OID_" + on.getOID().toString().replaceAll("[.]", "_");
-
-        OIDGeneric oidGenerico;
-        try {
-            oidGenerico = (OIDGeneric) Class.forName(className).newInstance();
-        } catch (InstantiationException e) {
-            throw new Exception("Was not possible instance class '" + className + "'.", e);
-        } catch (IllegalAccessException e) {
-            throw new Exception("Was not possible instance class '" + className + "'.", e);
-        } catch (ClassNotFoundException e) {
-            oidGenerico = new OIDGeneric();
-        }
-
-        oidGenerico.oid = on.getOID().toString();
-        oidGenerico.data = new String(on.getNameValue()).substring(6);
-        oidGenerico.initialize();
-
-        return oidGenerico;
-    }
+    private String oid = null;
+    private String data = null;
+    protected Map<String, String> properties = new HashMap<String, String>();
 
     protected void initialize() {
         // Inicializa as propriedades do conteudo DATA
@@ -169,34 +134,43 @@ public class OIDGeneric {
 
     /**
      *
-     * @param fields -> fields from certificate
+     * @param fields Campos do certificado
      */
     protected void initialize(Object[] fields) {
         int tmp = 0;
 
         for (int i = 0; i < fields.length; i += 2) {
             String key = (String) fields[i];
-            int size = ((Integer) fields[i + 1]).intValue();
-
+            int size = ((Number) fields[i + 1]).intValue();
             properties.put(key, data.substring(tmp, Math.min(tmp + size, data.length())));
-
             tmp += size;
         }
     }
 
     /**
+     * Retorna o OID
      *
-     * @return set of OID on String format
+     * @return
      */
     public String getOid() {
         return oid;
     }
 
     /**
+     * Retorna o conteudo de um OID
      *
-     * @return content on String format
+     * @return
      */
     public String getData() {
         return data;
     }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
 }
