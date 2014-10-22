@@ -58,7 +58,7 @@ CertificateManager cm = new CertificateManager(pinNumber);]]></programlisting>
     <section>
         <title>O Certificado Digital</title>
         <section>
-            <title>Extração de Informações</title>
+            <title>Extração de Informações utilizando anotações</title>
 
             <para>
                 Os certificados no formato X.509 podem conter várias informações armazenadas que podem ser obtidas através de um OID (Object Identifier). OID são usados
@@ -73,29 +73,28 @@ CertificateManager cm = new CertificateManager(pinNumber);]]></programlisting>
                 o seu OIDExtension. Para executar a carga das informações basta passar a classe/objeto para o CertificateManager.
             </para>
 
-            <programlisting role="JAVA"><![CDATA[
-class Cert {
+            <programlisting role="JAVA"><![CDATA[class Cert {
 
-        @ICPBrasilExtension(type=ICPBrasilExtensionType.CPF)
-        private String cpf;
+    @ICPBrasilExtension(type=ICPBrasilExtensionType.CPF)
+    private String cpf;
 
-        @ICPBrasilExtension(type=ICPBrasilExtensionType.NOME)
-        private String nome;
+    @ICPBrasilExtension(type=ICPBrasilExtensionType.NOME)
+    private String nome;
 
-        @DefaultExtension(type=DefaultExtensionType.CRL_URL)
-        private List<String> crlURL;
+    @DefaultExtension(type=DefaultExtensionType.CRL_URL)
+    private List<String> crlURL;
 
-        public String getCpf() {
-                return cpf;
-        }
+    public String getCpf() {
+        return cpf;
+    }
 
-        public String getNome() {
-                return nome;
-        }
+    public String getNome() {
+        return nome;
+    }
 
-        public List<String> getCrlURL() {
-                return crlURL;
-        }
+    public List<String> getCrlURL() {
+        return crlURL;
+    }
 
 }]]></programlisting>
 
@@ -103,8 +102,7 @@ class Cert {
                 Em seguida basta efetuar o carregamento da classe.
             </para>
 
-            <programlisting role="JAVA"><![CDATA[
-CertificateManager cm = new CertificateManager(x509);
+            <programlisting role="JAVA"><![CDATA[CertificateManager cm = new CertificateManager(x509);
 Cert cert = cm.load(Cert.class);]]></programlisting>
 
 
@@ -222,6 +220,37 @@ Cert cert = cm.load(Cert.class);]]></programlisting>
                     </listitem>
                 </itemizedlist>
             </section>
+        </section>
+
+        <section>
+            <title>Extração de Informações utilizando Classes</title>
+
+            <para>
+                Uma outra maneira de obter os valores necessários do certificado é através das classes de apoio fornecidas pelo componente. Caso deseje obter apenas informações, básicas,
+                podemos utilizar a classe <classname>BasicCertificate</classname>.
+            </para>
+
+            <para>
+                A seguir temos o exemplo de utilização, onde passamos um certificado para a classe e em seguida obtemos exibimos algumas informações no console.
+            </para>
+
+            <programlisting linenumbering="true" role="JAVA"><![CDATA[BasicCertificate bc = new BasicCertificate(certificate);
+logger.log(Level.INFO, "Nome....................[{0}]", bc.getNome());
+logger.log(Level.INFO, "E-mail..................[{0}]", bc.getEmail());
+logger.log(Level.INFO, "Numero de serie.........[{0}]", bc.getSerialNumber());
+logger.log(Level.INFO, "Nivel do Certificado....[{0}]", bc.getNivelCertificado());]]></programlisting>
+
+            <para>
+                Para obter informações mais específicas de um certificado de um e-CPF, e-CNPJ ou de equipamento, devemos utilizar a classe <classname>CertificateExtra</classname>.
+            </para>
+
+            <para>
+                A seguir temos o exemplo de utilização, onde recuperamos o número RIC de um certificado digital.
+            </para>
+
+            <programlisting linenumbering="true" role="JAVA"><![CDATA[CertificateExtra cx = new CertificateExtra(certificate);
+logger.log(Level.INFO, bc.toString());
+logger.log(Level.INFO, "RIC.....................[{0}]", cx.getOID_2_16_76_1_3_9().getRegistroDeIdentidadeCivil());]]></programlisting>
         </section>
     </section>
 
