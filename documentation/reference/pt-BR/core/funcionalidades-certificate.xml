@@ -245,12 +245,30 @@ logger.log(Level.INFO, "Nivel do Certificado....[{0}]", bc.getNivelCertificado()
             </para>
 
             <para>
-                A seguir temos o exemplo de utilização, onde recuperamos o número RIC de um certificado digital.
+                A seguir temos alguns exemplos de de utilização.
             </para>
 
-            <programlisting linenumbering="true" role="JAVA"><![CDATA[CertificateExtra cx = new CertificateExtra(certificate);
-logger.log(Level.INFO, bc.toString());
-logger.log(Level.INFO, "RIC.....................[{0}]", cx.getOID_2_16_76_1_3_9().getRegistroDeIdentidadeCivil());]]></programlisting>
+            <para>
+                O exemplo a seguir recupera o CPF e o número RIC de um certificado digital do tipo e-CPF.
+            </para>
+
+            <programlisting linenumbering="true" role="JAVA"><![CDATA[CertificateExtra ce = new CertificateExtra(certificate);
+logger.log(Level.INFO, "CPF.....................[{0}]", ce.getOID_2_16_76_1_3_1().getCPF());
+logger.log(Level.INFO, "RIC.....................[{0}]", ce.getOID_2_16_76_1_3_9().getRegistroDeIdentidadeCivil());]]></programlisting>
+
+            <para>
+                O exemplo a seguir recupera o CNPJ de um certificado digital do tipo e-CNPJ.
+            </para>
+
+            <programlisting linenumbering="true" role="JAVA"><![CDATA[CertificateExtra ce = new CertificateExtra(certificate);
+logger.log(Level.INFO, "CNPJ....................[{0}]", ce.getOID_2_16_76_1_3_3().getCNPJ());]]></programlisting>
+
+            <para>
+                O exemplo a seguir recupera o nome do responsável de um certificado digital do tipo Equipamento.
+            </para>
+
+            <programlisting linenumbering="true" role="JAVA"><![CDATA[CertificateExtra ce = new CertificateExtra(certificate);
+logger.log(Level.INFO, "Nome....................[{0}]", ce.getOID_2_16_76_1_3_2().getNome());]]></programlisting>
         </section>
     </section>
 
