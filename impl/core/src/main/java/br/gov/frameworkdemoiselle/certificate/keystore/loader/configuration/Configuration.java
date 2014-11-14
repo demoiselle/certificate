@@ -118,6 +118,9 @@ public class Configuration {
         map.put("TokenOuSmartCard_35", "/usr/lib/libwdpkcs.dylib");
         map.put("TokenOuSmartCard_36", "/usr/local/lib/libwdpkcs.dylib");
         map.put("TokenOuSmartCard_37", "/usr/local/ngsrv/libepsng_p11.so.1.2.2");
+        //Leitor Gemalto Mac
+        map.put("TokenOuSmartCard_38", "/usr/local/lib/libaetpkss.dylib");
+
 
         for (String driver : map.keySet()) {
             try {
