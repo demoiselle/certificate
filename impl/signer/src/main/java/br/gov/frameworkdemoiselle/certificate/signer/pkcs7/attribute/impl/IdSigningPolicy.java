@@ -40,9 +40,18 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttri
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
+import org.bouncycastle.asn1.esf.OtherHashAlgAndValue;
+import org.bouncycastle.asn1.esf.SigPolicyQualifierInfo;
+import org.bouncycastle.asn1.esf.SigPolicyQualifiers;
+import org.bouncycastle.asn1.esf.SignaturePolicyId;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 
 public class IdSigningPolicy implements SignedAttribute {
 
@@ -56,7 +65,24 @@ public class IdSigningPolicy implements SignedAttribute {
 
     @Override
     public Attribute getValue() {
-        return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyInfo().getSignPolicyIdentifier().getValue())));
+        //Atributo 1
+        ASN1ObjectIdentifier sigPolicyId = new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyInfo().getSignPolicyIdentifier().getValue());
+
+        //Atributo 2
+        OtherHashAlgAndValue sigPolicyHash = new OtherHashAlgAndValue(new AlgorithmIdentifier(new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue())), new DEROctetString(signaturePolicy.getSignPolicyHash().getValueUTF8().getBytes()));
+
+        //Atributo 3
+        List<SigPolicyQualifierInfo> sigPolicyQualifierInfos = new ArrayList<SigPolicyQualifierInfo>();
+
+        ASN1ObjectIdentifier sigPolicyQualifierId = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.5.1");
+        DERIA5String sigQualifier = new DERIA5String("xxx");
+        SigPolicyQualifierInfo bcSigPolicyQualifierInfo = new SigPolicyQualifierInfo(sigPolicyQualifierId, sigQualifier);
+        sigPolicyQualifierInfos.add(bcSigPolicyQualifierInfo);
+
+        SigPolicyQualifiers sigPolicyQualifiers = new SigPolicyQualifiers(sigPolicyQualifierInfos.toArray(new SigPolicyQualifierInfo[]{}));
+
+        SignaturePolicyId signaturePolicyId = new SignaturePolicyId(sigPolicyId, sigPolicyHash, sigPolicyQualifiers);
+        return new Attribute(new ASN1ObjectIdentifier(oid), new DERSet(signaturePolicyId));
     }
 
     @Override

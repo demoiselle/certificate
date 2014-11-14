@@ -50,6 +50,7 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DERNull;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
 import org.bouncycastle.asn1.ess.ESSCertIDv2;
@@ -91,7 +92,7 @@ public class SigningCertificateV2 implements SignedAttribute {
             IssuerSerial issuerSerial = new IssuerSerial(issuer, serialNumber);
             AlgorithmIdentifier algId = new AlgorithmIdentifier(new ASN1ObjectIdentifier("2.16.840.1.101.3.4.2.1"));//SHA-256
             ESSCertIDv2 essCertIDv2 = new ESSCertIDv2(algId, certHash, issuerSerial);
-            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new ASN1Encodable[]{new DERSet(essCertIDv2), new DERSet(DERNull.INSTANCE)}));
+            return new Attribute(new ASN1ObjectIdentifier(identifier), new DERSet(new DERSequence(new ASN1Encodable[]{new DERSequence(essCertIDv2), new DERSequence(DERNull.INSTANCE)})));
         } catch (CertificateEncodingException ex) {
             throw new SignerException(ex.getMessage());
         }
