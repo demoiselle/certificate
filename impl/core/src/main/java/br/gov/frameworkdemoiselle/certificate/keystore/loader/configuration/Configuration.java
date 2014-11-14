@@ -121,7 +121,6 @@ public class Configuration {
         //Leitor Gemalto Mac
         map.put("TokenOuSmartCard_38", "/usr/local/lib/libaetpkss.dylib");
 
-
         for (String driver : map.keySet()) {
             try {
                 this.addDriver(driver, map.get(driver));
