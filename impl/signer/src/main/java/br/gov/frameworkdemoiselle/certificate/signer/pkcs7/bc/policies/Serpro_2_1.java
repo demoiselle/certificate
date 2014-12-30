@@ -100,7 +100,7 @@ public class Serpro_2_1 implements SignaturePolicy {
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
         signaturePolicyId.setHash(new byte[]{32, -17, -65, -67, 120, -17, -65, -67, 37, 81, 59, -17, -65, -67, -17, -65, -67, 41, 98, 78, 31, 64, -17, -65, -67, 24, 19, -17, -65, -67, 92, -17, -65, -67});
-        signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA1withDSA.getOIDAlgorithmHash());
+        signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA1withRSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDSerpro.POLICY_SERPRO_2_1);
         signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.serpro.gov.br/"));
         return signaturePolicyId;
