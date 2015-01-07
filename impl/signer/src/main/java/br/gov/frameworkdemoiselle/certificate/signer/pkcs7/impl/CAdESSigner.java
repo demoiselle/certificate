@@ -36,16 +36,16 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.impl;
 
-import br.gov.frameworkdemoiselle.certificate.IValidator;
+//import br.gov.frameworkdemoiselle.certificate.IValidator;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
+//import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedOrUnsignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
+//import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.factory.AttributeFactory;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.AlgAndLength;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.CertificateTrustPoint;
@@ -53,6 +53,7 @@ import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.ObjectIdentifier;
 import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory;
 import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory.Policies;
+
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.Provider;
@@ -60,7 +61,7 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.CollectionCertStoreParameters;
+//import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAKey;
 import java.text.SimpleDateFormat;
@@ -72,6 +73,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1UTCTime;
@@ -112,7 +114,7 @@ public class CAdESSigner implements PKCS7Signer {
     private boolean attached = false;
     private SignaturePolicy signaturePolicy = null;
     private boolean defaultCertificateValidators = true;
-    private Collection<IValidator> certificateValidators = null;
+    //private Collection<IValidator> certificateValidators = null;
 
     public CAdESSigner() {
         this.pkcs1.setAlgorithm((String) null);
@@ -215,7 +217,7 @@ public class CAdESSigner implements PKCS7Signer {
         try {
             List<Certificate> certificates = new ArrayList<>();
             certificates.addAll(Arrays.asList(certificateChain));
-            CollectionCertStoreParameters cert = new CollectionCertStoreParameters(certificates);
+//            CollectionCertStoreParameters cert = new CollectionCertStoreParameters(certificates);
             result = new JcaCertStore(certificates);
 
         } catch (CertificateEncodingException ex) {
@@ -287,26 +289,26 @@ public class CAdESSigner implements PKCS7Signer {
         return this.pkcs1.getProvider();
     }
 
-    private String getProviderName() {
+   /* private String getProviderName() {
         if (this.pkcs1.getProvider() != null) {
             return this.pkcs1.getProvider().getName();
         }
         return null;
-    }
+    }*/
 
     @Override
     public PublicKey getPublicKey() {
         return this.pkcs1.getPublicKey();
     }
 
-    private Class<? extends SignedOrUnsignedAttribute> getTypeAttribute(SignedOrUnsignedAttribute attribute) {
+/*    private Class<? extends SignedOrUnsignedAttribute> getTypeAttribute(SignedOrUnsignedAttribute attribute) {
         if (attribute instanceof UnsignedAttribute) {
             return UnsignedAttribute.class;
         } else if (attribute instanceof SignedAttribute) {
             return SignedAttribute.class;
         }
         throw new SignerException("O atributo é inválido. Ele dever ser do tipo \"SignedAttribute\" ou \"UnsignedAttribute\"");
-    }
+    }*/
 
     public boolean isDefaultCertificateValidators() {
         return this.defaultCertificateValidators;
@@ -487,7 +489,8 @@ public class CAdESSigner implements PKCS7Signer {
         sha1WithRSAEncryption("1.2.840.113549.1.1.5", "SHA1withRSA"),
         sha256WithRSAEncryption("1.2.840.113549.1.1.11", "SHA256withRSA");
 
-        private final String identifier;
+        @SuppressWarnings("unused")
+		private final String identifier;
         private final String algorithmName;
 
         private AlgorithmNames(String identifier, String name) {

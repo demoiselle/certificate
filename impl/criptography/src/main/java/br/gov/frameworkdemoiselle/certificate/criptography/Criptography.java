@@ -59,6 +59,7 @@ import com.sun.crypto.provider.SunJCE;
  * 
  * @see {@link CriptographyImpl}
  */
+@SuppressWarnings("restriction")
 public interface Criptography {
 
 	/**

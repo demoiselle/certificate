@@ -62,7 +62,7 @@ public class MSKeyStoreLoader implements KeyStoreLoader {
     protected static final String MS_PROVIDER = "SunMSCAPI";
     protected static final String MS_TYPE = "Windows-MY";
     protected static final String MS_ERROR_LOAD = "Error on load a KeyStore from SunMSCAPI";
-    private CallbackHandler callback;
+    private static CallbackHandler callback;
 
     @Override
     public KeyStore getKeyStore() {
@@ -78,7 +78,7 @@ public class MSKeyStoreLoader implements KeyStoreLoader {
 
     @Override
     public void setCallbackHandler(CallbackHandler callback) {
-        this.callback = callback;
+        MSKeyStoreLoader.setCallback(callback);
     }
 
     /**
@@ -98,13 +98,13 @@ public class MSKeyStoreLoader implements KeyStoreLoader {
             keyStoreVeritable = (KeyStoreSpi) field.get(keyStore);
 
             if ("sun.security.mscapi.KeyStore$MY".equals(keyStoreVeritable.getClass().getName())) {
-                Collection entries;
+                Collection<?> entries;
                 String alias, hashCode;
                 X509Certificate[] certificates;
 
                 field = keyStoreVeritable.getClass().getEnclosingClass().getDeclaredField("entries");
                 field.setAccessible(true);
-                entries = (Collection) field.get(keyStoreVeritable);
+                entries = (Collection<?>) field.get(keyStoreVeritable);
 
                 for (Object entry : entries) {
                     field = entry.getClass().getDeclaredField("certChain");
@@ -127,4 +127,12 @@ public class MSKeyStoreLoader implements KeyStoreLoader {
             ex.printStackTrace();
         }
     }
+
+	public static CallbackHandler getCallback() {
+		return callback;
+	}
+
+	public static void setCallback(CallbackHandler callback) {
+		MSKeyStoreLoader.callback = callback;
+	}
 }

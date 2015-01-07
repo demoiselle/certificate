@@ -46,6 +46,7 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.PKCS11NotFoundException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.factory.KeyStoreLoaderFactory;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -53,6 +54,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.security.KeyStore;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -82,7 +84,7 @@ public class JKeyStoreDialog extends JDialog {
     private final JScrollPane scrollPane = new JScrollPane();
     private final JButton runButton = new JButton();
     private final JButton cancelButton = new JButton();
-    private final JComboBox policiesList = new JComboBox();
+    private final JComboBox<Object> policiesList = new JComboBox<Object>();
     private final JTable table = new JTable();
     private KeyStore keystore = null;
     private ListaCertificadosModel listaCertificadosModel = null;

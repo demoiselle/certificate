@@ -39,6 +39,7 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.impl;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS7Factory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
 import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -56,6 +57,7 @@ import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -67,9 +69,12 @@ public class CAdESSignerTest {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(CAdESSignerTest.class);
 
-    @Test
+    @SuppressWarnings("restriction")
+	//@Test
     public void testSignAndVerifySignature() {
         try {
+        	
+        	// TODO - criar um certificado de testes.
             String configName = "/home/07721825741/drivers.config";
             String password = "";
 

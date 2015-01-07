@@ -338,8 +338,7 @@ public class App extends AbstractAppletExecute {
                                 log4j-1.2.17-assinado.jar,
                                 slf4j-api-1.6.1-assinado.jar,
                                 slf4j-log4j12-1.6.1-assinado.jar,
-                                plugin-assinado.jar">
-
+                                htmlunit-2.15-assinado.jar">
                             <param name="factory.applet.action" value="br.gov.frameworkdemoiselle.App" />
                             <param name="applet.javascript.postaction.failure" value="foo" />
                             No Applet

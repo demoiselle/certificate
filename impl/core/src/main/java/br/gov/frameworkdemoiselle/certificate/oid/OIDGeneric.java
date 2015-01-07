@@ -47,6 +47,7 @@ package br.gov.frameworkdemoiselle.certificate.oid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DERIA5String;
@@ -55,14 +56,17 @@ import org.bouncycastle.asn1.DERPrintableString;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERUTF8String;
 import org.bouncycastle.asn1.DLSequence;
+
 import sun.security.util.DerValue;
 import sun.security.x509.OtherName;
 
+@SuppressWarnings("restriction")
 public class OIDGeneric {
 
     private String oid = null;
     private String data = null;
     protected Map<String, String> properties = new HashMap<String, String>();
+	private static ASN1InputStream is;
 
     protected OIDGeneric() {
     }
@@ -76,7 +80,7 @@ public class OIDGeneric {
      * @throws Exception Retorna a exceção Exception
      */
     public static OIDGeneric getInstance(byte[] data) throws IOException, Exception {
-        ASN1InputStream is = new ASN1InputStream(data);
+        is = new ASN1InputStream(data);
         DLSequence sequence = (DLSequence) is.readObject();
         ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) sequence.getObjectAt(0);
         DERTaggedObject taggedObject = (DERTaggedObject) sequence.getObjectAt(1);

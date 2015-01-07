@@ -42,6 +42,7 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.PKCS11NotFoundException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration.Configuration;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,10 +59,12 @@ import java.security.cert.CertificateException;
 import java.util.Formatter;
 import java.util.Map;
 import java.util.Set;
+
 import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Implementação de KeyStoreLoader baseado em drivers do sistema operacional. É
@@ -70,7 +73,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DriverKeyStoreLoader implements KeyStoreLoader {
 
-    private static final Logger logger = LoggerFactory.getLogger(DriverKeyStoreLoader.class);
+    //private static final Logger logger = LoggerFactory.getLogger(DriverKeyStoreLoader.class);
     private static final String PINNUMBER_INVALID = "PIN access to token can not be null or invalid";
     private static final String DRIVER_LOAD_ERROR = "Error on load a module PKCS#11";
     private static final String DRIVERS_EMPTY = "No driver are available";
@@ -102,7 +105,8 @@ public class DriverKeyStoreLoader implements KeyStoreLoader {
 
     }
 
-    public KeyStore getKeyStoreFromDriver(String driverName, String driverPath) {
+    @SuppressWarnings("resource")
+	public KeyStore getKeyStoreFromDriver(String driverName, String driverPath) {
         Configuration.getInstance().addDriver(driverName, driverPath);
         KeyStore keyStore = null;
         String pkcs11ConfigSettings = (new Formatter()).format(PKCS11_CONTENT_CONFIG_FILE, driverName, driverPath).toString();

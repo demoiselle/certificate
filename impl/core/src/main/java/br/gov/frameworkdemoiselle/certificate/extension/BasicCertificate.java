@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -545,7 +546,8 @@ public class BasicCertificate {
      *
      * @return O conteúdo relacionado ao OID informado
      */
-    public ASN1Primitive getExtensionValue(String oid) {
+    @SuppressWarnings("resource")
+	public ASN1Primitive getExtensionValue(String oid) {
         byte[] extensionValue = certificate.getExtensionValue(oid);
         if (extensionValue == null) {
             return null;

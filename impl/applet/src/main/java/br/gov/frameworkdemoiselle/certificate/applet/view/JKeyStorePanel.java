@@ -75,7 +75,7 @@ public class JKeyStorePanel extends JPanel {
     private final JScrollPane scrollPane = new JScrollPane();
     private final JButton runButton = new JButton();
     private final JButton cancelButton = new JButton();
-    private final JComboBox policiesList = new JComboBox();
+    private final JComboBox<Object> policiesList = new JComboBox<Object>();
     private final JTable table = new JTable();
     private KeyStore keystore = null;
     private ListaCertificadosModel listaCertificadosModel = null;

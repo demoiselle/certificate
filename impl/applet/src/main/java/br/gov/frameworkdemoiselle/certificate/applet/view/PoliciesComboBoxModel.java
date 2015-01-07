@@ -8,9 +8,11 @@ package br.gov.frameworkdemoiselle.certificate.applet.view;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-public class PoliciesComboBoxModel extends AbstractListModel implements ComboBoxModel {
+public class PoliciesComboBoxModel extends AbstractListModel<Object> implements ComboBoxModel<Object> {
 
-    String[] Politicas = {
+	private static final long serialVersionUID = 1L;
+
+	String[] Politicas = {
         "Política ICP-BRASIL com referência básica CMS, versão 1.0",
         "Política ICP-BRASIL com referência básica CMS, versão 1.1",
         "Política ICP-BRASIL com referência básica CMS, versão 2.0",

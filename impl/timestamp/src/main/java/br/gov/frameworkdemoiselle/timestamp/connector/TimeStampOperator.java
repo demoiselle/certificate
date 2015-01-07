@@ -46,6 +46,7 @@ import br.gov.frameworkdemoiselle.timestamp.enumeration.PKIFailureInfo;
 import br.gov.frameworkdemoiselle.timestamp.enumeration.PKIStatus;
 import br.gov.frameworkdemoiselle.timestamp.signer.RequestSigner;
 import br.gov.frameworkdemoiselle.timestamp.utils.TimeStampConfig;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +61,7 @@ import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cms.CMSException;
@@ -303,7 +305,8 @@ public class TimeStampOperator {
      * @param response O carimbo de tempo a ser validado
      *
      */
-    public void validate(byte[] content, byte[] response) throws CertificateCoreException {
+    @SuppressWarnings("unchecked")
+	public void validate(byte[] content, byte[] response) throws CertificateCoreException {
         try {
             TimeStampToken timeStampToken = new TimeStampToken(new CMSSignedData(response));
             CMSSignedData s = timeStampToken.toCMSSignedData();
@@ -313,12 +316,12 @@ public class TimeStampOperator {
             Store certStore = s.getCertificates();
             SignerInformationStore signers = s.getSignerInfos();
             Collection<SignerInformation> c = signers.getSigners();
-            Iterator it = c.iterator();
+            Iterator<SignerInformation> it = c.iterator();
 
             while (it.hasNext()) {
                 SignerInformation signer = (SignerInformation) it.next();
-                Collection certCollection = certStore.getMatches(signer.getSID());
-                Iterator certIt = certCollection.iterator();
+                Collection<?> certCollection = certStore.getMatches(signer.getSID());
+                Iterator<?> certIt = certCollection.iterator();
                 X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
                 if (signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
                     verified++;
