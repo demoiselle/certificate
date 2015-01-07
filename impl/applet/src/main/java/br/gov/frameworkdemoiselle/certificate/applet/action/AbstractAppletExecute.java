@@ -38,16 +38,20 @@ package br.gov.frameworkdemoiselle.certificate.applet.action;
 
 import br.gov.frameworkdemoiselle.certificate.CertificateManager;
 import br.gov.frameworkdemoiselle.certificate.applet.certificate.ICPBrasilCertificate;
+
 import com.sun.java.browser.dom.DOMAccessException;
 import com.sun.java.browser.dom.DOMAccessor;
 import com.sun.java.browser.dom.DOMAction;
 import com.sun.java.browser.dom.DOMService;
 import com.sun.java.browser.dom.DOMUnsupportedException;
+
 import java.applet.Applet;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.X509Certificate;
+
 import netscape.javascript.JSObject;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLDocument;
@@ -61,9 +65,12 @@ import org.w3c.dom.html.HTMLInputElement;
  * @author SUPST/STDCS
  *
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractAppletExecute implements AppletExecute {
 
-    /**
+    private static String result;
+
+	/**
      * Modifica um elemento do formulario html a partir da applet
      *
      * @param applet Applet
@@ -97,7 +104,7 @@ public abstract class AbstractAppletExecute implements AppletExecute {
      * @return Valor do campo
      */
     public static String getFormField(Applet applet, String formName, String fieldName) {
-        String result = "";
+        result = "";
         try {
             JSObject window = JSObject.getWindow(applet);
             JSObject document = (JSObject) window.getMember("document");
@@ -116,7 +123,7 @@ public abstract class AbstractAppletExecute implements AppletExecute {
     }
 
     private static void setFormFieldFromCommonAPI(final Applet applet, final String formName, final String fieldName, final String value) {
-        String result = null;
+        result = null;
         try {
             DOMService service = DOMService.getService(applet);
             service.invokeAndWait(new DOMAction() {
@@ -147,7 +154,7 @@ public abstract class AbstractAppletExecute implements AppletExecute {
     }
 
     private static String getFormFieldFromCommonAPI(final Applet applet, final String formName, final String fieldName) {
-        String result = null;
+        result = null;
         try {
             DOMService service = DOMService.getService(applet);
             result = (String) service.invokeAndWait(new DOMAction() {

@@ -90,6 +90,21 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Permissions>all-permissions</Permissions>
+							<Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
+							<Codebase>*</Codebase> 
+							<Application-Library-Allowable-Codebase>*</Application-Library-Allowable-Codebase> 
+							<Trusted-Library>true</Trusted-Library> 
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 
@@ -123,13 +138,19 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.sun.jdk.applet</groupId>
             <artifactId>plugin</artifactId>
             <version>1.6</version>
             <scope>system</scope>
             <systemPath>${java.home}/lib/plugin.jar</systemPath>
-        </dependency>
+        </dependency> -->
+		<dependency>
+			<groupId>net.sourceforge.htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+			<version>2.15</version>
+		</dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -189,6 +210,6 @@
     </repositories>
 
     <properties>
-        <demoiselle.framework.version>2.3.0</demoiselle.framework.version>
+        <demoiselle.framework.version>2.4.2</demoiselle.framework.version>
     </properties>
 </project>

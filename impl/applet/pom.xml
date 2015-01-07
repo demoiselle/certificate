@@ -73,6 +73,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+				 	<archive>
+						<manifestEntries>
+							<Application-Name>Demoiselle Certificate Applet</Application-Name>
+							<Entry-Point>br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet br.gov.frameworkdemoiselle.certificate.applet.view.JDialogApplet</Entry-Point>
+                		</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 
