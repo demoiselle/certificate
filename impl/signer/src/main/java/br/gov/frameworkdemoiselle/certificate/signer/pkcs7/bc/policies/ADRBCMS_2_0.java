@@ -221,7 +221,7 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
         }
 
         // Valida a cadeia de certificação de um arquivo assinado
-        ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0, CertPathEncoding.PKCS7);
+        //ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0, CertPathEncoding.PKCS7);
 
         Date dataSigner = null;
         try {
