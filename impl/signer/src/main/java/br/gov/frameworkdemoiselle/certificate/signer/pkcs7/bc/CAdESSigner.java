@@ -95,7 +95,6 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAtt
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.OIDICPBrasil;
 
 /**
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
@@ -513,6 +512,11 @@ public class CAdESSigner implements PKCS7Signer {
 
         // Valida o certificado usando a politica de certificacao
         this.signaturePolicy.validate(this.certificate, this.pkcs1.getPrivateKey());
+        
+        //Recupera o(s) certificado(s) de confianca para validacao
+        Collection<X509Certificate> trustedCas = CAManager.getInstance().getSignaturePolicyRootCAs(signaturePolicy.getSignaturePolicyId().getSigPolicyId());
+        //Efetua a validacao das cadeias do certificado baseado na politica
+        CAManager.getInstance().validateRootCAs(trustedCas, certificate);
 
         AttributeTable signedTable = this.mountSignedTable();
         AttributeTable unsignedTable = this.mountUnsignedTable();
