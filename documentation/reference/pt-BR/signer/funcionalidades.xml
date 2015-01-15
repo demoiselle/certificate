@@ -121,7 +121,7 @@ byte[] content = readContent("texto.txt"); /* implementar metodo de leitura de a
 PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
 signer.setCertificate(certificate);
 signer.setPrivateKey(privateKey);
-signer.setSignaturePolicy(new ADRBCMS_1_1());
+signer.setSignaturePolicy(new ADRBCMS_2_1());
 byte[] sign = signer.signer(this.content);]]></programlisting>
 
 
@@ -156,7 +156,7 @@ import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 byte[] content = readContent("texto.txt"); /* implementar metodo de leitura de arquivo */
 /* Gerando o HASH fora do assinador */
 Digest digest = DigestFactory.getInstance().factoryDefault();
-digest.setAlgorithm(DigestAlgorithmEnum.SHA_1);
+digest.setAlgorithm(DigestAlgorithmEnum.SHA_256);
 byte[] hash = digest.digest(content);
 
 /* Gerando a assinatura a partir do HASH gerado anteriormente */
@@ -164,7 +164,7 @@ PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
 signer.setCertificate(certificate);
 signer.setPrivateKey(privateKey);
 signer.addAttribute(new MessageDigest(hash));
-signer.setSignaturePolicy(new ADRBCMS_1_1());
+signer.setSignaturePolicy(new ADRBCMS_2_1());
 byte[] sign = signer.signer(null);]]></programlisting>
 
         <important>
@@ -172,27 +172,6 @@ byte[] sign = signer.signer(null);]]></programlisting>
                 Este procedimento gera o pacote PKCS7 idêntico ao pacote gerado pelo exemplo do tópico 2.2
             </para>
         </important>
-    </section>
-
-    <section>
-        <title>
-            Inclusão de data/hora da geração da assinatura
-        </title>
-
-        <para>
-            Caso seja necessário armazenar a data/hora em que a assinatura foi gerada, podemos usar um atributo para armazenar este dado.
-        </para>
-
-        <programlisting role="JAVA"><![CDATA[
-byte[] content = readContent("texto.txt"); /* implementar metodo de leitura de arquivo */
-PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
-signer.setCertificate(certificate);
-signer.setPrivateKey(privateKey);
-/* Documento assinado as 10:00:00AM 31/12/2010 */
-signer.addAttribute(new SigningTime(2010, 12, 31, 10, 0, 0));
-signer.setSignaturePolicy(new ADRBCMS_1_0());
-byte[] sign = signer.signer(this.content);]]></programlisting>
-
     </section>
 
     <section>

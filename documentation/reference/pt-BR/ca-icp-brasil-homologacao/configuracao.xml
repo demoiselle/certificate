@@ -18,7 +18,7 @@
 <dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-ca-icpbrasil-homologacao</artifactId>
-	<version>1.0.9</version>
+	<version>1.0.10</version>
 </dependency>]]>
         </programlisting>
     </section>

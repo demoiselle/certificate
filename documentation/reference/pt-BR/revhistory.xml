@@ -3,6 +3,18 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
     <revision>
+        <revnumber>1.0.10</revnumber>
+        <date>16/01/2015</date>
+        <authorinitials>eos</authorinitials>
+        <revremark>
+            <itemizedlist>
+                <listitem>
+                    <para>Correção na validação de data de vencimento do certificado no arquivo da assinatura</para>
+                </listitem>
+            </itemizedlist>
+        </revremark>
+    </revision>
+    <revision>
         <revnumber>1.0.9</revnumber>
         <date>22/10/2014</date>
         <authorinitials>hmp</authorinitials>
