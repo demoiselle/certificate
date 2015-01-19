@@ -39,13 +39,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>demoiselle-certificate-core</artifactId>
-  <version>1.0.10</version>
+  <version>1.0.10-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>br.gov.frameworkdemoiselle.component</groupId>
         <artifactId>demoiselle-certificate-parent</artifactId>
-        <version>1.0.10</version>
+        <version>1.0.10-SNAPSHOT</version>
         <relativePath>../../parent/certificate</relativePath>
     </parent>
 
