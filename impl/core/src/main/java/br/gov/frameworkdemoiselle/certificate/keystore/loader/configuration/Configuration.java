@@ -116,6 +116,9 @@ public class Configuration {
         map.put("TokenOuSmartCard_35", "/usr/lib/libwdpkcs.dylib");
         map.put("TokenOuSmartCard_36", "/usr/local/lib/libwdpkcs.dylib");
         map.put("TokenOuSmartCard_37", "/usr/local/ngsrv/libepsng_p11.so.1.2.2");
+        map.put("TokenOuSmartCard_38", "/usr/local/lib/libetpkcs11.dylib");
+        map.put("TokenOuSmartCard_39", "/usr/local/lib/libaetpkss.dylib");
+        
 
         for (String driver : map.keySet()) {
             try {
