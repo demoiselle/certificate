@@ -9,7 +9,7 @@
         <revremark>
             <itemizedlist>
                 <listitem>
-                    <para>Correção na validação de data de vencimento do certificado no arquivo da assinatura</para>
+                    <para>Retirada a validação do vencimento do certificado durante o check do arquivo assinado.</para>
                 </listitem>
             </itemizedlist>
         </revremark>
