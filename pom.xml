@@ -58,6 +58,7 @@
 
     <modules>
         <module>documentation/reference</module>
+        <module>documentation/quickstart</module>
         <module>parent/certificate</module>
         <module>impl/applet</module>
         <module>impl/core</module>
