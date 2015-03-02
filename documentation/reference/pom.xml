@@ -45,8 +45,8 @@
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle</groupId>
 		<artifactId>demoiselle-documentation-parent</artifactId>
-		<version>8</version>
 		<relativePath>../../../internal/parent/documentation</relativePath>
+		<version>9</version>
 	</parent>
 
 	<name>Demoiselle Certificate Reference Documentation</name>

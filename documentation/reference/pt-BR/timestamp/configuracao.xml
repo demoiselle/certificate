@@ -119,25 +119,15 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
         </para>
 
         <para>
-            Após a implementação, o artefato deve ser empacotado como um jar e colocado no lugar do componente padrão de carimbo de tempo, de modo a ser utilizado em conjunto com o
-            componente <emphasis>Demoiselle Signer</emphasis>.
+            Ao criar a sua implementação, voce deve usar a anotação <code>@Priority</code>, que recebe como parâmetro um número inteiro que serve para definir a prioridade de execução da respectiva 
+			implementação. O artefato deve ser empacotado de modo a ser utilizado em conjunto com o componente <emphasis>Demoiselle Signer</emphasis>.
         </para>
-
+	
         <para>
-            Em seguida, devemos editar um arquivo de propriedades do componente <emphasis>Demoiselle Signer</emphasis> para que o nosso componente customizado seja reconhecido. Para
-            isto, abra o arquivo de propriedades <code>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</code> localizado dentro da pasta <code>META-INF.services</code>.
-        </para>
+            Como o componente usa SPI, o seu projeto com sua implementação deve ter um diretório <emphasis>src/main/resource</emphasis> com a pasta <emphasis>META-INF/services</emphasis>. E dentro dela
+            um arquivo chamado "br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator"
 
-        <para>
-            No conteúdo deste arquivo deve constar a classe de implementação padrão do carimbador de tempo.
-
-            <itemizedlist>
-                <listitem>
-                    <code>br.gov.frameworkdemoiselle.timestamp.TimestampGeneratorImpl</code>
-                </listitem>
-            </itemizedlist>
-
-            Substitua o conteúdo pelo caminho completo da sua classe.
+            No arquivo adicione o caminho completo da sua classe.
 
             <itemizedlist>
                 <listitem>
@@ -147,7 +137,6 @@ public class TimestampGeneratorImpl implements TimeStampGenerator {
 
             Após estas alterações, o componente <emphasis>Demoiselle Signer</emphasis> utilizará a sua implementação customizada.
 
-            <important>As alterações dentro do jar do componente <emphasis>Demoiselle Signer</emphasis> devem ser feitas antes do componente ser assinado.</important>
         </para>
     </section>
 </chapter>
