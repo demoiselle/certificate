@@ -5,15 +5,160 @@
 <chapter id="avancado">
 	<title>Requisitando carimbo de Tempo através de um serviço</title>
 	<section>
-		<title>Nossa aplicação</title>
+		<title>Requisitando carumbo de tempo através de um certificado de aplicação</title>
+		<para>
+			Explicar que o componente possui uma implementação padrão de para gerar carimbo de tempo (link da documentação de referencia)
+		</para>
+	    <para>
+            <figure>
+                <title>
+                    Arquitetura padrão
+                </title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/timestamp01.png" format="PNG" align="center" scalefit="1" width="75%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>		
+	
+		<para>
+			Explicar solução que usa certificado da aplicação, cadastrando a chave publica desse certificado. 
+			Uma implementação própria que chama uma url (Servlet, REST, WebService) no servidor passando o conteudo.  
+		</para>
+	    <para>
+            <figure>
+                <title>
+                    Arquitetura com Servlet
+                </title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/timestamp02.png" format="PNG" align="center" scalefit="1" width="75%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>		
 	</section>
 	
 	<section>
-		<title>Criando um serviço usando Servlet</title>
-	</section>
+		<title>Criando uma Servlet para gerar o TimeStamp</title>
+		<para>
+			Em nosso projeto web, vamos adicionar ao pom.xml a dependecia do componente demoiselle-timestamp. Vamos utilizar sua API para
+			criar a requisação ao servidor de carimbo de tempo. 
+		</para>
+        <programlisting role="XML"><![CDATA[
+<dependency>
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
+	<artifactId>demoiselle-certificate-timestamp</artifactId>
+	<version>2.0.0</version>
+</dependency>]]></programlisting>
+		<para>
+			Em nosso servlet vamos executar tres atividades dinstintas:
+			1 - Leitura do certificado A1 (link para documentação de referencia)
+			2 - Leitura do conteúdo enviado pela apllet
+			3 - Requisição ao servidor de carimbo de tempo usando o certificado A1
+		</para>
+<programlisting role="Java"><![CDATA[
+@WebServlet("/carimbo")
+//@ServletSecurity(value = @HttpConstraint(rolesAllowed = "admin"))
+public class TimestampGeneratorServlet extends HttpServlet {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(TimestampGeneratorServlet.class);
+
+	
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("DoGET");
+		this.doPost(request, response);
+	}
+
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		
+		PrivateKey privateKey = null;
+		Certificate[] certificates = null;
+		byte[] content = null;
+
+		String configName = "/home/01534562567/drivers.config";
+		String password = "qwaszx12!";
+
+		Provider p = new sun.security.pkcs11.SunPKCS11(configName);
+		Security.addProvider(p);
+
+		KeyStore ks = null;
+		try {
+
+			ks = KeyStore.getInstance("PKCS11", "SunPKCS11-Provedor");
+
+			ks.load(null, password.toCharArray());
+
+			String alias = "";
+
+			KeyStore.ProtectionParameter protParam = new KeyStore.PasswordProtection(
+					password.toCharArray());
+
+			Enumeration<String> e = ks.aliases();
+			while (e.hasMoreElements()) {
+				alias = e.nextElement();
+				certificates = ks.getCertificateChain(alias);
+			}
+
+			KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry) ks
+					.getEntry(alias, protParam);
+			privateKey = pkEntry.getPrivateKey();
+
+			//Lendo o Conteúdo enviado
+			String contentType = request.getContentType();
+			if ("application/octet-stream".equals(contentType)|| contentType.isEmpty() || "application/x-www-form-urlencoded".equals(contentType)) {
+				content = IOUtils.toByteArray(request.getInputStream());
+			} else{
+				response.setContentType("text/plain");
+				response.setStatus(415);
+			}
+			
+			//requisitando um carimbo de tempo
+			TimeStampOperator timeStampOperator = new TimeStampOperator();
+			byte[] reqTimestamp = timeStampOperator.createRequest(privateKey,
+					certificates, content);
+
+			content = timeStampOperator.invoke(reqTimestamp);
+
+			response.setContentType("application/octet-stream");
+			response.getOutputStream().write(content);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+
+		} catch (CertificateCoreException e) {
+			response.setContentType("text/plain");
+			response.setStatus(500);
+			response.getOutputStream().write(e.getMessage().getBytes());
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		} catch (Exception e) {
+			response.setContentType("text/plain");
+			response.setStatus(500);
+			response.getOutputStream().write("Erro ao fazer load do certificado habilitado para requisitar carimbo de tempo".getBytes());
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		} finally {
+			// TODO
+
+		}
+	}>]]></programlisting>		
+	</section>	
 	<section>
 		<title>Criando uma implementação de TimeStampGenerator</title>
+		<para>
+			Como já explicamos a implementação padrão do componente requisita usando a pk do usuario. Podemos pedir para a aplicação fazer
+			essa solicitação criando uma implementação própria que se conecta 
+		</para>
+		
 	</section>
 
 	<section>
