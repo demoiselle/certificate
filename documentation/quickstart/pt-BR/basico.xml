@@ -17,8 +17,23 @@
 	<section>
 		<title>Criando sua Applet para exibir informações em uma página</title>
 		<para>
-			Crie um novo projeto com o nome "certificate-applet-customizada". Em seguida crie um classe <literal>App.java</literal>
-		no pacote <literal>br.gov.frameworkdemoiselle</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
+			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribuido os valores:
+		</para>
+<programlisting role="HTML" ><![CDATA[
+Group-id: XPTO
+Artifact-id: XPTO
+Packaging: JAR
+]]></programlisting>
+		<para>	
+			Após criada a aplicação adicione como dependência o componente <literal>demoiselle-certificate-applet</literal>: 
+		</para>	
+        <programlisting role="XML"><![CDATA[<dependency>
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
+	<artifactId>demoiselle-certificate-applet</artifactId>
+	<version>2.0.0</version>
+</dependency>]]></programlisting>			
+		<para>
+			Em seguida crie um classe <literal>App.java</literal> no pacote <literal>XPTO</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
 		</para>
 		
 		<programlisting role="JAVA" ><![CDATA[
@@ -63,41 +78,114 @@ public class App extends AbstractAppletExecute {
         </para>		
 	</section>
 
-	<section>
-		<title>Assinatura de código</title>
-		<para>
-			Para assinatura de código recomendamos que siga o indicado em nossa documentação de referência: <link linkend="XPTP">XPTO</link>
-		</para>
-	</section>
-
     <section>
-        <title>Integração do applet com páginas web</title>
-        <para>
-            O componente do applet possui a capacidade se comunicar com campos html de uma página web.
-        </para>
-        <para>
-            Para prencher um valor vindo do applet em um componente html, vamos considerar o código html abaixo:
-        </para>
-
-        <programlisting role="HTML" language="HTML"><![CDATA[
-<form id="mainForm" name="mainForm" method="post">
-        <input type="text" name="cpf" value="" size="11">
-</form>]]></programlisting>
+        <title>Assinatura dos jars</title>
 
         <para>
-            Para preenchermos o campo html descrito acima com um valor fornecido do applet, utilizamos o código a seguir.
+        	O modelo de segurança da plataforma Java é centrado sobre o conceito de sandbox (caixa de areia), 
+        	no qual um código remoto como um applet por padrão não é confiável e, portanto, não pode ter acesso ilimitado ao Sistema Operacional. 
+       		Para que possamos executar nossa applet, precisamos assinar todos assinar todos os jar necessários a execução da applet, conforme mostrado na tabela abaixo:
         </para>
-        <programlisting role="JAVA"><![CDATA[AbstractAppletExecute.setFormField(applet, "mainForm", "cpf", "12345678900");]]></programlisting>
+        
+        <table frame="all" pgwide="1">
+            <title>Lista dos jars assinados</title>
+            <tgroup colsep="1" cols="2">
+                <colspec colnum="1" colname="c0" />
+                <colspec colnum="2" colname="c1" />
+                <thead>
+                    <row>
+                        <entry>Jar Original</entry>
+                        <entry>Jar Assinado</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>demoiselle-certificate-applet-customizada-1.0.0.jar</entry>
+                        <entry>demoiselle-certificate-applet-customizada-1.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-applet-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-applet-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-core-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-core-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-signer-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-signer-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-policy-engine-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-policy-engine-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-timestamp-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-timestamp-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-criptography-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-criptography-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-ca-icpbrasil-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-2.0.0.jar</entry>
+                        <entry>demoiselle-certificate-ca-icpbrasil-homologacao-2.0.0-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>bcprov-jdk15on-1.51.jar</entry>
+                        <entry>bcprov-jdk15on-1.51-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>bcpkix-jdk15on-1.51.jar</entry>
+                        <entry>bcpkix-jdk15on-1.51-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>bcmail-jdk15on-1.51.jar</entry>
+                        <entry>bcmail-jdk15on-1.51-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>log4j-1.2.17.jar</entry>
+                        <entry>log4j-1.2.17-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>slf4j-api-1.6.1.jar</entry>
+                        <entry>slf4j-api-1.6.1-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry>slf4j-log4j12-1.6.1.jar</entry>
+                        <entry>slf4j-log4j12-1.6.1-assinado.jar</entry>
+                    </row>
+                    <row>
+                        <entry></entry>
+                        <entry>plugin-assinado.jar</entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
         <para>
-            Para obtermos o valor do campo html descrito acima para ser utilizado pelo applet, utilizamos o código a seguir.
+            Para mais detalhes sobre os procedimentos para assinatura dos artefatos, 
+            consulte a documentação de referência <link linkend="sas">XPTO</link>
         </para>
-        <programlisting role="JAVA"><![CDATA[AbstractAppletExecute.getFormField(applet, "mainform", "cpf");]]></programlisting>
+
     </section>
-     
+
 	<section>
 		<title>Projeto Web Exemplo</title>
 		<para>
-			Vamos criar um projeto Web e adicionar a página HTML que irá executar a applet.
+			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribuido os valores:
+		</para>
+<programlisting role="HTML" ><![CDATA[
+Group-id: XPTO
+Artifact-id: XPTO
+Packaging: WAR
+]]></programlisting>
+		
+		<para>
+			Adicione a página HTML que irá executar a applet.
 		</para>
         <programlisting role="HTML"><![CDATA[<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -159,7 +247,7 @@ public class App extends AbstractAppletExecute {
                             </tr>
                             <tr>
                                 <th colspan="2">Dados extraídos do certificado digital</th>
-                            </tr>
+                            </tr>ar
                             <tr>
                                 <td>CPF:</td>
                                 <td><input type="text" name="cpf" value="" size="11" disabled="true"></td>
@@ -180,77 +268,59 @@ public class App extends AbstractAppletExecute {
                 </tr>
             </table>
         </form>
-    </body>
+    </body>ar
 </html>]]></programlisting>
 
 		<para>
-        Caso ocorra algum problema na recuperação do certificado digital, o componente está preparado para efetuar o tratamento. Entretanto, existem casos em que o desenvolvedor precisa executar ações adicionais. Para estes casos, foi disponibilizado um novo recurso em que o componente efetua a chamada de um método
-        JavaScript que pode ser personalizado conforme a necessidade da aplicação. Abaixo temos um exemplo de método:
+       		Para funcionamento da applet é necessário as propiedades:              
+                <literal>factory.applet.action</literal>, que define qual classe será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, e a
+                <literal>applet.javascript.postaction.failure</literal>, que define qual método JavaScript deverá ser chamado. 
+        </para>
+		<para>
+			O seu projeto ficará com a seguinte estrutura de diretórios: 
 		</para>
-        <programlisting role="JAVA"><![CDATA[<script type="text/javascript">
-        function foo() {
-                alert("foo() method called!");
-        }
-</script>]]></programlisting>
 
-        <note>
-            <para>
-                A únicas propriedades necessárias ao funcionamento da applet são a
-                <literal>factory.applet.action</literal>
-                , que define qual classe será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, e a
-                <literal>applet.javascript.postaction.failure</literal>
-                , que define qual método JavaScript deverá ser chamado. Mesmo que
-                este último recurso não seja usado, é necessário que seja definido um método vazio, do contrário
-                o componente exibirá um erro informando que não foi possível encontrar um método válido.
-            </para>
-        </note>
+      <programlisting role="JAVA"><![CDATA[
+      certificate-exemplo-web.war
+	|-- webapp
+	|	|-- applet.html
+	|	|-- XPTO-assinado.jar  
+ 	|	|-- WEB-INF
+	|		|-- web.xml
+   ]]></programlisting>
 
-        <important>
-            <para>
-                A chamada do método JavaScript por padrão só funciona no Linux e Mac, pois neles o acesso é feito diretamente pelo Hardware, e não por uma camada de abstração
-                como no Windows. Para que este recurso funcione também no Windows, é necessário indicar que o acesso deve ser feito diretamente pelo hardware também. Consulte
-                a documentação do componente <emphasis>demoiselle-core</emphasis> para detalhes sobre este recurso.
-            </para>
-        </important>
 	</section>
 
 	<section>
-		<title> Integrando o componente demoiselle-signer à sua applet	</title>
-	 	<programlisting role="JAVA" ><![CDATA[
-	  		Trecho de código para assinar conteúdo.
-	 
-		]]> </programlisting>
-	
-		<para>
-			Para realizar assinatura digital do contéudo, utilizamos o componente demoiselle-signer 
+		<title> Assinando um documento	</title>
+	 	<para>
+			Para realizar assinatura digital do contéudo, utilizamos o componente demoiselle-certificate-signer 
 			que assina um conteúdo carregado no applet usando o certificado digital carregado pela appplet.
 		</para>
+		
+		<para>
+			Para isso vamos adicionar a dependência no pom.xml do projeto XPTO.jar. 
+		</para>
+        <programlisting role="XML"><![CDATA[<dependency>
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
+	<artifactId>demoiselle-certificate-signer</artifactId>
+	<version>2.0.0</version>
+</dependency>]]></programlisting>			
+
+		<para>
+			Para assinatura de documentos é necessário criar um objeto <literal>PKCS7Singer</literal>, setar os atributos 
+			e chamar o método <literal>doSign()</literal>:
+		</para>	
+        <programlisting role="JAVA"><![CDATA[PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
+signer.setCertificates(keystore.getCertificateChain(alias));
+signer.setPrivateKey((PrivateKey) keystore.getKey(alias, null));
+signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1); 
+byte[] signed = signer.doSign(content);]]></programlisting>	
+
 		<para>
 			Abaixo segue como ficará nosso código completo.
 		</para>
        	<programlisting role="JAVA" ><![CDATA[
-package br.gov.frameworkdemoiselle;
-
-import br.gov.frameworkdemoiselle.certificate.applet.action.AbstractAppletExecute;
-import br.gov.frameworkdemoiselle.certificate.applet.certificate.ICPBrasilCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS7Factory;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.policy.engine.factory.PolicyFactory;
-import java.applet.Applet;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.AuthProvider;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.UnrecoverableKeyException;
-import javax.security.auth.login.LoginException;
-import javax.swing.JOptionPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class App extends AbstractAppletExecute {
 
@@ -268,7 +338,7 @@ public class App extends AbstractAppletExecute {
             }
             String user_home = System.getProperty("user.home");
             logger.info("user.home......: {}", user_home);
-            String path = new File(documento).getAbsolutePath();
+            String path = new File(documento).getAbsolutePath(AD_RB_CADES_2_1);
             logger.info("Path...........: {}", path);
             byte[] content = readContent(path);
 
@@ -393,18 +463,7 @@ public class App extends AbstractAppletExecute {
 }
 }]]></programlisting>
 
-		<para>
-			E assim ficará a estrutura do seu projeto Web:
-		</para>
 
-      <programlisting role="JAVA"><![CDATA[
-      certificate-exemplo-web.war
-	|-- webapp
-	|	|-- applet.html
-	|	|-- XPTO-assinado.jar  
- 	|	|-- WEB-INF
-	|		|-- web.xml
-   ]]></programlisting>
 
 	</section>
 
