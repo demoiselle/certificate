@@ -164,4 +164,44 @@ public class TimestampGeneratorServlet extends HttpServlet {
 	<section>
 		<title>Adicionando segurança</title>
 	</section>
+	
+	<section>
+		<title>Teste de destaque</title>
+		<programlistingco>
+			<areaspec>
+				<area id="inject-context" coords="5"/>
+				<areaset id="add-msg-context" coords="">
+					<area id="" coords="2"/>
+					<area id="" coords="5"/>
+					<area id="" coords="7"/>
+				</areaset>
+			</areaspec>
+			<programlisting role="JAVA">
+<![CDATA[
+Linha 1
+linha 2
+linha 3
+linha 4
+linha 5
+linha 6 
+linha 7 
+linha 8
+
+]]></programlisting>
+
+<calloutlist>
+				<callout arearefs="inject-context">
+					<para>
+						X
+					</para>
+				</callout>
+				<callout arearefs="add-msg-context">
+					<para>
+						Y
+					</para>
+				</callout>
+			</calloutlist>
+		</programlistingco>
+		
+	</section>
 </chapter>
