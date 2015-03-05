@@ -17,13 +17,11 @@
 	<section>
 		<title>Criando sua Applet para exibir informações em uma página</title>
 		<para>
-			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribuido os valores:
+			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribua os valores:
 		</para>
-<programlisting role="HTML" ><![CDATA[
-Group-id: XPTO
-Artifact-id: XPTO
-Packaging: JAR
-]]></programlisting>
+<programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
+Artifact-id: AppletCustomizada
+Packaging: JAR]]></programlisting>
 		<para>	
 			Após criada a aplicação adicione como dependência o componente <literal>demoiselle-certificate-applet</literal>: 
 		</para>	
@@ -33,7 +31,7 @@ Packaging: JAR
 	<version>2.0.0</version>
 </dependency>]]></programlisting>			
 		<para>
-			Em seguida crie um classe <literal>App.java</literal> no pacote <literal>XPTO</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
+			Em seguida crie um classe <literal>App.java</literal> no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample.applet</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
 		</para>
 		
 		<programlisting role="JAVA" ><![CDATA[
@@ -178,97 +176,59 @@ public class App extends AbstractAppletExecute {
 		<para>
 			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribuido os valores:
 		</para>
-<programlisting role="HTML" ><![CDATA[
-Group-id: XPTO
-Artifact-id: XPTO
-Packaging: WAR
-]]></programlisting>
+<programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
+Artifact-id: AppletCustomizadaWeb
+Packaging: WAR]]></programlisting>
 		
 		<para>
 			Adicione a página HTML que irá executar a applet.
 		</para>
-        <programlisting role="HTML"><![CDATA[<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+        <programlisting role="HTML"><![CDATA[<!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="/demoiselle-certificate-applet-customizada-web/resources/styles/default.css" rel="stylesheet" type="text/css"/>
-        <title>Projeto Exemplo</title>
-    </head>
-
-    <script type="text/javascript">
-        function foo() {
-            alert("foo() method called!");
-        }
-    </script>
-
-    <body>
-        <form id="mainForm" name="mainForm" method="post" action="">
-            <table>
-                <tr>
-                    <td><h1>Applet Exemplo de Assinatura Digital</h1></td>
-                </tr>
-                <tr>
-                    <td>
-                        <applet codebase="http://10.32.180.96:8080/demoiselle-certificate-applet-customizada-web/"
-                                code="br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet" width=480 height=350 MAYSCRIPT
-                                archive="demoiselle-certificate-applet-customizada-1.0.0-assinado.jar,
-                                demoiselle-certificate-applet-2.0.0-assinado.jar,
-                                demoiselle-certificate-core-2.0.0-assinado.jar,
-                                demoiselle-certificate-signer-2.0.0-assinado.jar,
-                                demoiselle-certificate-policy-engine-2.0.0-assinado.jar,
-                                demoiselle-certificate-timestamp-2.0.0-assinado.jar,
-                                demoiselle-certificate-criptography-2.0.0-assinado.jar,
-                                demoiselle-certificate-ca-icpbrasil-2.0.0-assinado.jar,
-                                demoiselle-certificate-ca-icpbrasil-homologacao-2.0.0-assinado.jar,
-                                bcprov-jdk15on-1.51-assinado.jar,
-                                bcpkix-jdk15on-1.51-assinado.jar,
-                                bcmail-jdk15on-1.51-assinado.jar,
-                                log4j-1.2.17-assinado.jar,
-                                slf4j-api-1.6.1-assinado.jar,
-                                slf4j-log4j12-1.6.1-assinado.jar,
-                                plugin-assinado.jar">
-
-                            <param name="factory.applet.action" value="br.gov.frameworkdemoiselle.App" />
-                            <param name="applet.javascript.postaction.failure" value="foo" />
-                            No Applet
-                        </applet>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table width="100%">
-                            <tr>
-                                <th colspan="2">Escolha o arquivo a ser assinado</th>
-                            </tr>
-                            <tr>
-                                <td>Documento:</td>
-                                <td><input type="file" name="documento" value=""></td>
-                            </tr>
-                            <tr>
-                                <th colspan="2">Dados extraídos do certificado digital</th>
-                            </tr>ar
-                            <tr>
-                                <td>CPF:</td>
-                                <td><input type="text" name="cpf" value="" size="11" disabled="true"></td>
-                            </tr>
-                            <tr>
-                                <td >Nome:</td>
-                                <td><input type="text" name="nome" value="" size="30" disabled="true"></td>
-                            </tr>
-                            <tr>
-                                <td >Email:</td>
-                                <td><input type="text" name="email" value="" size="30" disabled="true"></td>
-                            </tr>
-                            <tr>
-                                <td >Nascimento:</td>
-                                <td><input type="text" name="nascimento" value="" size="8" disabled="true"></td>
-                            </tr>
-                        </table>
-                </tr>
-            </table>
-        </form>
-    </body>ar
+<head>
+<meta charset="UTF-8">
+<title>Exemplo de Assinatura de Documento</title>
+<link href="css/default.css" rel="stylesheet">
+</head>
+<body>
+	<form id="mainForm" name="mainForm" method="post" action="">
+		<h3>Applet Exemplo de Assinatura Digital</h3>
+		<object codetype="application/java"
+			classid="java:br.gov.frameworkdemoiselle.certificate.applet.view.JPanelApplet"
+			width=480 height=350
+			archive="AppletCustomizada-1.0.0-assinado.jar,
+                demoiselle-certificate-applet-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-core-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-signer-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-policy-engine-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-timestamp-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-criptography-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-ca-icpbrasil-2.0.0-SNAPSHOT-assinado.jar,
+                demoiselle-certificate-ca-icpbrasil-homologacao-2.0.0-SNAPSHOT-assinado.jar,
+                bcprov-jdk15on-1.51-assinado.jar,
+                bcpkix-jdk15on-1.51-assinado.jar,
+                bcmail-jdk15on-1.51-assinado.jar,
+                log4j-1.2.17-assinado.jar,
+                slf4j-api-1.6.1-assinado.jar,
+                slf4j-log4j12-1.6.1-assinado.jar,
+                plugin-assinado.jar">
+			<param name="factory.applet.action"
+				value="br.gov.frameworkdemoiselle.certificate.sample.applet.App" />
+			<param name="applet.javascript.postaction.failure" value="foo" />
+			No Applet
+		</object>
+		<label for="documento">Arquivo: </label> 
+		<input id="documento" type="file" name="documento">
+		<label for="cpf">CPF</label> 
+		<input id="cpf"	type="text" name="cpf" disabled="disabled">
+		<label for="nome">Nome</label> 
+		<input id="nome" type="text" name="nome" disabled="disabled">
+		<label for="nascimento">Nascimento</label> 
+		<input id="nascimento" type="text" name="nascimento" disabled="disabled">
+		<label for="email">Email</label> 
+		<input id="email" type="text" name="email" disabled="disabled">
+	</form>
+</body>
 </html>]]></programlisting>
 
 		<para>
@@ -276,17 +236,58 @@ Packaging: WAR
                 <literal>factory.applet.action</literal>, que define qual classe será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, e a
                 <literal>applet.javascript.postaction.failure</literal>, que define qual método JavaScript deverá ser chamado. 
         </para>
+        <para>
+        	Acrescente um arquivo <literal>default.css</literal> na pasta <literal>webpapp/css</literal>.
+        </para>
+   		<programlisting role="HTML"><![CDATA[label {
+	display: block;
+	margin-bottom: -1em;
+}
+
+input {
+	display: block;
+	position: relative;
+	left: 7em;
+	top: -0.5em;
+}
+
+input[type="file"]{
+    border: 1px solid #cccccc;
+    padding: 5px;
+}]]></programlisting>
 		<para>
 			O seu projeto ficará com a seguinte estrutura de diretórios: 
 		</para>
 
-      <programlisting role="JAVA"><![CDATA[
-      certificate-exemplo-web.war
-	|-- webapp
-	|	|-- applet.html
-	|	|-- XPTO-assinado.jar  
- 	|	|-- WEB-INF
-	|		|-- web.xml
+      <programlisting role="HTML"><![CDATA[
+AppletCustomizadaWeb
+├── pom.xml
+└── src
+    ├── main
+    │   ├── java
+    │   ├── resources
+    │   └── webapp
+    │       ├── css
+    │       │   └── default.css
+    │       ├── AppletCustomizada-1.0.0-assinado.jar
+    │       ├── applet.html
+    │       ├── bcmail-jdk15on-1.51-assinado.jar
+    │       ├── bcpkix-jdk15on-1.51-assinado.jar
+    │       ├── bcprov-jdk15on-1.51-assinado.jar
+    │       ├── demoiselle-certificate-applet-2.0.0-assinado.jar
+    │       ├── demoiselle-certificate-ca-icpbrasil-2.0.0-assinado.jar
+    │       ├── demoiselle-certificate-core-2.0.0-assinado.jar
+    │       ├── demoiselle-certificate-criptography-2.0.0-assinado.jar
+    │       ├── demoiselle-certificate-policy-engine-2.0.0-assinado.jar
+    │       ├── demoiselle-certificate-signer-2.0.0-assinado.jar
+    │       ├── demoiselle-certificate-timestamp-2.0.0-assinado.jar
+    │       ├── log4j-1.2.17-assinado.jar
+    │       ├── plugin-assinado.jar
+    │       ├── slf4j-api-1.6.1-assinado.jar
+    │       └── slf4j-log4j12-1.6.1-assinado.jar
+    └── test
+        ├── java
+        └── resources
    ]]></programlisting>
 
 	</section>
