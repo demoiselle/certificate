@@ -300,7 +300,7 @@ AppletCustomizadaWeb
 		</para>
 		
 		<para>
-			Para isso vamos adicionar a dependência no pom.xml do projeto XPTO.jar. 
+			Para isso vamos adicionar a dependência no pom.xml do projeto AppletCustomizadaWeb. 
 		</para>
         <programlisting role="XML"><![CDATA[<dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
@@ -309,27 +309,65 @@ AppletCustomizadaWeb
 </dependency>]]></programlisting>			
 
 		<para>
-			Para assinatura de documentos é necessário criar um objeto <literal>PKCS7Singer</literal>, setar os atributos 
+			Para assinatura de documentos é necessário criar um objeto <literal>PKCS7Singer</literal>, configurar os atributos 
 			e chamar o método <literal>doSign()</literal>:
 		</para>	
         <programlisting role="JAVA"><![CDATA[PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
 signer.setCertificates(keystore.getCertificateChain(alias));
 signer.setPrivateKey((PrivateKey) keystore.getKey(alias, null));
-signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1); 
-byte[] signed = signer.doSign(content);]]></programlisting>	
+byte[] signed = signer.doSign(content);
+signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programlisting>	
+
+		<para>
+			O componente implementa assinatura padrão ICPBrasil de referência básica (RB) e de referência temporal (RT). 
+			No método <literal>setSignaturePolicy()</literal> você pode definir a política a ser usada. 
+			Atualmente o componente suporta as política de assinatura listadas abaixo:
+		</para>
+		<itemizedlist>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RB_CADES_1_0</literal>, Refere-se à Assinatura Digital de Referência Básica versão 1.0;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RB_CADES_1_1</literal>, Refere-se à Assinatura Digital de Referência Básica versão 1.1;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RB_CADES_2_0</literal>, Refere-se à Assinatura Digital de Referência Básica versão 2.0;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RB_CADES_2_1</literal>, Refere-se à Assinatura Digital de Referência Básica versão 2.1;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RT_CADES_1_0</literal>, Refere-se à Assinatura Digital de Referência Temporal versão 1.0;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RT_CADES_1_1</literal>, Refere-se à Assinatura Digital de Referência Temporal versão 1.1;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RT_CADES_2_0</literal>, Refere-se à Assinatura Digital de Referência Temporal versão 2.0;
+            </listitem>
+            <listitem>
+                <literal>PolicyFactory.Policies.AD_RT_CADES_2_1</literal>, Refere-se à Assinatura Digital de Referência Temporal versão 2.1;
+            </listitem>
+        </itemizedlist>		
 
 		<para>
 			Abaixo segue como ficará nosso código completo.
 		</para>
-       	<programlisting role="JAVA" ><![CDATA[
+       	<programlisting role="JAVA" ><![CDATA[public class App extends AbstractAppletExecute{
+	
+	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
-public class App extends AbstractAppletExecute {
-
-    private static final Logger logger = LoggerFactory.getLogger(App.class);
-
-    @Override
-    public void execute(KeyStore keystore, String alias, int policyselected, Applet applet) {
-        try {
+	@Override
+	public void execute(KeyStore keystore, String alias, int policyselected, Applet applet) {
+		try {
+            /* Exibe alguns dados do certificado */
+            ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
+            AbstractAppletExecute.setFormField(applet, "mainForm", "cpf", certificado.getCpf());
+            AbstractAppletExecute.setFormField(applet, "mainForm", "nome", certificado.getNome());
+            AbstractAppletExecute.setFormField(applet, "mainForm", "nascimento", certificado.getDataNascimento());
+            AbstractAppletExecute.setFormField(applet, "mainForm", "email", certificado.getEmail());
+            
+            
             /* Carregando o conteudo a ser assinado */
             String documento = AbstractAppletExecute.getFormField(applet, "mainForm", "documento");
 
@@ -337,54 +375,19 @@ public class App extends AbstractAppletExecute {
                 JOptionPane.showMessageDialog(applet, "Por favor, escolha um documento para assinar", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            String user_home = System.getProperty("user.home");
-            logger.info("user.home......: {}", user_home);
-            String path = new File(documento).getAbsolutePath(AD_RB_CADES_2_1);
-            logger.info("Path...........: {}", path);
-            byte[] content = readContent(path);
 
+            String path = new File(documento).getAbsolutePath();
+            byte[] content = readContent(path);
+            logger.info("Path.........: {}", path );
+
+            
             /* Parametrizando o objeto doSign */
             PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
             signer.setCertificates(keystore.getCertificateChain(alias));
             signer.setPrivateKey((PrivateKey) keystore.getKey(alias, null));
-
-            switch (policyselected) {
-                case 0: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_1_0);
-                    break;
-                }
-                case 1: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_1_1);
-                    break;
-                }
-                case 2: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_0);
-                    break;
-                }
-                case 3: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
-                    break;
-                }
-                case 4: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_1_0);
-                    break;
-                }
-                case 5: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_1_1);
-                    break;
-                }
-                case 6: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_2_0);
-                    break;
-                }
-                case 7: {
-                    signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_2_1);
-                    break;
-                }
-            }
-
             signer.setAttached(true);
-
+            signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);
+            
             /* Realiza a assinatura do conteudo */
             logger.info("Efetuando a  assinatura do conteudo");
             byte[] signed = signer.doSign(content);
@@ -396,45 +399,29 @@ public class App extends AbstractAppletExecute {
             logger.info("Efetuando a validacao da assinatura.");
             boolean checked = signer.check(content, signed);
 
-            if (checked) {ja usado, é ne
-                logger.info("A assinatura e valida.");
+            if (checked) {
                 JOptionPane.showMessageDialog(applet, "O arquivo foi assinado e validado com sucesso.", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                logger.info("A assinatura nao e valida!");
-            }
+            	JOptionPane.showMessageDialog(applet, "Assinatura inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+            }            
+            
+        } catch (KeyStoreException e) {
+            JOptionPane.showMessageDialog(applet, e.getMessage(), "Error",  JOptionPane.ERROR_MESSAGE);
+        } catch (UnrecoverableKeyException e) {
+        	JOptionPane.showMessageDialog(applet, e.getMessage(), "Error",  JOptionPane.ERROR_MESSAGE);
+		} catch (NoSuchAlgorithmException e) {
+			JOptionPane.showMessageDialog(applet, e.getMessage(), "Error",  JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
 
-            /* Exibe alguns dados do certificado */
-            ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
-            AbstractAppletExecute.setFormField(applet, "mainForm", "cpf", certificado.getCpf());
-            AbstractAppletExecute.setFormField(applet, "mainForm", "nome", certificado.getNome());
-            AbstractAppletExecute.setFormField(applet, "mainForm", "nascimento", certificado.getDataNascimento());
-            AbstractAppletExecute.setFormField(applet, "mainForm", "email", certificado.getEmail());
-
-        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
-            JOptionPane.showMessageDialog(applet, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            logger.info("Efetuando logout no provider.");
-            AuthProvider ap = null;
-
-            if (keystore != null) {
-                ap = (AuthProvider) keystore.getProvider();
-            }
-
-            if (ap != null) {
-                try {
-                    ap.logout();
-                } catch (LoginException e) {
-                    JOptionPane.showMessageDialog(applet, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void cancel(KeyStore keystore, String alias, int policyselected, Applet applet) {
-        /* Seu codigo customizado aqui... */
-    }
-
+	@Override
+	public void cancel(KeyStore keystore, String alias, int policyselected,
+			Applet applet) {
+		// TODO Auto-generated method stub
+		
+	}
+	
     private byte[] readContent(String arquivo) {
         byte[] result = null;
         try {
@@ -460,19 +447,16 @@ public class App extends AbstractAppletExecute {
         } catch (IOException ex) {
             logger.info(ex.getMessage());
         }
-    }
-}
+    }	
 }]]></programlisting>
-
-
 
 	</section>
 
 	<section>
 		<title>Executando o Applet</title>
  		<para>
-         Após publicação em seu servidor WEB. 
-         Abra seu navegador na url na qual foi publicado os arquivos. Neste exemplo seria http://localhost:8080/certificate-exemplo. Se o certificado
+         Agora publique sua aplicação web em um servidor Jboss EAP6
+         Ao acessar a url http://localhost:8080/AppletCustomizadaWeb/applet.html. Se o certificado
             digital necessitar do pin para que seja feito o acesso, a aplicação solicitará imediatamente o pin de seu certificado, conforme a tela abaixo:
         </para>
 
@@ -505,7 +489,5 @@ public class App extends AbstractAppletExecute {
             </figure>
         </para>
 </section>
-
-
 
 </chapter>
