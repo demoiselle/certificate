@@ -55,8 +55,8 @@
 	<section>
 		<title>Criando uma Servlet para gerar o TimeStamp</title>
 		<para>
-			Em nosso projeto web, vamos adicionar ao pom.xml a dependecia do componente <literal>demoiselle-certificate-timestamp</literal>. 
-			Vamos utilizar sua API para	criar a requisação ao servidor de carimbo de tempo. 
+			Em nosso projeto web, vamos adicionar ao pom.xml a dependência do componente <literal>demoiselle-certificate-timestamp</literal>. 
+			Vamos utilizar sua API para	gerar um carimbo de tempo.
 		</para>
         <programlisting role="XML"><![CDATA[<dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
