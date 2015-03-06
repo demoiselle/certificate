@@ -3,11 +3,14 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 
 <chapter id="avancado">
-	<title>Requisitando carimbo de Tempo através de um serviço</title>
+	<title>Usando um carimbo de tempo</title>
 	<section>
-		<title>Requisitando carumbo de tempo através de um certificado de aplicação</title>
+		<title>Como funciona</title>
 		<para>
-			Explicar que o componente possui uma implementação padrão de para gerar carimbo de tempo (link da documentação de referencia)
+			Para usar a política AD_RT do ICP-Brasil precisamos requisitar uma referência temporal digital a uma ACT que possua um servidor devidamente homologado.
+			O componente <literal>demoiselle-certificate-timestamp</literal> possui toda a implementação necessária para acessar o servidor de carimbo de tempo do SERPRO.
+			Para obter uma referência temporal é necessário assinar uma requisição usando certificado que esteja autorizado a acessar esse servidor e assim gerar uma
+			assinatura de documento com referência temporal.
 		</para>
 	    <para>
             <figure>
@@ -23,8 +26,17 @@
         </para>		
 	
 		<para>
-			Explicar solução que usa certificado da aplicação, cadastrando a chave publica desse certificado. 
-			Uma implementação própria que chama uma url (Servlet, REST, WebService) no servidor passando o conteudo.  
+			Para aplicações que disponibilizam assinatura com referência temporal para diversos usuários essa implementação
+			padrão pode não ser a ideal, pois será necessário autorizar cada usuário para obter um carimbo de tempo.
+			Pensando nisso está disponível no componente a opção de criarmos nossa própria classe para obter o carimbo de tempo. 
+		</para>
+		<para>
+			Em nossa aplicação vamos criar uma implementação de gerador de timestamp que ao invés de pedir ao servidor um carimbo
+			usando o certificado que assina o documento, pediremos a um servidor que tenha acesso a um certificado de máquina devidamente autorizado.
+			A assinatura do documento será feita pelo certificado do usuário que terá um carimbo de tempo para aquele conteúdo gerado com um certificado de aplicação.
+			Nossa implementação irá enviar o conteúdo lido pela applet para um Servlet que irá carregar o certificado da aplicação e solicitar o carimbo de tempo.
+			Em nosso exemplo usamos Servlet, mas você também pode usar um serviço REST ou um WebService, lembrando apenas que é importante esse serviço exigir
+			autenticação para que possa ser acessado.
 		</para>
 	    <para>
             <figure>
@@ -43,11 +55,10 @@
 	<section>
 		<title>Criando uma Servlet para gerar o TimeStamp</title>
 		<para>
-			Em nosso projeto web, vamos adicionar ao pom.xml a dependecia do componente demoiselle-timestamp. Vamos utilizar sua API para
-			criar a requisação ao servidor de carimbo de tempo. 
+			Em nosso projeto web, vamos adicionar ao pom.xml a dependecia do componente <literal>demoiselle-certificate-timestamp</literal>. 
+			Vamos utilizar sua API para	criar a requisação ao servidor de carimbo de tempo. 
 		</para>
-        <programlisting role="XML"><![CDATA[
-<dependency>
+        <programlisting role="XML"><![CDATA[<dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-timestamp</artifactId>
 	<version>2.0.0</version>
