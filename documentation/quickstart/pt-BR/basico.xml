@@ -449,7 +449,27 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
         }
     }	
 }]]></programlisting>
+		<para>
+			O seu projeto ficará com a seguinte estrutura de diretórios: 
+		</para>
 
+      <programlisting role="HTML"><![CDATA[
+AppletCustomizada
+├── pom.xml
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── br
+    │   │       └── gov
+    │   │           └── frameworkdemoiselle
+    │   │               └── certificate
+    │   │                   └── sample
+    │   │                       └── applet
+    │   │                           └── App.java                      
+    │   └── resources
+    └── test
+        ├── java
+        └── resources]]></programlisting>
 	</section>
 
 	<section>
