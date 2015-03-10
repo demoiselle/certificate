@@ -178,14 +178,20 @@ public class TimestampGeneratorServlet extends HttpServlet {
 		</para>
 		<programlisting role="Java"><![CDATA[public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
 }
+public void validateTimeStamp(byte[] content, byte[] response)	throws CertificateCoreException {
+}
 public byte[] generateTimeStamp() throws CertificateCoreException {
 	return null;
-}
-public void validateTimeStamp(byte[] content, byte[] response)	throws CertificateCoreException {
 }]]></programlisting>
 		<para>
 		No método <literal>initialize</literal> vamos apenas atribuir o conteúdo <literal>this.content = content;</literal> 
 		</para>
+				
+		<para>
+		O método <literal>validateTimeStamp</literal> vamos manter o mesmo código da implementação padrão:
+		</para>
+		<programlisting role="Java"><![CDATA[TimeStampOperator timeStampOperator = new TimeStampOperator();
+timeStampOperator.validate(content, response);]]></programlisting>
 				
 		<para>
 		O método <literal>generateTimeStamp()</literal> é o método central da nossa implementação, vamos conectar ao servlet
@@ -203,26 +209,21 @@ public void validateTimeStamp(byte[] content, byte[] response)	throws Certificat
 	connection.setRequestProperty("Content-Type","application/octet-stream");]]></programlisting>
 		<para>
 		
-		<para>
-		O método <literal>validateTimeStamp</literal> vamos manter o mesmo código da implementação padrão:
-		</para>
-		<programlisting role="Java"><![CDATA[TimeStampOperator timeStampOperator = new TimeStampOperator();
-timeStampOperator.validate(content, response);]]></programlisting>
-		
 		A <literal>urlString</literal> em nosso caso será: <literal>http://localhost:8080/AppletCustomizadaWeb/carimbo</literal>. 
 		</para>	
 		<para>
-		Escrevemos o conteúdo no request.
+		Escrevemos o seguinte conteúdo no request:
 		</para>
 		<programlisting role="Java"><![CDATA[OutputStream os = connection.getOutputStream();
 os.write(content);
 os.flush();
 os.close();]]></programlisting>
 		<para>
-		Após estabelicado os paramêtros da conexão, testamos os status HTTP que nos indica se a solicitação foi bem sucedida. 
-		O primeiro status que testamos é o 200, que indica o sucesso na requisição e poderemos ler no <literal>response</literal>
-		o carimbo de tempo restornado, e esse mesmo carimbo será validado pelo método <literal>validateTimeStamp</literal> com o conteúdo
-		na instância local. Essa validação sempre ocorre o que, o que torna inválido o carimbo se houver qualquer alteração no arquivo ou carimbo.
+		Após estabelecidos os paramêtros da conexão, testamos os status HTTP que nos indica se a solicitação foi bem sucedida. 
+		O primeiro status que testamos é o 200. Esse status  indica o sucesso na requisição, e assim poderemos
+		ler no <literal>response</literal> o carimbo de tempo restornado. Esse mesmo carimbo será ainda validado 
+		pelo método <literal>validateTimeStamp</literal> com o conteúdo na instância local. Essa validação 
+		sempre ocorre, e, se houve qualquer alteração no arquivo ou carimbo, este é invalidado.
 		</para>
 		<programlisting role="Java"><![CDATA[int status = connection.getResponseCode();
 		if (status == 200) {
@@ -233,8 +234,9 @@ os.close();]]></programlisting>
 			}
 		}]]></programlisting>		
 		<para>
-		Precisamos tratar os status HTTP: 500 - Internal Server Error, 401 - Unauthorized e 403 - Access to the requested resource has been denied.
-		Abaixo veja como ficará o código da nossa classe: 
+		Para os casos de erro, trataremos os status HTTP <emphasis>500 - Internal Server Error</emphasis>, 
+		<emphasis>401 - Unauthorized</emphasis> e <emphasis>403 - Access to the requested resource has been denied</emphasis>.
+		Abaixo, veja como ficará o código da nossa classe: 
 		</para>
 		<programlisting role="Java"><![CDATA[@Priority(Priority.MAX_PRIORITY)
 public class MyTimestampGeneratorImpl implements TimeStampGenerator {
@@ -254,7 +256,7 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 		HttpURLConnection connection = null;
 
 		try {
-			// Cria a conexão com o serviço que requisita o carimbo de Tempo
+			// Cria a conexao com o servico que requisita o carimbo de Tempo
 			URL url = new URL("http://localhost:8080/certificate-applet-web/carimbo");
 
 			connection = (HttpURLConnection) url.openConnection();
@@ -265,13 +267,13 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Content-Type","application/octet-stream");
 			
-			// Envia o conteúdo
+			// Envia o conteudo
 			OutputStream os = connection.getOutputStream();
 			os.write(content);
 			os.flush();
 			os.close();
 
-			// Trata o status da conexão
+			// Trata o status da conexao
 			int status = connection.getResponseCode();
 			if (status == 200) {
 				if (connection.getContentType().equals("application/octet-stream")) {
@@ -297,12 +299,12 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 			}
 
 			if (timestamp == null){
-				throw new CertificateCoreException("Carimbo de Tempo não foi gerado");
+				throw new CertificateCoreException("Carimbo de Tempo nao foi gerado");
 			}
 			
 			
 		} catch ( ConnectException e) {
-			throw new CertificateCoreException("Erro ao conectar ao serviço que solicita carimbo de tempo");
+			throw new CertificateCoreException("Erro ao conectar ao servico que solicita carimbo de tempo");
 		} catch ( IOException e) {
 			throw new RuntimeException(e);			
 		} finally {
@@ -321,7 +323,11 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 	}
 }]]></programlisting>	
 
-			     <programlisting role="HTML"><![CDATA[
+<para>
+A organização da AppletCustomizada ficara assim:
+</para>
+
+<programlisting role="HTML"><![CDATA[
 AppletCustomizado
 ├── pom.xml
 └── src
