@@ -17,7 +17,7 @@
 	<section>
 		<title>Criando sua Applet para exibir informações em uma página</title>
 		<para>
-			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribua os valores:
+			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribua os seguintes valores:
 		</para>
 <programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
 Artifact-id: AppletCustomizada
@@ -31,14 +31,13 @@ Packaging: JAR]]></programlisting>
 	<version>2.0.0</version>
 </dependency>]]></programlisting>			
 		<para>
-			Em seguida crie um classe <literal>App.java</literal> no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample.applet</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
+			Em seguida, crie a classe <literal>App.java</literal> no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample.applet</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
 		</para>
 		
-		<programlisting role="JAVA" ><![CDATA[
-public class App extends AbstractAppletExecute {
+		<programlisting role="JAVA" ><![CDATA[public class App extends AbstractAppletExecute {
 
 	@Override
-	public void execute(KeyStore keystore, String alias, int policyselected, Applet applet) {
+	public void execute(KeyStore keystore, String alias, int policySelected, Applet applet) {
 		try {
 			/* Exibe alguns dados do certificado */
 			ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
@@ -46,7 +45,7 @@ public class App extends AbstractAppletExecute {
 			AbstractAppletExecute.setFormField(applet, "mainForm", "nome", certificado.getNome());
 			AbstractAppletExecute.setFormField(applet, "mainForm", "nascimento", certificado.getDataNascimento());
 			AbstractAppletExecute.setFormField(applet, "mainForm", "email",	certificado.getEmail());
-
+		
 		} catch (KeyStoreException e) {
 			JOptionPane.showMessageDialog(applet, e.getMessage(), "Error",	JOptionPane.ERROR_MESSAGE);
 		}
@@ -82,7 +81,7 @@ public class App extends AbstractAppletExecute {
         <para>
         	O modelo de segurança da plataforma Java é centrado sobre o conceito de sandbox (caixa de areia), 
         	no qual um código remoto como um applet por padrão não é confiável e, portanto, não pode ter acesso ilimitado ao Sistema Operacional. 
-       		Para que possamos executar nossa applet, precisamos assinar todos assinar todos os jar necessários a execução da applet, conforme mostrado na tabela abaixo:
+       		Para que possamos executar nossa applet, precisamos assinar todos os jars necessários à execução da applet, conforme mostrado na tabela abaixo:
         </para>
         
         <table frame="all" pgwide="1">
@@ -174,7 +173,7 @@ public class App extends AbstractAppletExecute {
 	<section>
 		<title>Projeto Web Exemplo</title>
 		<para>
-			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribuido os valores:
+			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribua os seguintes valores:
 		</para>
 <programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
 Artifact-id: AppletCustomizadaWeb
@@ -234,10 +233,10 @@ Packaging: WAR]]></programlisting>
 		<para>
        		Para funcionamento da applet é necessário as propiedades:              
                 <literal>factory.applet.action</literal>, que define qual classe será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, e a
-                <literal>applet.javascript.postaction.failure</literal>, que define qual método JavaScript deverá ser chamado. 
+                <literal>applet.javascript.postaction.failure</literal>, que define qual método JavaScript deverá ser chamado em caso de alguma falha. 
         </para>
         <para>
-        	Acrescente um arquivo <literal>default.css</literal> na pasta <literal>webpapp/css</literal>.
+        	Acrescente um arquivo <literal>default.css</literal> na pasta <literal>webpapp/css</literal>, com o seguinte conteúdo:
         </para>
    		<programlisting role="HTML"><![CDATA[label {
 	display: block;
@@ -295,12 +294,12 @@ AppletCustomizadaWeb
 	<section>
 		<title> Assinando um documento	</title>
 	 	<para>
-			Para realizar assinatura digital do contéudo, utilizamos o componente demoiselle-certificate-signer 
-			que assina um conteúdo carregado no applet usando o certificado digital carregado pela appplet.
+			Para realizar assinatura digital do contéudo utilizamos o componente demoiselle-certificate-signer. 
+			Esse componente assina um conteúdo carregado no applet, utilizando um certificado digital também carregado pela appplet.
 		</para>
 		
 		<para>
-			Para isso vamos adicionar a dependência no pom.xml do projeto AppletCustomizadaWeb. 
+			Para isso, vamos adicionar a dependência à esse componente no pom.xml do projeto AppletCustomizadaWeb: 
 		</para>
         <programlisting role="XML"><![CDATA[<dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
@@ -380,7 +379,6 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
             byte[] content = readContent(path);
             logger.info("Path.........: {}", path );
 
-            
             /* Parametrizando o objeto doSign */
             PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
             signer.setCertificates(keystore.getCertificateChain(alias));
@@ -419,7 +417,6 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
 	public void cancel(KeyStore keystore, String alias, int policyselected,
 			Applet applet) {
 		// TODO Auto-generated method stub
-		
 	}
 	
     private byte[] readContent(String arquivo) {
@@ -475,9 +472,10 @@ AppletCustomizada
 	<section>
 		<title>Executando o Applet</title>
  		<para>
-         Agora publique sua aplicação web em um servidor Jboss EAP6
-         Ao acessar a url http://localhost:8080/AppletCustomizadaWeb/applet.html. Se o certificado
-            digital necessitar do pin para que seja feito o acesso, a aplicação solicitará imediatamente o pin de seu certificado, conforme a tela abaixo:
+         Agora publique sua aplicação web em um servidor Jboss EAP6., e acesse a url 
+         http://localhost:8080/AppletCustomizadaWeb/applet.html. Se o certificado digital necessitar 
+         do pin para que seja feito o acesso, a aplicação solicitará imediatamente o pin de seu certificado, 
+         conforme a tela abaixo:
         </para>
 
         <para>
@@ -493,7 +491,8 @@ AppletCustomizada
             </figure>
         </para>
         <para>
-            O componente exibirá uma tela com os certificados disponíveis, seu número de série, sua data inicial de validade, sua data final de validade e o emissor deste certificado, fornecendo ao
+            O componente exibirá uma tela com os certificados disponíveis, seu número de série, sua data 
+            inicial de validade, sua data final de validade, e o emissor deste certificado, fornecendo ao
             usuário a possibilidade de escolher qual certificado deseja-se utilizar.
         </para>
         <para>

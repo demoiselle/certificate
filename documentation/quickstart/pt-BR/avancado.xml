@@ -7,10 +7,13 @@
 	<section>
 		<title>Como funciona</title>
 		<para>
-			Para usar a política AD_RT do ICP-Brasil precisamos requisitar uma referência temporal digital a uma ACT que possua um servidor devidamente homologado.
-			O componente <literal>demoiselle-certificate-timestamp</literal> possui toda a implementação necessária para acessar o servidor de carimbo de tempo do SERPRO.
-			Para obter uma referência temporal é necessário assinar uma requisição usando certificado que esteja autorizado a acessar esse servidor e assim gerar uma
-			assinatura de documento com referência temporal.
+			Para usar uma política AD_RT (Assinatura Digital de Referência Temporal) do ICP-Brasil precisamos 
+			requisitar uma referência temporal digital a uma ACT (Autoridade de Carimbo do Tempo), que possue 
+			um servidor devidamente homologado.	O componente <literal>demoiselle-certificate-timestamp</literal> 
+			possui toda a implementação necessária para acessar o servidor de carimbo de tempo do SERPRO 
+			(que é uma ACT). Para obter uma referência temporal é necessário assinar uma requisição usando 
+			um certificado que esteja autorizado a acessar esse servidor, e assim gerar uma assinatura de 
+			conteúdo com referência temporal.
 		</para>
 	    <para>
             <figure>
@@ -24,19 +27,14 @@
                 </mediaobject>
             </figure>
         </para>		
-	
 		<para>
 			Para aplicações que disponibilizam assinatura com referência temporal para diversos usuários essa implementação
 			padrão pode não ser a ideal, pois será necessário autorizar cada usuário para obter um carimbo de tempo.
-			Pensando nisso está disponível no componente a opção de criarmos nossa própria classe para obter o carimbo de tempo. 
-		</para>
-		<para>
-			Em nossa aplicação vamos criar uma implementação de gerador de timestamp que ao invés de pedir ao servidor um carimbo
-			usando o certificado que assina o documento, pediremos a um servidor que tenha acesso a um certificado de máquina devidamente autorizado.
-			A assinatura do documento será feita pelo certificado do usuário que terá um carimbo de tempo para aquele conteúdo gerado com um certificado de aplicação.
-			Nossa implementação irá enviar o conteúdo lido pela applet para um Servlet que irá carregar o certificado da aplicação e solicitar o carimbo de tempo.
-			Em nosso exemplo usamos Servlet, mas você também pode usar um serviço REST ou um WebService, lembrando apenas que é importante esse serviço exigir
-			autenticação para que possa ser acessado.
+			Pensando nisso, o componente oferece possibilidade para que a aplicação não peça o carimbo de tempo
+			diretamente ao servidor de carimbo de tempo, mas que solicite a um outro servidor que faça isso pela 
+			aplicação, como ilustra a figura 2.2. Dessa forma, apenas o servidor intermediário necessita assinar 
+			as requisições com um certificado autorizado pelo servirdor de carimbo de tempo, não havendo então a 
+			necessidade de autorizar cada usuário da aplicação.
 		</para>
 	    <para>
             <figure>
@@ -50,13 +48,26 @@
                 </mediaobject>
             </figure>
         </para>		
+        
+        <para>			
+			Essa alternativa pode ser aplicada através da implementação, na própria aplicação, da classe que obtém
+			o carimbo de tempo, em substituição à implementação padrão, como mostraremos a seguir.
+		</para>
+		<para>
+			Em nossa aplicação vamos criar uma implementação de gerador de timestamp que ao invés de pedir ao servidor um carimbo
+			usando o certificado que assina o documento, peça a um servidor que tenha acesso a um certificado de máquina devidamente autorizado.
+			A assinatura do documento será feita pelo certificado do usuário que terá um carimbo de tempo para aquele conteúdo gerado com um 
+			certificado de aplicação. Nossa implementação irá enviar o conteúdo lido pela applet para um Servlet que irá carregar o certificado 
+			da aplicação e solicitar o carimbo de tempo. Nesse exemplo usamos Servlet, mas você também pode usar um serviço REST ou um WebService, 
+			lembrando apenas que é importante esse serviço exigir autenticação para que possa ser acessado.
+		</para>
 	</section>
 	
 	<section>
 		<title>Criando uma Servlet para gerar o TimeStamp</title>
 		<para>
 			Em nosso projeto web, vamos adicionar ao pom.xml a dependência do componente <literal>demoiselle-certificate-timestamp</literal>. 
-			Vamos utilizar sua API para	gerar um carimbo de tempo.
+			Vamos utilizar sua API para	obter um carimbo de tempo.
 		</para>
         <programlisting role="XML"><![CDATA[<dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
@@ -64,12 +75,13 @@
 	<version>2.0.0</version>
 </dependency>]]></programlisting>
 <para>
-			Crie uma classe <literal>TimeStampGeneratorServlet</literal> no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample</literal>
-			Nessa classe vamos implementar um método para ler o certificado de máquina, leremos o conteúdo enviado para a Servlet e faremos 
+			Crie a classe <literal>TimeStampGeneratorServlet</literal> no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample</literal>.
+			Nessa classe vamos implementar um método para ler o certificado de máquina. Leremos o conteúdo enviado para a Servlet e faremos 
 			a requisição ao servidor de carimbo de tempo.
 		</para>
 		<para>
-			Para usar a API de Servlet do Java adicione a dependencia abaixo, no <literal>pom.xml</literal> da aplicação <emphasis>AppletCustomizadaWeb</emphasis>
+			Para usar a API de Servlet do Java adicione a dependência ao <literal>javaee-web-api</literal>, no <literal>pom.xml</literal> 
+			da aplicação <emphasis>AppletCustomizadaWeb</emphasis>:
 		</para>
 		<programlisting role="XML"><![CDATA[<dependency>
 	<groupId>javax</groupId>
@@ -78,20 +90,22 @@
 	<scope>provided</scope>
 </dependency>]]></programlisting>
 		<para>
-			Crie um método <literal>loadCertificate</literal> carregando o certificado no servidor da sua aplicação 
-			que tem acesso ao servidor de carimbo de tempo. Para mais detalhes de como implementar essa leitura de certificado 
+			Crie o método <literal>loadCertificate</literal>, que carrega o certificado no servidor da sua aplicação 
+			que tem acesso ao servidor de carimbo de tempo. Para mais detalhes de como implementar a leitura de certificado 
 			consulte <link linkend="x">XPTO</link>. 
 		</para>
-<programlisting role="Java"><![CDATA[CertificateLoader certificateLoader = new CertificateLoaderImpl();
-X509Certificate certificate = certificateLoader.load(new File("certificado.cer");]]></programlisting>
+<programlisting role="Java"><![CDATA[private void loadCertificate() throws Exception{
+	CertificateLoader certificateLoader = new CertificateLoaderImpl();
+	X509Certificate certificate = certificateLoader.load(new File("certificado.cer");
+}]]></programlisting>
 		<para>
-			O segundo passo é ler o arquivo enviar a nossa Servlet. 
+			O segundo passo é ler o arquivo enviado à nossa Servlet. 
 		</para>
 		<programlisting role="Java"><![CDATA[content = IOUtils.toByteArray(request.getInputStream());]]></programlisting>
 		<para>
 			O terceito e último passo é enviar a solicitação para o servidor de carimbo de tempo usando a API do componente <literal>demoiselle-certificate-timestamp</literal>.
-			Para criar a solicitação basta criamos um <literal>TimeStampOperator</literal> e chamamos o método <literal>createRequest</literal>
-			passando o conteúdo, certifica e chave privada para assinar a resquisição.  
+			Para criar a solicitação, basta criamos um <literal>TimeStampOperator</literal> e chamamos o método <literal>createRequest</literal>
+			passando o conteúdo, certificado e chave privada para assinar a resquisição.  
 		</para>
 		<programlisting role="Java"><![CDATA[TimeStampOperator timeStampOperator = new TimeStampOperator();
 byte[] reqTimestamp = timeStampOperator.createRequest(privateKey,certificates, content);
@@ -128,19 +142,16 @@ public class TimestampGeneratorServlet extends HttpServlet {
 
 			response.setContentType("application/octet-stream");
 			response.getOutputStream().write(timestamp);
-			response.getOutputStream().flush();
-			response.getOutputStream().close();			
 		
 		} catch (CertificateCoreException e) {
 			response.setContentType("text/plain");
 			response.setStatus(500);
 			response.getOutputStream().write(e.getMessage().getBytes());
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
 		} catch (Exception e) {
 			response.setContentType("text/plain");
 			response.setStatus(500);
 			response.getOutputStream().write("Erro ao fazer load do certificado habilitado para requisitar carimbo de tempo".getBytes());
+		} finally {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 		}
@@ -150,7 +161,7 @@ public class TimestampGeneratorServlet extends HttpServlet {
 	<section>
 		<title>Criando sua própria implementação de TimeStampGenerator</title>
 		<para>
-			Agora vamos criar uma implementação própria do TimeStampGenerator. Ao invés de solicitar um carimbo de tempo a servidor, 
+			Agora vamos criar uma implementação própria do TimeStampGenerator em nossa applet. Ao invés de solicitar um carimbo de tempo a servidor, 
 			nossa implememtação se conecta a um serviço responsável por essa solicitação, enviando para ele o conteúdo. 
 		</para>
 		<para>
@@ -158,11 +169,12 @@ public class TimestampGeneratorServlet extends HttpServlet {
 			para definir a nossa implementação como prioritária. 
 		</para>
 		<important>
-			É importante adicionar a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal>
+			Para garantir que a sua implementação será utilizada, é importante adicionar a anotação 
+			<literal>@Priority(Priority.MAX_PRIORITY)</literal>.
 		</important>	
 		<para>
-			Em seu projeto<emphasis>AppletCustomizada</emphasis> crie a classe <literal>MyTimestampGeneratorImpl</literal> que implementa <literal>TimeStampGenerator</literal> no pacote
-			<literal>br.gov.frameworkdemoiselle.certificate.sample</literal>. Os métodos a serem implementados são esses:
+			Em seu projeto <emphasis>AppletCustomizada</emphasis> crie no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample</literal>, a classe <literal>MyTimestampGeneratorImpl</literal>.
+			Essa classe deve implementar <literal>TimeStampGenerator</literal>, e os métodos a serem implementados são esses:
 		</para>
 		<programlisting role="Java"><![CDATA[public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
 }
@@ -172,19 +184,16 @@ public byte[] generateTimeStamp() throws CertificateCoreException {
 public void validateTimeStamp(byte[] content, byte[] response)	throws CertificateCoreException {
 }]]></programlisting>
 		<para>
-		Na inicialização vamos setar apenas o conteúdo <literal>this.content = content;</literal> 
+		No método <literal>initialize</literal> vamos apenas atribuir o conteúdo <literal>this.content = content;</literal> 
 		</para>
-		<para>
-		O método <literal>validateTimeStamp</literal> vamos manter o mesmo código da implementação padrão:
-		</para>
-		<programlisting role="Java"><![CDATA[TimeStampOperator timeStampOperator = new TimeStampOperator();
-timeStampOperator.validate(content, response);]]></programlisting>		
+				
 		<para>
 		O método <literal>generateTimeStamp()</literal> é o método central da nossa implementação, vamos conectar ao servlet
-		enviando o conteúdo sobre o qual é requisitado o carimbo de tempo. Como em nossa aplicação usamos servlet vamos começar
-		estabelecendo a conexão com a URL. Vamos usar o método POST.
+		enviando o conteúdo sobre o qual é requisitado o carimbo de tempo. Como em nossa aplicação usamos servlet, vamos começar
+		estabelecendo a conexão com a URL e, a seguir, usar o método POST.
 		</para>		
-		<programlisting role="Java"><![CDATA[URL url = new URL(urlString);
+		<programlisting role="Java"><![CDATA[
+	URL url = new URL(urlString);
 	connection = (HttpURLConnection) url.openConnection();
 
 	connection.setRequestMethod("POST");
@@ -193,6 +202,13 @@ timeStampOperator.validate(content, response);]]></programlisting>
 	connection.setDoOutput(true);
 	connection.setRequestProperty("Content-Type","application/octet-stream");]]></programlisting>
 		<para>
+		
+		<para>
+		O método <literal>validateTimeStamp</literal> vamos manter o mesmo código da implementação padrão:
+		</para>
+		<programlisting role="Java"><![CDATA[TimeStampOperator timeStampOperator = new TimeStampOperator();
+timeStampOperator.validate(content, response);]]></programlisting>
+		
 		A <literal>urlString</literal> em nosso caso será: <literal>http://localhost:8080/AppletCustomizadaWeb/carimbo</literal>. 
 		</para>	
 		<para>
