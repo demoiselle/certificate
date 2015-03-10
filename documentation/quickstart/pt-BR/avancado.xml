@@ -351,8 +351,8 @@ AppletCustomizado
 	<section>
 		<title>Adicionando segurança</title>
 		<para>
-		Por fim vamos adicionar segurança a nossa aplicação. É importante que o serviço disponível, seja usando Servlet, REST, WebService esteja sob
-		o contexto de segurança da aplicação. Com isso o serviço só poderá ser acessado pelo usuário autorizado pela aplicação.
+		Por fim vamos adicionar segurança a nossa aplicação. É importante que o serviço disponível (seja usando Servlet, REST ou WebService) esteja sob
+		o contexto de segurança da aplicação. Com isso, o serviço só poderá ser acessado pelo usuário autorizado pela aplicação.
 		</para>
 		<para>
 		Em nosso exemplo usaremos a autenticação JAAS do tipo FORM que lerá um usuário no Jboss EAP 6.
@@ -362,7 +362,7 @@ AppletCustomizado
 			<title>Configurando o Jboss EAP 6</title>
 			
 			<para>Acesse <literal>JBOSS_HOME/bin</literal> e execute o <literal>add-user</literal> crie um usuario e senha 
-			pertencente a role <emphasis>admin</emphasis> </para>
+			pertencente à role <emphasis>admin</emphasis> </para>
 			
 			<para>No arquivo de configuração <literal>standalone.xml</literal> adicione um <literal>security-domain</literal> </para>
 			<programlisting role="XML"><![CDATA[<security-domain name="user" cache-type="default">
@@ -421,7 +421,7 @@ AppletCustomizado
 		
 		<section>
 			<title>Configurando o Servlet</title>
-			<para>Adiciona a anotação abaixo na classe <literal>TimestampGeneratorServlet</literal> </para>
+			<para>Adicione a anotação abaixo na classe <literal>TimestampGeneratorServlet</literal> </para>
 			<programlisting role="Java"><![CDATA[@ServletSecurity(value = @HttpConstraint(rolesAllowed = "admin"))]]></programlisting>	
 		</section>		
 		
