@@ -328,7 +328,7 @@ A organização da AppletCustomizada ficara assim:
 </para>
 
 <programlisting role="HTML"><![CDATA[
-AppletCustomizado
+AppletCustomizada
 ├── pom.xml
 └── src
     ├── main
@@ -351,37 +351,34 @@ AppletCustomizado
 	<section>
 		<title>Adicionando segurança</title>
 		<para>
-		Por fim vamos adicionar segurança a nossa aplicação. É importante que o serviço disponível (seja usando Servlet, REST ou WebService) esteja sob
+		Por fim vamos adicionar segurança à nossa aplicação. É importante que o serviço disponível (seja usando Servlet, REST ou WebService) esteja sob
 		o contexto de segurança da aplicação. Com isso, o serviço só poderá ser acessado pelo usuário autorizado pela aplicação.
 		</para>
 		<para>
-		Em nosso exemplo usaremos a autenticação JAAS do tipo FORM que lerá um usuário no Jboss EAP 6.
+		Em nosso exemplo usaremos a autenticação JAAS do tipo FORM em nosso Servidor Jboss EAP6.
 		</para>
 		
 		<section>
 			<title>Configurando o Jboss EAP 6</title>
 			
-			<para>Acesse <literal>JBOSS_HOME/bin</literal> e execute o <literal>add-user</literal> crie um usuario e senha 
-			pertencente à role <emphasis>admin</emphasis> </para>
-			
-			<para>No arquivo de configuração <literal>standalone.xml</literal> adicione um <literal>security-domain</literal> </para>
-			<programlisting role="XML"><![CDATA[<security-domain name="user" cache-type="default">
-				<authentication>
-					<login-module code="RealmUsersRoles" flag="required">
-					<module-option name="usersProperties" value="${jboss.server.config.dir}/application-users.properties"/>
-					<module-option name="rolesProperties" value="${jboss.server.config.dir}/application-roles.properties"/>
-					<module-option name="unauthenticatedIdentity" value="guest"/>
-					<module-option name="password-stacking" value="useFirstPass"/>
-					</login-module>
-				</authentication>
-			</security-domain>]]></programlisting>	
+			<para>Acesse <literal>JBOSS_HOME/bin</literal> e execute o <literal>add-user</literal> crie um usuário de aplicação 
+			pertencente ao grupo <emphasis>admin</emphasis>, e adicione ao realm "ApplicationRealm".	
+			 Para mais detalhes consulte a documentação 
+			 <ulink url="https://docs.jboss.org/author/display/AS71/add-user+utility"><citetitle>add-user utility</citetitle> </ulink>.
+			 </para>
 		</section>
 		<section>
-			<title>Configurando a aplicação</title>
+			<title>Configurando a aplicação Web</title>
 			<para>
 			Crie o arquivo <literal>web.xml</literal> na pasta <literal>webapp/WEB-INF</literal> do seu projeto <literal>AppletCustomizadaWeb</literal>.
 			</para>
 			<programlisting role="XML"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Admin</web-resource-name>
@@ -402,27 +399,70 @@ AppletCustomizado
 
 	<security-role>
 		<role-name>admin</role-name>
-	</security-role>	
+	</security-role>
+
+</web-app>  	
 	]]></programlisting>	
 		</section>
 
 		<section>
 			<title>Criando as páginas HTML</title>
-			<para>Crie em seu projeto Web as duas páginas abaixo.</para>
+			<para>Crie em seu projeto Web <literal>AppletCustomizadaWeb</literal> as duas páginas abaixo.</para>
 			<para>login.html</para>
 			<programlisting role="HTML"><![CDATA[
-				PAGINA
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Exemplo de Assinatura de Documento</title>
+<link href="css/default.css" rel="stylesheet">
+</head>
+
+<body>
+	<form id="form-login" method="post" action="j_security_check">
+		<div>
+			<h2>Applet Exemplo de Assinatura Digital</h2>
+		</div>
+
+		<label for="username">Login</label> 
+		<input id="username" type="text" name="j_username"> 
+		<label for="password">Senha</label>
+		<input id="password"  type="password" name="j_password">
+		<button id="login" type="submit" value="Login">Entrar</button>
+	</form>
+</body>
+</html>			
 			]]></programlisting>	
 			<para>index.html</para>
 			<programlisting role="HTML"><![CDATA[
-				PAGINA
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Exemplo de Assinatura de Documento</title>
+<link href="css/default.css" rel="stylesheet">
+</head>
+<body>
+	<div>
+		<h2>Applet Exemplo de Assinatura Digital</h2>
+	</div>
+	<div>
+		<a href="applet.html">Assinar Documento</a>
+	</div>
+</body>
+</html>
 			]]></programlisting>		
 		</section>
 		
 		<section>
 			<title>Configurando o Servlet</title>
-			<para>Adicione a anotação abaixo na classe <literal>TimestampGeneratorServlet</literal> </para>
-			<programlisting role="Java"><![CDATA[@ServletSecurity(value = @HttpConstraint(rolesAllowed = "admin"))]]></programlisting>	
+			<para>
+			Adicione a anotação de sergurança a classe <literal>TimestampGeneratorServlet</literal> 
+			para que as definições de segurança sejam aplicadas.   
+			</para>
+			<programlisting role="Java"><![CDATA[
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = "admin"))
+	]]></programlisting>	
 		</section>		
 		
 		<para>
@@ -447,10 +487,8 @@ AppletCustomizadoWeb
     │       │   └── default.css    
     │       ├── WEB-INF
     │       │   └── web.xml    
-    │       ├── AppletCustomizada-1.0.0-assinado.jar
-    │       ├── index.html
-    │       ├── login.html    
     │       ├── applet.html
+    │       ├── AppletCustomizada-1.0.0-assinado.jar
     │       ├── bcmail-jdk15on-1.51-assinado.jar
     │       ├── bcpkix-jdk15on-1.51-assinado.jar
     │       ├── bcprov-jdk15on-1.51-assinado.jar
@@ -461,7 +499,9 @@ AppletCustomizadoWeb
     │       ├── demoiselle-certificate-policy-engine-2.0.0-SNAPSHOT-assinado.jar
     │       ├── demoiselle-certificate-signer-2.0.0-SNAPSHOT-assinado.jar
     │       ├── demoiselle-certificate-timestamp-2.0.0-SNAPSHOT-assinado.jar
+    │       ├── index.html
     │       ├── log4j-1.2.17-assinado.jar
+    │       ├── login.html    
     │       ├── plugin-assinado.jar
     │       ├── slf4j-api-1.6.1-assinado.jar
     │       └── slf4j-log4j12-1.6.1-assinado.jar
