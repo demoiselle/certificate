@@ -30,7 +30,10 @@
 		</note>
 	</preface>
 	
+	<xi:include href="ambiente.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 	<xi:include href="basico.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 	<xi:include href="avancado.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
+	<!-- Anexos -->
+	<xi:include href="repositorios.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
  </book>
