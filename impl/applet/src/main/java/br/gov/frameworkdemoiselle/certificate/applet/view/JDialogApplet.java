@@ -173,12 +173,11 @@ public class JDialogApplet extends JApplet {
         try {
             KeyStore keystore = keyStoreDialog.getKeyStore();
             String alias = keyStoreDialog.getAlias();
-            int policyselected = keyStoreDialog.getPolicySelected();
 
             if (keystore != null) {
                 String className = this.getParameter(AppletConfig.PARAM_APPLET_ACTION_EXECUTE.getKey());
                 AppletExecute appletExecute = AppletExecuteFactory.factory(className);
-                appletExecute.execute(keystore, alias, policyselected, this);
+                appletExecute.execute(keystore, alias, this);
             }
         } catch (FactoryException e) {
             e.printStackTrace();
@@ -198,12 +197,11 @@ public class JDialogApplet extends JApplet {
 
         KeyStore keystore = keyStoreDialog.getKeyStore();
         String alias = keyStoreDialog.getAlias();
-        int policyselected = keyStoreDialog.getPolicySelected();
 
         keyStoreDialog.dispose();
         String className = this.getParameter(AppletConfig.PARAM_APPLET_ACTION_EXECUTE.getKey());
         AppletExecute appletExecute = AppletExecuteFactory.factory(className);
-        appletExecute.cancel(keystore, alias, policyselected, this);
+        appletExecute.cancel(keystore, alias, this);
     }
 
 }

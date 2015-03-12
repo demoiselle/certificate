@@ -78,11 +78,9 @@ public class JKeyStoreDialog extends JDialog {
     private static final long serialVersionUID = 1L;
 
     private final JLabel certificatesLabel = new JLabel();
-    private final JLabel policiesLabel = new JLabel();
     private final JScrollPane scrollPane = new JScrollPane();
     private final JButton runButton = new JButton();
     private final JButton cancelButton = new JButton();
-    private final JComboBox policiesList = new JComboBox();
     private final JTable table = new JTable();
     private KeyStore keystore = null;
     private ListaCertificadosModel listaCertificadosModel = null;
@@ -169,23 +167,9 @@ public class JKeyStoreDialog extends JDialog {
             cancelButton.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
             cancelButton.setBounds(new Rectangle(AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_X.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_BUTTON_CANCEL_HEIGHT.getValueInt()));
 
-            //Label da lista de politicas
-            policiesLabel.setText(AppletConfig.CONFIG_DIALOG_LABEL_POLICY.getValue());
-            policiesLabel.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
-            policiesLabel.setBounds(AppletConfig.CONFIG_DIALOG_LABEL_POLICY_X.getValueInt(), AppletConfig.CONFIG_DIALOG_LABEL_POLICY_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_LABEL_POLICY_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_LABEL_POLICY_HEIGHT.getValueInt());
-
-            //Combo da lista de politicas
-            policiesList.setFont(new Font(AppletConfig.CONFIG_DIALOG_FONT.getValue(), AppletConfig.CONFIG_DIALOG_FONT_STYLE.getValueInt(), AppletConfig.CONFIG_DIALOG_FONT_SIZE.getValueInt()));
-            policiesList.setBounds(AppletConfig.CONFIG_DIALOG_COMBO_POLICY_X.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_Y.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_WIDTH.getValueInt(), AppletConfig.CONFIG_DIALOG_COMBO_POLICY_HEIGHT.getValueInt());
-            PoliciesComboBoxModel policiesComboBoxModel = new PoliciesComboBoxModel();
-            policiesList.setModel(policiesComboBoxModel);
-            policiesList.setSelectedIndex(0);
-
             this.add(scrollPane, null);
             this.add(runButton, null);
             this.add(cancelButton, null);
-            this.add(policiesLabel, null);
-            this.add(policiesList, null);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -303,9 +287,4 @@ public class JKeyStoreDialog extends JDialog {
     public int getCertificatesCount() {
         return table.getRowCount();
     }
-
-    public int getPolicySelected() {
-        return policiesList.getSelectedIndex();
-    }
-
 }
