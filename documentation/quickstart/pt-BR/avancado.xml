@@ -90,9 +90,22 @@
 	<scope>provided</scope>
 </dependency>]]></programlisting>
 		<para>
+			Além disso, nossa Servlet irá receber e enviar dados via <emphasis>stream</emphasis>. Por isso, 
+			adicionamos também dependência ao <literal>commons-io</literal>, que oferece algumas facilidades para
+			a execução dessas tarefas:
+		</para>
+		<programlisting role="XML"><![CDATA[<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>1.3.2</version>
+</dependency>]]></programlisting>
+		
+		<para>
+        	<!-- A cada nova versão, lembrar de atualizar a versão do link para a documentação de referência -->
 			Crie o método <literal>loadCertificate</literal>, que carrega o certificado no servidor da sua aplicação 
 			que tem acesso ao servidor de carimbo de tempo. Para mais detalhes de como implementar a leitura de certificado 
-			consulte <link linkend="x">XPTO</link>. 
+			consulte a <ulink url="http://demoiselle.sourceforge.net/docs/components/certificate/reference/2.0.0/html_single/">
+			documentação de referência</ulink>. 
 		</para>
 <programlisting role="Java"><![CDATA[private void loadCertificate() throws Exception{
 	CertificateLoader certificateLoader = new CertificateLoaderImpl();
@@ -162,8 +175,16 @@ public class TimestampGeneratorServlet extends HttpServlet {
 		<title>Criando sua própria implementação de TimeStampGenerator</title>
 		<para>
 			Agora vamos criar uma implementação própria do TimeStampGenerator em nossa applet. Ao invés de solicitar um carimbo de tempo a servidor, 
-			nossa implememtação se conecta a um serviço responsável por essa solicitação, enviando para ele o conteúdo. 
+			nossa implememtação se conecta a um serviço responsável por essa solicitação, enviando para ele o conteúdo, e recebendo de volta o 
+			carimbo de tempo. Assim, da mesma forma que a Servlet, vamos também adicionar aqui a dependência ao <literal>commons-io</literal>:
 		</para>
+		
+		<programlisting role="XML"><![CDATA[<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>1.3.2</version>
+</dependency>]]></programlisting>
+		
 		<para>
 			O componente usa o SPI para descobrir as implementações presentes, então usamos a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal> 
 			para definir a nossa implementação como prioritária. 
