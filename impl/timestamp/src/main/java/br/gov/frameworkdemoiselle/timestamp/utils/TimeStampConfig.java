@@ -37,7 +37,10 @@
 package br.gov.frameworkdemoiselle.timestamp.utils;
 
 import java.io.IOException;
+import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +53,12 @@ public class TimeStampConfig {
     private static final Logger logger = LoggerFactory.getLogger(TimeStampConfig.class);
 
     private static TimeStampConfig instance = null;
-
+    private static ResourceBundle bundle = null;
+    
+    private String tspHostname;
+    private int tspPort;
+    private String tspOid;
+    
     /**
      * Retorna uma instancia de TimeStampConfig
      *
@@ -62,27 +70,49 @@ public class TimeStampConfig {
         }
         return instance;
     }
-    private Properties p;
+
+    public ResourceBundle getBundle(String bundleName) {
+        return ResourceBundle.getBundle(bundleName);
+    }    
 
     protected TimeStampConfig() {
-        try {
-            p = new Properties();
-            p.load(this.getClass().getResourceAsStream("/br/gov/frameworkdemoiselle/timestamp/config.properties"));
-        } catch (IOException ex) {
-            logger.info(ex.getMessage());
-
+        if (bundle == null){
+	    	try {
+	        	bundle = getBundle("timestamp-config");
+	        } catch (MissingResourceException mre) {
+	            try {
+	            	bundle = getBundle("timestamp-config-default");
+	            } catch (MissingResourceException e) {
+	            	 logger.info(e.getMessage());
+	            }
+	        }
         }
     }
 
     public String getTspHostname() {
-        return p.getProperty("tsp_hostname");
+    	try {
+    		tspHostname = bundle.getString("tsp_hostname");
+		} catch (MissingResourceException e) {
+			throw new RuntimeException("key 'tspHostname' not found for resource");
+		}
+    	return tspHostname;
     }
 
     public int getTSPPort() {
-        return Integer.parseInt(p.getProperty("tsp_port"));
+    	try {
+			tspPort = Integer.parseInt(bundle.getString("tsp_port"));
+		} catch (MissingResourceException e) {
+			throw new RuntimeException("key 'tspPort' not found for resource");
+		}
+    	return tspPort;
     }
 
     public String getTSPOid() {
-        return p.getProperty("tsp_oid");
+    	try {
+    		tspOid =  bundle.getString("tsp_oid");
+		} catch (MissingResourceException e) {
+			throw new RuntimeException("key 'tspOid' not found for resource");
+		}
+    	return tspOid;
     }
 }
