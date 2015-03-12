@@ -219,15 +219,14 @@ timeStampOperator.validate(content, response);]]></programlisting>
 		enviando o conteúdo sobre o qual é requisitado o carimbo de tempo. Como em nossa aplicação usamos servlet, vamos começar
 		estabelecendo a conexão com a URL e, a seguir, usar o método POST.
 		</para>		
-		<programlisting role="Java"><![CDATA[
-	URL url = new URL(urlString);
-	connection = (HttpURLConnection) url.openConnection();
+		<programlisting role="Java"><![CDATA[URL url = new URL(urlString);
+connection = (HttpURLConnection) url.openConnection();
 
-	connection.setRequestMethod("POST");
-	connection.setUseCaches(false);
-	connection.setDoInput(true);
-	connection.setDoOutput(true);
-	connection.setRequestProperty("Content-Type","application/octet-stream");]]></programlisting>
+connection.setRequestMethod("POST");
+connection.setUseCaches(false);
+connection.setDoInput(true);
+connection.setDoOutput(true);
+connection.setRequestProperty("Content-Type","application/octet-stream");]]></programlisting>
 		<para>
 		
 		A <literal>urlString</literal> em nosso caso será: <literal>http://localhost:8080/AppletCustomizadaWeb/carimbo</literal>. 
@@ -247,13 +246,13 @@ os.close();]]></programlisting>
 		sempre ocorre, e, se houve qualquer alteração no arquivo ou carimbo, este é invalidado.
 		</para>
 		<programlisting role="Java"><![CDATA[int status = connection.getResponseCode();
-		if (status == 200) {
-			if (connection.getContentType().equals("application/octet-stream")) {
-				InputStream is = connection.getInputStream();
-				timestamp = IOUtils.toByteArray(is);
-				is.close();
-			}
-		}]]></programlisting>		
+if (status == 200) {
+	if (connection.getContentType().equals("application/octet-stream")) {
+		InputStream is = connection.getInputStream();
+		timestamp = IOUtils.toByteArray(is);
+		is.close();
+	}
+}]]></programlisting>		
 		<para>
 		Para os casos de erro, trataremos os status HTTP <emphasis>500 - Internal Server Error</emphasis>, 
 		<emphasis>401 - Unauthorized</emphasis> e <emphasis>403 - Access to the requested resource has been denied</emphasis>.

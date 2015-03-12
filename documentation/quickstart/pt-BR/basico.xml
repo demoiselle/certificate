@@ -170,7 +170,8 @@ Packaging: JAR]]></programlisting>
         <para>
         	<!-- A cada nova versão, lembrar de atualizar a versão do link para a documentação de referência -->
             Para mais detalhes sobre os procedimentos para assinatura dos artefatos, 
-            consulte a <ulink url="http://demoiselle.sourceforge.net/docs/components/certificate/reference/2.0.0/html_single/">documentação de referência</ulink>.
+            consulte a <ulink url="http://demoiselle.sourceforge.net/docs/components/certificate/reference/2.0.0/html_single/">documentação de referência</ulink>,
+            e o <link linkend="certificado">Apendice B</link>.
         </para>
 
     </section>
