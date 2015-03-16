@@ -25,11 +25,33 @@ Packaging: JAR]]></programlisting>
 		<para>	
 			Após criada a aplicação adicione como dependência o componente <literal>demoiselle-certificate-applet</literal>: 
 		</para>	
-        <programlisting role="XML"><![CDATA[<dependency>
-	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-	<artifactId>demoiselle-certificate-applet</artifactId>
-	<version>2.0.0</version>
-</dependency>]]></programlisting>			
+        <programlisting role="XML"><![CDATA[<dependencies>
+    <dependency>
+		<groupId>br.gov.frameworkdemoiselle.component</groupId>
+		<artifactId>demoiselle-certificate-applet</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+	
+	...
+	
+</dependencies>]]></programlisting>
+
+		<para>
+			Como esse componente não está no repositório <emphasis>Maven</emphasis>, devemos adicionar também no <literal>pom.xml</literal> o 
+			repositório do qual o componente deve ser baixado:
+		</para>
+		
+		 <programlisting role="XML"><![CDATA[<repositories>
+    <repository>
+        <id>demoiselle</id>
+        <name>Demoiselle SourceForge Repository</name>
+    	<url>http://demoiselle.sourceforge.net/repository/release</url>
+	</repository>
+	
+	...
+	
+</repositories>]]></programlisting>
+			
 		<para>
 			Em seguida, crie a classe <literal>App.java</literal> no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample.applet</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
 		</para>
@@ -307,11 +329,32 @@ AppletCustomizadaWeb
 		<para>
 			Para isso, vamos adicionar a dependência à esse componente no pom.xml do projeto AppletCustomizadaWeb: 
 		</para>
-        <programlisting role="XML"><![CDATA[<dependency>
-	<groupId>br.gov.frameworkdemoiselle.component</groupId>
-	<artifactId>demoiselle-certificate-signer</artifactId>
-	<version>2.0.0</version>
-</dependency>]]></programlisting>			
+        <programlisting role="XML"><![CDATA[<dependencies>
+    <dependency>
+		<groupId>br.gov.frameworkdemoiselle.component</groupId>
+		<artifactId>demoiselle-certificate-signer</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+	
+	...
+	
+</dependencies>]]></programlisting>		
+
+		<para>
+			Assim como o componente Demoiselle Certificate Applet, o Demoiselle Certificate Signer não está no repositório <emphasis>Maven</emphasis>, 
+			sendo assim necessário também adicionar o repositório do qual o componente deve ser baixado:
+		</para>
+		
+		 <programlisting role="XML"><![CDATA[<repositories>
+    <repository>
+        <id>demoiselle</id>
+        <name>Demoiselle SourceForge Repository</name>
+    	<url>http://demoiselle.sourceforge.net/repository/release</url>
+	</repository>
+	
+	...
+	
+</repositories>]]></programlisting>	
 
 		<para>
 			Para assinatura de documentos é necessário criar um objeto <literal>PKCS7Singer</literal>, configurar os atributos 
