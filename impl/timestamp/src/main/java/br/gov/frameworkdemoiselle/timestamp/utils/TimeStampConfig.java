@@ -36,9 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.timestamp.utils;
 
-import java.io.IOException;
 import java.util.MissingResourceException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;

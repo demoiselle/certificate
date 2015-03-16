@@ -179,10 +179,10 @@ public abstract class AbstractAppletExecute implements AppletExecute {
     }
 
     @Override
-    public abstract void execute(KeyStore keystore, String alias, int policyselected, Applet applet);
+    public abstract void execute(KeyStore keystore, String alias, Applet applet);
 
     @Override
-    public abstract void cancel(KeyStore keystore, String alias, int policyselected, Applet applet);
+    public abstract void cancel(KeyStore keystore, String alias, Applet applet);
 
     /**
      * Retorn o objeto carregado com as informacoes do certificado ao formato

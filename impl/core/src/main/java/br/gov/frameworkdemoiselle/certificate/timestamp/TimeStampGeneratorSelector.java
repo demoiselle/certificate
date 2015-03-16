@@ -9,6 +9,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 
 import br.gov.frameworkdemoiselle.certificate.Priority;
+import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 // TODO Criar Exception
 public final class TimeStampGeneratorSelector implements Serializable {
 
@@ -58,8 +59,9 @@ public final class TimeStampGeneratorSelector implements Serializable {
 			result = priority.value();
 		}
 
-		if (priority == null)
-			System.err.println(">>>>> Favor sinalizar a Prioridade em: " + clazz.getClass().getName());
+		if (priority == null) {
+			new CertificateCoreException("Favor sinalizar a Prioridade em: " + clazz.getClass().getName());
+		}
 
 		return result;
 	}
@@ -77,14 +79,8 @@ public final class TimeStampGeneratorSelector implements Serializable {
 
 		if (!ambiguous.isEmpty()) {
 			ambiguous.add(selected);
-		
-			String message = "Ambiguidade de Prioridade";
-			try {
-				throw new Exception(message);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			throw new CertificateCoreException("@Priority com ambiguidade em: " + selected.getClass().getCanonicalName());
 		}
 	}
 
