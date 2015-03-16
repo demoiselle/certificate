@@ -161,7 +161,7 @@ Packaging: JAR]]></programlisting>
                         <entry>slf4j-log4j12-1.6.1-assinado.jar</entry>
                     </row>
                     <row>
-                        <entry></entry>
+                        <entry>plugin.jar</entry>
                         <entry>plugin-assinado.jar</entry>
                     </row>
                 </tbody>
