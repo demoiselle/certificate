@@ -174,9 +174,9 @@ public class TimestampGeneratorServlet extends HttpServlet {
 	<section>
 		<title>Criando sua própria implementação de TimeStampGenerator</title>
 		<para>
-			Agora vamos criar uma implementação própria do TimeStampGenerator em nossa applet. Ao invés de solicitar um carimbo de tempo a servidor, 
-			nossa implememtação se conecta a um serviço responsável por essa solicitação, enviando para ele o conteúdo, e recebendo de volta o 
-			carimbo de tempo. Assim, da mesma forma que a Servlet, vamos também adicionar aqui a dependência ao <literal>commons-io</literal>:
+			Agora vamos criar uma implementação própria do TimeStampGenerator em nossa applet. Ao invés de solicitar um carimbo de tempo diretamente 
+			ao servidor, nossa implememtação se conecta a um serviço responsável por essa solicitação, enviando para ele o conteúdo, e recebendo de 
+			volta o carimbo de tempo. Assim, da mesma forma que a Servlet, vamos também adicionar aqui a dependência ao <literal>commons-io</literal>:
 		</para>
 		
 		<programlisting role="XML"><![CDATA[<dependency>
@@ -186,16 +186,26 @@ public class TimestampGeneratorServlet extends HttpServlet {
 </dependency>]]></programlisting>
 		
 		<para>
-			O componente usa o SPI para descobrir as implementações presentes, então usamos a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal> 
-			para definir a nossa implementação como prioritária. 
+			Em seu projeto <emphasis>AppletCustomizada</emphasis>, crie no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample</literal> 
+			a classe <literal>MyTimestampGeneratorImpl</literal>, que deve implementar a interface <literal>TimeStampGenerator</literal>. Para 
+			descobrir as implementações de <literal>TimeStampGenerator</literal> presentes no projeto, é utilizado o SPI, por isso precisamos 
+			fazer dois ajustes para que a classe criada seja utilizada no lugar da implementação padrão. A primeira é anotar a classe 
+			<literal>MyTimestampGeneratorImpl</literal> com a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal>, para definir a nossa 
+			implementação como prioritária. A segunda é criar um arquivo chamado 
+			<literal>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</literal> no diretório 
+			<literal>src/main/resources/META-INF/services</literal>, e dentro desse arquivo colocar o caminho completo da classe 
+			<literal>MyTimestampGeneratorImpl</literal>, que é 
+			<literal>br.gov.frameworkdemoiselle.certificate.sample.MyTimestampGeneratorImpl</literal>, no caso do nosso exemplo.
 		</para>
+		
 		<important>
-			Para garantir que a sua implementação será utilizada, é importante adicionar a anotação 
-			<literal>@Priority(Priority.MAX_PRIORITY)</literal>.
+			Para garantir que a sua implementação será utilizada, é importante adicionar a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal>, 
+			e adicionar o caminho para sua implementação no arquivo <literal>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</literal>,
+			dentro da pasta <literal>src/main/resources/META-INF/services</literal>.
 		</important>	
+		
 		<para>
-			Em seu projeto <emphasis>AppletCustomizada</emphasis> crie no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample</literal>, a classe <literal>MyTimestampGeneratorImpl</literal>.
-			Essa classe deve implementar <literal>TimeStampGenerator</literal>, e os métodos a serem implementados são esses:
+			Ao implementar a interface <literal>TimeStampGenerator</literal>, os seguintes métodos devem ser implementados:
 		</para>
 		<programlisting role="Java"><![CDATA[public void initialize(byte[] content, PrivateKey privateKey, Certificate[] certificates) throws CertificateCoreException {
 }
