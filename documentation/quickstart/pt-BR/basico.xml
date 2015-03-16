@@ -3,28 +3,37 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 
 <chapter id="basico">
+	
 	<title>Criação da aplicação</title>
 	
 	<section>
+	
 		<title>Nossa primeira aplicação</title>
+		
 		<para>
 			Nesta seção apresentaremos o passo-a-passo para construção de um projeto de exemplo do <emphasis>demoiselle-applet</emphasis>. 
 			Nele será construída uma página html que executará a applet para assinatura de um documento usando certificados A1 ou A3 
 			e apresentação das informações do certificado na própria página html.
 		</para>
+		
 	</section>
 	
 	<section>
+		
 		<title>Criando sua Applet para exibir informações em uma página</title>
+		
 		<para>
 			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribua os seguintes valores:
 		</para>
-<programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
+		
+		<programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
 Artifact-id: AppletCustomizada
 Packaging: JAR]]></programlisting>
+		
 		<para>	
 			Após criada a aplicação adicione como dependência o componente <literal>demoiselle-certificate-applet</literal>: 
 		</para>	
+		
         <programlisting role="XML"><![CDATA[<dependencies>
     <dependency>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
@@ -90,14 +99,17 @@ Packaging: JAR]]></programlisting>
             escrevem no formulário html chamado de mainForm no qual a applet está sendo executado. O terceiro parâmetro do método informa em
             qual campo do formulário a informação será registrada.
         </para>
+        
         <para>
             O método
             <literal>cancel</literal>
             pode ser utilizado para implementar uma ação no caso do usuário desistir da ação. No código de exemplo é feito apenas a ocultação da applet.
-        </para>		
+        </para>	
+        	
 	</section>
 
     <section>
+        
         <title>Assinatura dos jars</title>
 
         <para>
@@ -189,6 +201,7 @@ Packaging: JAR]]></programlisting>
                 </tbody>
             </tgroup>
         </table>
+        
         <para>
         	<!-- A cada nova versão, lembrar de atualizar a versão do link para a documentação de referência -->
             Para mais detalhes sobre os procedimentos para assinatura dos artefatos, 
@@ -199,10 +212,13 @@ Packaging: JAR]]></programlisting>
     </section>
 
 	<section>
+		
 		<title>Projeto Web Exemplo</title>
+		
 		<para>
 			Crie um novo projeto Maven em branco, marcando a opção "Create a Simple Project" e atribua os seguintes valores:
 		</para>
+		
 <programlisting role="HTML" ><![CDATA[Group-id: br.gov.frameworkdemoiselle.certificate.sample
 Artifact-id: AppletCustomizadaWeb
 Packaging: WAR]]></programlisting>
@@ -210,6 +226,7 @@ Packaging: WAR]]></programlisting>
 		<para>
 			Adicione a página HTML que irá executar a applet.
 		</para>
+		
         <programlisting role="HTML"><![CDATA[<!DOCTYPE html>
 <html>
 <head>
@@ -263,9 +280,11 @@ Packaging: WAR]]></programlisting>
                 <literal>factory.applet.action</literal>, que define qual classe será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, e a
                 <literal>applet.javascript.postaction.failure</literal>, que define qual método JavaScript deverá ser chamado em caso de alguma falha. 
         </para>
+        
         <para>
         	Acrescente um arquivo <literal>default.css</literal> na pasta <literal>webpapp/css</literal>, com o seguinte conteúdo:
         </para>
+        
    		<programlisting role="HTML"><![CDATA[label {
 	display: block;
 	margin-bottom: -1em;
@@ -282,6 +301,7 @@ input[type="file"]{
     border: 1px solid #cccccc;
     padding: 5px;
 }]]></programlisting>
+		
 		<para>
 			O seu projeto ficará com a seguinte estrutura de diretórios: 
 		</para>
@@ -320,7 +340,9 @@ AppletCustomizadaWeb
 	</section>
 
 	<section>
+		
 		<title> Assinando um documento	</title>
+	 	
 	 	<para>
 			Para realizar assinatura digital do contéudo utilizamos o componente demoiselle-certificate-signer. 
 			Esse componente assina um conteúdo carregado no applet, utilizando um certificado digital também carregado pela appplet.
@@ -329,6 +351,7 @@ AppletCustomizadaWeb
 		<para>
 			Para isso, vamos adicionar a dependência à esse componente no pom.xml do projeto AppletCustomizadaWeb: 
 		</para>
+		
         <programlisting role="XML"><![CDATA[<dependencies>
     <dependency>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
@@ -360,6 +383,7 @@ AppletCustomizadaWeb
 			Para assinatura de documentos é necessário criar um objeto <literal>PKCS7Singer</literal>, configurar os atributos 
 			e chamar o método <literal>doSign()</literal>:
 		</para>	
+		
         <programlisting role="JAVA"><![CDATA[PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
 signer.setCertificates(keystore.getCertificateChain(alias));
 signer.setPrivateKey((PrivateKey) keystore.getKey(alias, null));
@@ -371,6 +395,7 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
 			No método <literal>setSignaturePolicy()</literal> você pode definir a política a ser usada. 
 			Atualmente o componente suporta as política de assinatura listadas abaixo:
 		</para>
+		
 		<itemizedlist>
             <listitem>
                 <literal>PolicyFactory.Policies.AD_RB_CADES_1_0</literal>, Refere-se à Assinatura Digital de Referência Básica versão 1.0;
@@ -401,6 +426,7 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
 		<para>
 			Abaixo segue como ficará nosso código completo.
 		</para>
+		
        	<programlisting role="JAVA" ><![CDATA[public class App extends AbstractAppletExecute{
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
@@ -495,6 +521,7 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
         }
     }	
 }]]></programlisting>
+		
 		<para>
 			O seu projeto ficará com a seguinte estrutura de diretórios: 
 		</para>
@@ -519,7 +546,9 @@ AppletCustomizada
 	</section>
 
 	<section>
+		
 		<title>Executando o Applet</title>
+ 		
  		<para>
          Agora publique sua aplicação web em um servidor Jboss EAP6., e acesse a url 
          http://localhost:8080/AppletCustomizadaWeb/applet.html. Se o certificado digital necessitar 
@@ -539,11 +568,13 @@ AppletCustomizada
                 </mediaobject>
             </figure>
         </para>
+        
         <para>
             O componente exibirá uma tela com os certificados disponíveis, seu número de série, sua data 
             inicial de validade, sua data final de validade, e o emissor deste certificado, fornecendo ao
             usuário a possibilidade de escolher qual certificado deseja-se utilizar.
         </para>
+        
         <para>
             <figure>
                 <title>
@@ -556,6 +587,7 @@ AppletCustomizada
                 </mediaobject>
             </figure>
         </para>
+        
 </section>
 
 </chapter>
