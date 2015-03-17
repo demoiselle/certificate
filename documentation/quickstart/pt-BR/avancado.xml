@@ -599,6 +599,7 @@ AppletCustomizadoWeb
     │       ├── bcmail-jdk15on-1.51-assinado.jar
     │       ├── bcpkix-jdk15on-1.51-assinado.jar
     │       ├── bcprov-jdk15on-1.51-assinado.jar
+    │       ├── commons-io-1.3.2-assinado.jar
     │       ├── demoiselle-certificate-applet-2.0.0-SNAPSHOT-assinado.jar
     │       ├── demoiselle-certificate-ca-icpbrasil-2.0.0-SNAPSHOT-assinado.jar
     │       ├── demoiselle-certificate-core-2.0.0-SNAPSHOT-assinado.jar
