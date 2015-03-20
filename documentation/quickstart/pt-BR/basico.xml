@@ -12,8 +12,8 @@
 		
 		<para>
 			Nesta seção apresentaremos o passo-a-passo para construção de um projeto de exemplo do <emphasis>demoiselle-applet</emphasis>. 
-			Nele será construída uma página html que executará a applet para assinatura de um documento usando certificados A1 ou A3 
-			e apresentação das informações do certificado na própria página html.
+			Nele será construída uma página <literal>html</literal> que executará a <literal>applet</literal> para assinatura de documentos, 
+			utilizando certificados A1 ou A3, e apresentação das informações do certificado na própria página <literal>html</literal>.
 		</para>
 		
 	</section>
@@ -94,10 +94,8 @@ Packaging: JAR]]></programlisting>
         </para>
 
         <para>
-            Os métodos
-            <literal>setFormField</literal>
-            escrevem no formulário html chamado de mainForm no qual a applet está sendo executado. O terceiro parâmetro do método informa em
-            qual campo do formulário a informação será registrada.
+            Os métodos <literal>setFormField</literal> escrevem no formulário <literal>html</literal> chamado de mainForm no qual a applet está 
+            sendo executado. O terceiro parâmetro do método informa em qual campo do formulário a informação será registrada.
         </para>
         
         <para>
@@ -113,9 +111,10 @@ Packaging: JAR]]></programlisting>
         <title>Assinatura dos jars</title>
 
         <para>
-        	O modelo de segurança da plataforma Java é centrado sobre o conceito de sandbox (caixa de areia), 
-        	no qual um código remoto como um applet por padrão não é confiável e, portanto, não pode ter acesso ilimitado ao Sistema Operacional. 
-       		Para que possamos executar nossa applet, precisamos assinar todos os jars necessários à execução da applet, conforme mostrado na tabela abaixo:
+        	O modelo de segurança da plataforma Java é centrado sobre o conceito de sandbox (caixa de areia), no qual um código remoto como um 
+        	<literal>applet</literal> por padrão não é confiável e, portanto, não pode ter acesso ilimitado ao Sistema Operacional.	Para que 
+        	possamos executar nossa <literal>applet</literal>, precisamos assinar todos os jars necessários à execução da applet, conforme mostrado
+        	na tabela abaixo:
         </para>
         
         <table frame="all" pgwide="1">
@@ -224,7 +223,7 @@ Artifact-id: AppletCustomizadaWeb
 Packaging: WAR]]></programlisting>
 		
 		<para>
-			Adicione a página HTML que irá executar a applet.
+			Adicione a página <literal>html</literal> que irá executar a <literal>applet</literal>.
 		</para>
 		
         <programlisting role="HTML"><![CDATA[<!DOCTYPE html>
@@ -277,9 +276,10 @@ Packaging: WAR]]></programlisting>
 </html>]]></programlisting>
 
 		<para>
-       		Para funcionamento da applet é necessário as propiedades:              
-                <literal>factory.applet.action</literal>, que define qual classe será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, e a
-                <literal>applet.javascript.postaction.failure</literal>, que define qual método JavaScript deverá ser chamado em caso de alguma falha. 
+       		Para o funcionamento da <literal>applet</literal>applet são necessárias as propiedades:              
+            <literal>factory.applet.action</literal> e <literal>applet.javascript.postaction.failure</literal>. A primeira define qual classe 
+            será instanciada no momento do clique do botão Ok e carregamento do Keystore do usuário, enquanto a segunda define qual método 
+            JavaScript deverá ser chamado em caso de alguma falha. 
         </para>
         
         <para>
@@ -346,12 +346,13 @@ AppletCustomizadaWeb
 		<title> Assinando um documento	</title>
 	 	
 	 	<para>
-			Para realizar assinatura digital do contéudo utilizamos o componente demoiselle-certificate-signer. 
-			Esse componente assina um conteúdo carregado no applet, utilizando um certificado digital também carregado pela appplet.
+			Para realizar assinatura digital do contéudo utilizamos o componente <literal>demoiselle-certificate-signer</literal>. 
+			Esse componente assina um conteúdo carregado no <literal>applet</literal>, utilizando um certificado digital também carregado pela 
+			<literal>applet</literal>.
 		</para>
 		
 		<para>
-			Para isso, vamos adicionar a dependência à esse componente no pom.xml do projeto AppletCustomizadaWeb: 
+			Para isso, devemos adicionar dependência à esse componente no <literal>pom.xml</literal> do projeto AppletCustomizadaWeb: 
 		</para>
 		
         <programlisting role="XML"><![CDATA[<dependencies>
@@ -552,7 +553,7 @@ AppletCustomizada
 		<title>Executando o Applet</title>
  		
  		<para>
-         Agora publique sua aplicação web em um servidor Jboss EAP6., e acesse a url 
+         Agora publique sua aplicação web em um servidor Jboss EAP6, e acesse a url 
          http://localhost:8080/AppletCustomizadaWeb/applet.html. Se o certificado digital necessitar 
          do pin para que seja feito o acesso, a aplicação solicitará imediatamente o pin de seu certificado, 
          conforme a tela abaixo:
