@@ -23,7 +23,7 @@
     <section>
         <title>Implementando uma solução customizada de carimbo de tempo</title>
         <para>
-            Este componente fornece uma implmentação de referência para acesso ao servidor de carimbo de tempo do SERPRO, mas podem ocorrer casos em que é necessário que
+            Este componente fornece uma implementação de referência para acesso ao servidor de carimbo de tempo do SERPRO, mas podem ocorrer casos em que é necessário que
             o acesso seja feito a outro servidor, ou mesmo o modo de acesso precisa ser alterado, como por exemplo utilizando REST ou HTTP.
         </para>
 
