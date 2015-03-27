@@ -11,7 +11,7 @@
 		<title>Como funciona</title>
 		
 		<para>
-			Para usar uma política AD_RT (Assinatura Digital de Referência Temporal) do ICP-Brasil precisamos 
+			Para usar uma política AD_RT (Assinatura Digital de Referência Temporal) do ICP-Brasil, precisamos 
 			requisitar uma referência temporal digital a uma ACT (Autoridade de Carimbo do Tempo), que possue 
 			um servidor devidamente homologado.	O componente <literal>demoiselle-certificate-timestamp</literal> 
 			possui toda a implementação necessária para acessar o servidor de carimbo de tempo do SERPRO 
@@ -34,7 +34,7 @@
         </para>	
         	
 		<para>
-			Para aplicações que disponibilizam assinatura com referência temporal para diversos usuários essa implementação
+			Para aplicações que disponibilizam assinatura com referência temporal para diversos usuários, essa implementação
 			padrão pode não ser a ideal, pois será necessário autorizar cada usuário para obter um carimbo de tempo.
 			Pensando nisso, o componente oferece possibilidade para que a aplicação não peça o carimbo de tempo
 			diretamente ao servidor de carimbo de tempo, mas que solicite a um outro servidor que faça isso pela 
