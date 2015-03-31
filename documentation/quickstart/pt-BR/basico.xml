@@ -113,7 +113,7 @@ Packaging: JAR]]></programlisting>
         <para>
         	O modelo de segurança da plataforma Java é centrado sobre o conceito de sandbox (caixa de areia), no qual um código remoto como um 
         	<literal>applet</literal> por padrão não é confiável e, portanto, não pode ter acesso ilimitado ao Sistema Operacional.	Para que 
-        	possamos executar nossa <literal>applet</literal>, precisamos assinar todos os jars necessários à execução da applet, conforme mostrado
+        	possamos executar nossa <literal>applet</literal>, precisamos assinar todos os jars necessários à sua execução, conforme mostrado
         	na tabela abaixo:
         </para>
         
@@ -223,7 +223,7 @@ Artifact-id: AppletCustomizadaWeb
 Packaging: WAR]]></programlisting>
 		
 		<para>
-			Adicione a página <literal>html</literal> que irá executar a <literal>applet</literal>.
+			Adicione a página <literal>html</literal> que irá executar a <literal>applet</literal>:
 		</para>
 		
         <programlisting role="HTML"><![CDATA[<!DOCTYPE html>
@@ -274,6 +274,12 @@ Packaging: WAR]]></programlisting>
 	</form>
 </body>
 </html>]]></programlisting>
+		<note>
+			<para>
+				É necessário que os arquivos .jar assinados na sessão anterior sejam adicionados 
+				ao mesmo diretório da página <literal>html</literal> que irá utilizá-los
+			</para>
+		</note>
 
 		<para>
        		Para o funcionamento da <literal>applet</literal>applet são necessárias as propiedades:              
@@ -352,7 +358,7 @@ AppletCustomizadaWeb
 		</para>
 		
 		<para>
-			Para isso, devemos adicionar dependência à esse componente no <literal>pom.xml</literal> do projeto AppletCustomizadaWeb: 
+			Para isso, devemos adicionar dependência à esse componente no <literal>pom.xml</literal> do projeto AppletCustomizada: 
 		</para>
 		
         <programlisting role="XML"><![CDATA[<dependencies>
@@ -365,7 +371,7 @@ AppletCustomizadaWeb
 	...
 	
 </dependencies>]]></programlisting>		
-
+<!-- 
 		<para>
 			Assim como o componente Demoiselle Certificate Applet, o Demoiselle Certificate Signer não está no repositório <emphasis>Maven</emphasis>, 
 			sendo assim necessário também adicionar o repositório do qual o componente deve ser baixado:
@@ -381,6 +387,7 @@ AppletCustomizadaWeb
 	...
 	
 </repositories>]]></programlisting>	
+ -->
 
 		<para>
 			Para assinatura de documentos é necessário criar um objeto <literal>PKCS7Singer</literal>, configurar os atributos 
@@ -424,10 +431,27 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
             <listitem>
                 <literal>PolicyFactory.Policies.AD_RT_CADES_2_1</literal>, Refere-se à Assinatura Digital de Referência Temporal versão 2.1;
             </listitem>
-        </itemizedlist>		
+        </itemizedlist>	
+        
+        <para>
+        	Por isso, devemos adicionar ainda outra dependência ao projeto AppletCustomizada, justamente
+        	ao componente responsável pelo gerenciamento das políticas, o <literal>demoiselle-certificate-policy-engine</literal>:
+        </para>	
+        
+        <programlisting role="XML"><![CDATA[<dependencies>
+    <dependency>
+		<groupId>br.gov.frameworkdemoiselle.component</groupId>
+		<artifactId>demoiselle-certificate-policy-engine</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+	
+	...
+	
+</dependencies>]]></programlisting>		
 
 		<para>
-			Abaixo segue como ficará nosso código completo.
+			Para utilizar esses recursos, devemos modificar nossa classe <literal>App.java</literal>, também no projeto AppletCustomizada,
+			que ficará assim:
 		</para>
 		
        	<programlisting role="JAVA" ><![CDATA[public class App extends AbstractAppletExecute{
