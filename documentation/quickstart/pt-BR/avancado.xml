@@ -153,8 +153,8 @@
 		
 		<para>
 			O terceito e último passo é enviar a solicitação para o servidor de carimbo de tempo usando a API do componente <literal>demoiselle-certificate-timestamp</literal>.
-			Para criar a solicitação, basta criamos um <literal>TimeStampOperator</literal> e chamamos o método <literal>createRequest</literal>
-			passando o conteúdo, certificado e chave privada para assinar a resquisição.  
+			Para criar a solicitação, basta criarmos um <literal>TimeStampOperator</literal> e chamarmos o método <literal>createRequest</literal>
+			passando o conteúdo, o certificado e a chave privada para assinar a requisição.  
 		</para>
 		
 		<programlisting role="Java"><![CDATA[TimeStampOperator timeStampOperator = new TimeStampOperator();
@@ -186,14 +186,20 @@ public class TimestampGeneratorServlet extends HttpServlet {
 			//Lendo o Conteúdo enviado
 			content = IOUtils.toByteArray(request.getInputStream());
 			
-			//requisitando um carimbo de tempo
-			TimeStampOperator timeStampOperator = new TimeStampOperator();
-			byte[] reqTimestamp = timeStampOperator.createRequest(privateKey,certificates, content);
-
-			timestamp = timeStampOperator.invoke(reqTimestamp);
-
-			response.setContentType("application/octet-stream");
-			response.getOutputStream().write(timestamp);
+			if (content.length > 0) {
+				//requisitando um carimbo de tempo
+				TimeStampOperator timeStampOperator = new TimeStampOperator();
+				byte[] reqTimestamp = timeStampOperator.createRequest(privateKey,certificates, content);
+	
+				timestamp = timeStampOperator.invoke(reqTimestamp);
+	
+				response.setContentType("application/octet-stream");
+				response.getOutputStream().write(timestamp);
+			}else{
+				response.setContentType("text/plain");
+				response.setStatus(500);
+				response.getOutputStream().write("Conteúdo não enviado".getBytes());
+			}
 		
 		} catch (CertificateCoreException e) {
 			response.setContentType("text/plain");
@@ -276,8 +282,8 @@ public byte[] generateTimeStamp() throws CertificateCoreException {
 timeStampOperator.validate(content, response);]]></programlisting>
 				
 		<para>
-		O método <literal>generateTimeStamp()</literal> é o método central da nossa implementação, vamos conectar ao servlet
-		enviando o conteúdo sobre o qual é requisitado o carimbo de tempo. Como em nossa aplicação usamos servlet, vamos começar
+		O método <literal>generateTimeStamp()</literal> é o método central da nossa implementação. Nele vamos conectar à servlet e
+		enviar o conteúdo sobre o qual é requisitado o carimbo de tempo. Como em nossa aplicação usamos servlet, vamos começar
 		estabelecendo a conexão com a URL e, a seguir, usar o método POST.
 		</para>		
 		
@@ -562,7 +568,7 @@ AppletCustomizada
 			<title>Configurando o Servlet</title>
 			
 			<para>
-			Adicione a anotação de sergurança a classe <literal>TimestampGeneratorServlet</literal> 
+			Adicione a anotação de sergurança à classe <literal>TimestampGeneratorServlet</literal> 
 			para que as definições de segurança sejam aplicadas.   
 			</para>
 			

@@ -68,7 +68,7 @@ Packaging: JAR]]></programlisting>
 		<programlisting role="JAVA" ><![CDATA[public class App extends AbstractAppletExecute {
 
 	@Override
-	public void execute(KeyStore keystore, String alias, int policySelected, Applet applet) {
+	public void execute(KeyStore keystore, String alias, Applet applet) {
 		try {
 			/* Exibe alguns dados do certificado */
 			ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
@@ -83,7 +83,7 @@ Packaging: JAR]]></programlisting>
 	}
 
 	@Override
-	public void cancel(KeyStore keystore, String alias, int policyselected,	Applet applet) {
+	public void cancel(KeyStore keystore, String alias, Applet applet) {
 		/* Seu codigo customizado aqui... */
 	}
 }]]></programlisting>
@@ -459,7 +459,7 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
 	@Override
-	public void execute(KeyStore keystore, String alias, int policyselected, Applet applet) {
+	public void execute(KeyStore keystore, String alias, Applet applet) {
 		try {
             /* Exibe alguns dados do certificado */
             ICPBrasilCertificate certificado = super.getICPBrasilCertificate(keystore, alias, false);
@@ -516,8 +516,7 @@ signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_1);]]></programli
 	}
 
 	@Override
-	public void cancel(KeyStore keystore, String alias, int policyselected,
-			Applet applet) {
+	public void cancel(KeyStore keystore, String alias,	Applet applet) {
 		// TODO Auto-generated method stub
 	}
 	
