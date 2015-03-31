@@ -213,7 +213,7 @@ public class App extends AbstractAppletExecute {
         <para>
             Os métodos
             <literal>setFormField</literal>
-            escrevem no formulário html chamado de mainForm no qual a applet está sendo executado. O terceiro parâmetro do método informa em
+            escrevem no formulário html chamado de mainForm no qual a applet está sendo executada. O terceiro parâmetro do método informa em
             qual campo do formulário a informação será registrada.
         </para>
 
