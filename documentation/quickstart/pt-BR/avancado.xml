@@ -406,7 +406,7 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 			}
 
 			if (timestamp == null){
-				throw new CertificateCoreException("Carimbo de Tempo nao foi gerado");
+				throw new CertificateCoreException("Carimbo de Tempo não foi gerado");
 			}
 			
 			
