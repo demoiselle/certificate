@@ -174,10 +174,10 @@ timestamp = timeStampOperator.invoke(reqTimestamp);]]></programlisting>
 		</para>
 
 		<programlisting role="Java"><![CDATA[@WebServlet("/carimbo")
-public class TimestampGeneratorServlet extends HttpServlet {
+public class TimeStampGeneratorServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(TimestampGeneratorServlet.class);
+	private static final Logger logger = LoggerFactory.getLogger(TimeStampGeneratorServlet.class);
 	
 	private PrivateKey privateKey = null;
 	private Certificate[] certificates = null;
@@ -221,6 +221,11 @@ public class TimestampGeneratorServlet extends HttpServlet {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 		}
+		
+		private void loadCertificate() throws Exception{
+			CertificateLoader certificateLoader = new CertificateLoaderImpl();
+			X509Certificate certificate = certificateLoader.load(new File("certificado.cer");
+		}
 	}
 ]]></programlisting>
 
@@ -249,15 +254,15 @@ public class TimestampGeneratorServlet extends HttpServlet {
 		
 		<para>
 			Em seu projeto <emphasis>AppletCustomizada</emphasis>, crie no pacote <literal>br.gov.frameworkdemoiselle.certificate.sample</literal> 
-			a classe <literal>MyTimestampGeneratorImpl</literal>, que deve implementar a interface <literal>TimeStampGenerator</literal>. Para 
+			a classe <literal>MyTimeStampGeneratorImpl</literal>, que deve implementar a interface <literal>TimeStampGenerator</literal>. Para 
 			descobrir as implementações de <literal>TimeStampGenerator</literal> presentes no projeto, é utilizado o SPI, por isso precisamos 
 			fazer dois ajustes para que a classe criada seja utilizada no lugar da implementação padrão. A primeira é anotar a classe 
-			<literal>MyTimestampGeneratorImpl</literal> com a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal>, para definir a nossa 
+			<literal>MyTimeStampGeneratorImpl</literal> com a anotação <literal>@Priority(Priority.MAX_PRIORITY)</literal>, para definir a nossa 
 			implementação como prioritária. A segunda é criar um arquivo chamado 
 			<literal>br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator</literal> no diretório 
 			<literal>src/main/resources/META-INF/services</literal>, e dentro desse arquivo colocar o caminho completo da classe 
 			<literal>MyTimestampGeneratorImpl</literal>, que é 
-			<literal>br.gov.frameworkdemoiselle.certificate.sample.MyTimestampGeneratorImpl</literal>, no caso do nosso exemplo.
+			<literal>br.gov.frameworkdemoiselle.certificate.sample.MyTimeStampGeneratorImpl</literal>, no caso do nosso exemplo.
 		</para>
 		
 		<important>
@@ -359,7 +364,7 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 
 		try {
 			// Cria a conexao com o servico que requisita o carimbo de Tempo
-			URL url = new URL("http://localhost:8080/certificate-applet-web/carimbo");
+			URL url = new URL("http://localhost:8080/AppletCustomizadaWeb/carimbo");
 
 			connection = (HttpURLConnection) url.openConnection();
 
