@@ -423,7 +423,16 @@ public class MyTimestampGeneratorImpl implements TimeStampGenerator {
 		TimeStampOperator timeStampOperator = new TimeStampOperator();
 		timeStampOperator.validate(content, response);
 	}
-}]]></programlisting>	
+}]]></programlisting>
+
+		<para>
+			Além disso, na classe <literal>App</literal>, devemos modificar a política que ajustamos
+			para utilizar a política de Assinatura Digital de Referência Básica versão 2.1, para utilizar a
+			política de Assinatura Digital de Referência Temporal versão 2.1:
+		</para>	
+		
+		<programlisting role="HTML"><![CDATA[
+signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_2_1);]]></programlisting>	
 
 		<para>
 			A organização da AppletCustomizada ficara assim:
