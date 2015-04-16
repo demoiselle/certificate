@@ -36,14 +36,18 @@
  */
 package br.gov.frameworkdemoiselle.timestamp;
 
+import br.gov.frameworkdemoiselle.certificate.Priority;
 import br.gov.frameworkdemoiselle.certificate.exception.CertificateCoreException;
 import br.gov.frameworkdemoiselle.certificate.timestamp.TimeStampGenerator;
 import br.gov.frameworkdemoiselle.timestamp.connector.TimeStampOperator;
+
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Priority(Priority.MIN_PRIORITY)
 public class TimestampGeneratorImpl implements TimeStampGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(TimestampGeneratorImpl.class);

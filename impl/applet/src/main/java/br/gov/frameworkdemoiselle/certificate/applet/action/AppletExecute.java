@@ -51,10 +51,9 @@ public interface AppletExecute {
      * @param keystore Repositório de chaves
      * @param alias O apelido do certificado contido no repositório de chaves
      * que se deseja usar
-     * @param policyselected O indice da politica selecionada
      * @param applet O Applet que executará a ação
      */
-    public void execute(KeyStore keystore, String alias, int policyselected, Applet applet);
+    public void execute(KeyStore keystore, String alias, Applet applet);
 
     /**
      * Acao a ser executada quando efetuado o cancelamento
@@ -62,9 +61,8 @@ public interface AppletExecute {
      * @param keystore Repositório de chavess
      * @param alias O apelido do certificado contido no repositório de chaves
      * que se deseja usar
-     * @param policyselected O indice da politica selecionada
      * @param applet O Applet que executará a ação
      */
-    public void cancel(KeyStore keystore, String alias, int policyselected, Applet applet);
+    public void cancel(KeyStore keystore, String alias, Applet applet);
 
 }

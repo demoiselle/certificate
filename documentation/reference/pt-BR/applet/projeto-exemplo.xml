@@ -25,20 +25,23 @@
 
     <section>
         <title>Criando uma AppletExecute</title>
-
+		
         <para>
-            Crie um novo projeto com o nome de demoiselle-applet-customizada. Em seguida, crie uma classe que chamaremos de
-            <literal>App.java</literal>
-            no
-            <literal>pacote br.gov.frameworkdemoiselle</literal>
-            , estendendo a classe
-            <literal>AbstractAppletExecute</literal>
-            .
+            Crie um novo projeto com o nome de demoiselle-applet-customizada. Adicione a esse projeto a dependência para o componente
+            Demoiselle Certificate Signer:
+        </para>
+        <programlisting role="XML"><![CDATA[<dependency>
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
+	<artifactId>demoiselle-certificate-signer</artifactId>
+	<version>2.0.0</version>
+</dependency>]]></programlisting>
+         
+        <para>   
+             Em seguida, crie uma classe que chamaremos de <literal>App.java</literal> no pacote 
+             <literal>br.gov.frameworkdemoiselle</literal>, estendendo a classe <literal>AbstractAppletExecute</literal>.
         </para>
 
-
-        <programlisting role="JAVA" ><![CDATA[
-package br.gov.frameworkdemoiselle;
+        <programlisting role="JAVA" ><![CDATA[package br.gov.frameworkdemoiselle;
 
 import br.gov.frameworkdemoiselle.certificate.applet.action.AbstractAppletExecute;
 import br.gov.frameworkdemoiselle.certificate.applet.certificate.ICPBrasilCertificate;
@@ -210,7 +213,7 @@ public class App extends AbstractAppletExecute {
         <para>
             Os métodos
             <literal>setFormField</literal>
-            escrevem no formulário html chamado de mainForm no qual a applet está sendo executado. O terceiro parâmetro do método informa em
+            escrevem no formulário html chamado de mainForm no qual a applet está sendo executada. O terceiro parâmetro do método informa em
             qual campo do formulário a informação será registrada.
         </para>
 
@@ -230,9 +233,9 @@ public class App extends AbstractAppletExecute {
         </para>
 
         <programlisting role="JAVA"><![CDATA[@Override
-    public void cancel(KeyStore keystore, String alias, int policyselected, Applet applet) {
-        /* Seu codigo customizado aqui... */
-    }]]></programlisting>
+public void cancel(KeyStore keystore, String alias, int policyselected, Applet applet) {
+	/* Seu codigo customizado aqui... */
+}]]></programlisting>
 
     </section>
 
@@ -246,17 +249,14 @@ public class App extends AbstractAppletExecute {
 
         <para>
             Para prencher um valor vindo do applet em um componente html, vamos considerar o código html abaixo:
-
         </para>
 
-        <programlisting role="HTML" language="HTML"><![CDATA[
-<form id="mainForm" name="mainForm" method="post">
-        <input type="text" name="cpf" value="" size="11">
+        <programlisting role="HTML" language="HTML"><![CDATA[<form id="mainForm" name="mainForm" method="post">
+	<input type="text" name="cpf" value="" size="11">
 </form>]]></programlisting>
 
         <para>
             Para preenchermos o campo html descrito acima com um valor fornecido do applet, utilizamos o código a seguir.
-
         </para>
 
         <programlisting role="JAVA"><![CDATA[AbstractAppletExecute.setFormField(applet, "mainForm", "cpf", "12345678900");]]></programlisting>
@@ -433,9 +433,9 @@ input[type="text"],input[type="file"]{
         JavaScript que pode ser personalizado conforme a necessidade da aplicação. Abaixo temos um exemplo de método:
 
         <programlisting role="JAVA"><![CDATA[<script type="text/javascript">
-        function foo() {
-                alert("foo() method called!");
-        }
+	function foo() {
+		alert("foo() method called!");
+	}
 </script>]]></programlisting>
 
         <note>

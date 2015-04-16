@@ -11,6 +11,13 @@
             <emphasis>Demoiselle Timestamp</emphasis> foi desenvolvido para fornecer acesso ao servidor de carimbo de tempo do SERPRO. Através dele, podemos fazer requisições de data e hora
             para artafatos que necessitem de uma referência temporal reconhecida.
         </para>
+        
+        <note>
+			<para>
+				Para mais informações sobre o serviço de Assinatura Digital de Referência Temporal
+				ofericido pela ACT (Autoridade de Carimbo do Tempo) SERPRO, acesse o site <ulink url="http://carimbodotempo.serpro.gov.br/act/">carimbodotempo.serpro.gov.br/act</ulink>.
+			</para>
+		</note>
 
         <para>
             Ele foi projetado para apoiar o componente de assinatura digital nas políticas de referência temporal e superiores, mas não está limitado a ele, podendo ser utilizado em
