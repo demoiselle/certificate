@@ -210,16 +210,6 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
             throw new SignerException("Invalid signature", e);
         }
 
-        // O atributo signingCertificate deve conter referência apenas ao
-        // certificado do signatário.
-        org.bouncycastle.asn1.cms.Attribute signedSigningCertificate = signedAttributesTable.get(new DERObjectIdentifier("1.2.840.113549.1.9.16.2.47"));
-        if (signedSigningCertificate != null) {
-            // Uso futuro, para processamento dos valores
-            ASN1Set set = signedSigningCertificate.getAttrValues();
-        } else {
-            throw new SignerException("O Atributo signingCertificate não pode ser nulo.");
-        }
-
         // Valida a cadeia de certificação de um arquivo assinado
         //ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0, CertPathEncoding.PKCS7);
         
@@ -253,6 +243,17 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
             throw new SignerException("There is SigningTime attribute on Package PKCS7, but it is null");
         }
 
+        
+        // O atributo signingCertificate deve conter referência apenas ao
+        // certificado do signatário.
+        org.bouncycastle.asn1.cms.Attribute signedSigningCertificate = signedAttributesTable.get(new DERObjectIdentifier("1.2.840.113549.1.9.16.2.47"));
+        if (signedSigningCertificate != null) {
+            // Uso futuro, para processamento dos valores
+            ASN1Set set = signedSigningCertificate.getAttrValues();
+        } else {
+            throw new SignerException("O Atributo signingCertificate não pode ser nulo.");
+        }        
+        
     }
 
     /**
