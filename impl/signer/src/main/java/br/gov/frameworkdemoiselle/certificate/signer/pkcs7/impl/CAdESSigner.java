@@ -170,12 +170,12 @@ public class CAdESSigner implements PKCS7Signer {
                 //Realiza a verificação dos atributos assinados
                 logger.info("Efetuando a verificação dos atributos assinados");
                 AttributeTable signedAttributes = signer.getSignedAttributes();
-                if (signedAttributes.size() == 0) {
+                if ((signedAttributes==null)||(signedAttributes!= null && signedAttributes.size() == 0)) {
                     throw new SignerException("O pacote PKCS7 não contém atributos assinados.");
                 }
 
                 AttributeTable unsignedAttributes = signer.getUnsignedAttributes();
-                if (unsignedAttributes.size() == 0) {
+                if ((unsignedAttributes==null)||(unsignedAttributes != null && unsignedAttributes.size() == 0)) {
                     logger.info("O pacote PKCS7 não contem atributos nao assinados.");
                 }
 
