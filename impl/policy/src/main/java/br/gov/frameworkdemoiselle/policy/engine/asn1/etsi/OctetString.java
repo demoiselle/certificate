@@ -8,7 +8,7 @@ import org.bouncycastle.asn1.DEROctetString;
 public class OctetString extends ASN1Object {
 
     private String value;
-    private DEROctetString derOctetString;
+    protected DEROctetString derOctetString;
 
     public String getValue() {
         return value;
@@ -28,7 +28,15 @@ public class OctetString extends ASN1Object {
         return result;
     }
 
-    @Override
+    public DEROctetString getDerOctetString() {
+		return derOctetString;
+	}
+
+	public void setDerOctetString(DEROctetString derOctetString) {
+		this.derOctetString = derOctetString;
+	}
+
+	@Override
     public void parse(ASN1Primitive derObject) {
         if (derObject instanceof DEROctetString) {
             this.derOctetString = (DEROctetString) derObject;

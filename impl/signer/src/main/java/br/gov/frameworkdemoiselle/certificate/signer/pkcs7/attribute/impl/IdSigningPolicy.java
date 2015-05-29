@@ -36,15 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.impl;
 
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
-import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DERIA5String;
-import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
 import org.bouncycastle.asn1.esf.OtherHashAlgAndValue;
@@ -52,6 +50,9 @@ import org.bouncycastle.asn1.esf.SigPolicyQualifierInfo;
 import org.bouncycastle.asn1.esf.SigPolicyQualifiers;
 import org.bouncycastle.asn1.esf.SignaturePolicyId;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
 
 public class IdSigningPolicy implements SignedAttribute {
 
@@ -69,13 +70,15 @@ public class IdSigningPolicy implements SignedAttribute {
         ASN1ObjectIdentifier sigPolicyId = new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyInfo().getSignPolicyIdentifier().getValue());
 
         //Atributo 2
-        OtherHashAlgAndValue sigPolicyHash = new OtherHashAlgAndValue(new AlgorithmIdentifier(new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue())), new DEROctetString(signaturePolicy.getSignPolicyHash().getValueUTF8().getBytes()));
+        OtherHashAlgAndValue sigPolicyHash = new OtherHashAlgAndValue(new AlgorithmIdentifier(
+        		new ASN1ObjectIdentifier(signaturePolicy.getSignPolicyHashAlg().getAlgorithm().getValue())), 
+        		signaturePolicy.getSignPolicyHash().getDerOctetString());
 
         //Atributo 3
         List<SigPolicyQualifierInfo> sigPolicyQualifierInfos = new ArrayList<SigPolicyQualifierInfo>();
 
         ASN1ObjectIdentifier sigPolicyQualifierId = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.5.1");
-        DERIA5String sigQualifier = new DERIA5String("xxx");
+        DERIA5String sigQualifier = new DERIA5String(signaturePolicy.getSignPolicyURI());
         SigPolicyQualifierInfo bcSigPolicyQualifierInfo = new SigPolicyQualifierInfo(sigPolicyQualifierId, sigQualifier);
         sigPolicyQualifierInfos.add(bcSigPolicyQualifierInfo);
 

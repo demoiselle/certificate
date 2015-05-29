@@ -36,14 +36,16 @@
  */
 package br.gov.frameworkdemoiselle.policy.engine.factory;
 
-import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
-import br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.LPA;
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
+
+import br.gov.frameworkdemoiselle.policy.engine.asn1.etsi.SignaturePolicy;
+import br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.LPA;
 
 public class PolicyFactory {
 
@@ -57,16 +59,16 @@ public class PolicyFactory {
 
     public SignaturePolicy loadPolicy(Policies policy) {
         SignaturePolicy signaturePolicy = new SignaturePolicy();
-        InputStream is = this.getClass().getResourceAsStream(policy.getUrl());
-        BufferedInputStream bis = new BufferedInputStream(is);
+        InputStream is = this.getClass().getResourceAsStream(policy.getFile());
         ASN1Primitive primitive = this.readANS1FromStream(is);
         signaturePolicy.parse(primitive);
+        signaturePolicy.setSignPolicyURI(policy.getUrl());
         return signaturePolicy;
     }
 
     public LPA loadLPA() {
         br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.LPA listaPoliticaAssinatura = new br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.LPA();
-        InputStream is = this.getClass().getResourceAsStream(ListOfSubscriptionPolicies.version1.getUrl());
+        InputStream is = this.getClass().getResourceAsStream(ListOfSubscriptionPolicies.version1.getFile());
         ASN1Primitive primitive = this.readANS1FromStream(is);
         listaPoliticaAssinatura.parse(primitive);
         return listaPoliticaAssinatura;
@@ -74,7 +76,7 @@ public class PolicyFactory {
 
     public br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.v2.LPA loadLPAv2() {
         br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.v2.LPA listaPoliticaAssinatura = new br.gov.frameworkdemoiselle.policy.engine.asn1.icpb.v2.LPA();
-        InputStream is = this.getClass().getResourceAsStream(ListOfSubscriptionPolicies.version2.getUrl());
+        InputStream is = this.getClass().getResourceAsStream(ListOfSubscriptionPolicies.version2.getFile());
         ASN1Primitive primitive = this.readANS1FromStream(is);
         listaPoliticaAssinatura.parse(primitive);
         return listaPoliticaAssinatura;
@@ -86,6 +88,7 @@ public class PolicyFactory {
         try {
             primitive = asn1is.readObject();
         } catch (IOException error) {
+        	logger.log(Level.SEVERE, "Error reading stream.", error);
             throw new RuntimeException(error);
         } finally {
             try {
@@ -99,37 +102,66 @@ public class PolicyFactory {
 
     public enum Policies {
 
-        AD_RB_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB.der"),
-        AD_RB_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB_v1_1.der"),
-        AD_RB_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB_v2_0.der"),
-        AD_RB_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB_v2_1.der"),
-        AD_RT_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT.der"),
-        AD_RT_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT_v1_1.der"),
-        AD_RT_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT_v2_0.der"),
-        AD_RT_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT_v2_1.der"),
-        AD_RV_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV.der"),
-        AD_RV_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV_v1_1.der"),
-        AD_RV_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV_v2_0.der"),
-        AD_RV_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV_v2_1.der"),
-        AD_RC_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC.der"),
-        AD_RC_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC_v1_1.der"),
-        AD_RC_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC_v2_0.der"),
-        AD_RC_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC_v2_1.der"),
-        AD_RA_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA.der"),
-        AD_RA_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v1_1.der"),
-        AD_RA_CADES_1_2("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v1_2.der"),
-        AD_RA_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v2_0.der"),
-        AD_RA_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v2_1.der"),
-        AD_RA_CADES_2_2("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v2_2.der");
+        AD_RB_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB.der", 
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RB.der"),
+        AD_RB_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB_v1_1.der", 
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RB_v1_1.der"),
+        AD_RB_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB_v2_0.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RB_v2_0.der"),
+        AD_RB_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RB_v2_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RB_v2_1.der"),
+        AD_RT_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RT.der"),
+        AD_RT_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT_v1_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RT_v1_1.der"),
+        AD_RT_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT_v2_0.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RT_v2_0.der"),
+        AD_RT_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RT_v2_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RT_v2_1.der"),
+        AD_RV_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RV.der"),
+        AD_RV_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV_v1_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RV_v1_1.der"),
+        AD_RV_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV_v2_0.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RV_v2_0.der"),
+        AD_RV_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RV_v2_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RV_v2_1.der"),
+        AD_RC_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RC.der"),
+        AD_RC_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC_v1_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RC_v1_1.der"),
+        AD_RC_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC_v2_0.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RC_v2_0.der"),
+        AD_RC_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RC_v2_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RC_v2_1.der"),
+        AD_RA_CADES_1_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RA.der"),
+        AD_RA_CADES_1_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v1_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RA_v1_1.der"),
+        AD_RA_CADES_1_2("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v1_2.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RA_v1_2.der"),
+        AD_RA_CADES_2_0("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v2_0.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RA_v2_0.der"),
+        AD_RA_CADES_2_1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v2_1.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RA_v2_1.der"),
+        AD_RA_CADES_2_2("/br/gov/frameworkdemoiselle/policy/engine/artifacts/PA_AD_RA_v2_2.der",
+        		"http://politicas.icpbrasil.gov.br/PA_AD_RA_v2_2.der");
 
-        private String url;
-
-        private Policies(String url) {
+        private Policies(String file, String url) {
+        	this.file = file;
             this.url = url;
         }
 
+        private String file;
+        
+        public String getFile() {
+            return file;
+        }
+        
+        private String url;
+        
         public String getUrl() {
-            return url;
+        	return url;
         }
     }
 
@@ -138,14 +170,14 @@ public class PolicyFactory {
         version1("/br/gov/frameworkdemoiselle/policy/engine/artifacts/LPA.der"),
         version2("/br/gov/frameworkdemoiselle/policy/engine/artifacts/LPAv2.der");
 
-        private String url;
+        private String file;
 
-        private ListOfSubscriptionPolicies(String url) {
-            this.url = url;
+        private ListOfSubscriptionPolicies(String file) {
+            this.file = file;
         }
 
-        public String getUrl() {
-            return url;
+        public String getFile() {
+            return file;
         }
     }
 }
