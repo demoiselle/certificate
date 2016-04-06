@@ -69,16 +69,16 @@ import org.bouncycastle.openssl.PEMWriter;
 /**
  * @author SUPST/STDCS
 */
-public class Utils {
+public final class Utils {
 
-    private final int BUFFER_SIZE = 4096;
+    private static final int BUFFER_SIZE = 4096;
 
     /**
      *
      * @param content O conteudo a ser enviado
      * @param UrlToUpload A url para onde o conteudo sera enviado
      */
-    public void uploadToURL(byte[] content, String UrlToUpload) {
+    public static void uploadToURL(byte[] content, String UrlToUpload, String token) {
         try {
             System.out.println("br.gov.serpro.certificate.ui.util.Utils.uploadToURL()");
 
@@ -88,6 +88,7 @@ public class Utils {
             con.setDoOutput(true);
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/octet-stream");
+            con.setRequestProperty("Authorization", "Token "+token);
 
             try (OutputStream out = con.getOutputStream()) {
                 copy(in, out);
@@ -113,7 +114,7 @@ public class Utils {
      * @param UrlToDownload
      * @return
      */
-    public byte[] downloadFromUrl(String UrlToDownload) {
+    public static byte[] downloadFromUrl(String UrlToDownload, String token) {
         ByteArrayOutputStream outputStream = null;
         try {
             System.out.println("br.gov.serpro.certificate.ui.util.Utils.downloadFromUrl()");
@@ -122,6 +123,7 @@ public class Utils {
             byte[] chunk = new byte[BUFFER_SIZE];
             int bytesRead;
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestProperty("Authorization", "Token "+token);
             int responseCode = con.getResponseCode();
             System.out.println("Response Code...: " + responseCode);
             if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -182,7 +184,7 @@ public class Utils {
      * @param content Conteudo a ser gravado
      * @param file Caminho e nome do arquivo
      */
-    public void writeContentToDisk(byte[] content, String file) {
+    public static void writeContentToDisk(byte[] content, String file) {
         try {
             File f = new File(file);
             FileOutputStream os = new FileOutputStream(f);
@@ -201,7 +203,7 @@ public class Utils {
      * @return
      * @throws IOException
      */
-    private long copy(InputStream input, OutputStream output) throws IOException {
+    private static long copy(InputStream input, OutputStream output) throws IOException {
         byte[] buffer = new byte[BUFFER_SIZE];
         long count = 0L;
         int n = 0;
