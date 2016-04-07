@@ -47,24 +47,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.cert.Certificate;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bouncycastle.openssl.PEMWriter;
 
 /**
  * @author SUPST/STDCS
@@ -80,14 +67,12 @@ public final class Utils {
      */
     public static void uploadToURL(byte[] content, String UrlToUpload, String token) {
         try {
-            System.out.println("br.gov.serpro.certificate.ui.util.Utils.uploadToURL()");
-
             ByteArrayInputStream in = new ByteArrayInputStream(content);
             URL url = new URL(UrlToUpload);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
             con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/octet-stream");
+            con.setRequestProperty("Content-Type", "application/zip");
             con.setRequestProperty("Authorization", "Token "+token);
 
             try (OutputStream out = con.getOutputStream()) {
@@ -96,15 +81,15 @@ public final class Utils {
             }
 
             int responseCode = con.getResponseCode();
-            System.out.println("Response Code...: " + responseCode);
-            if (responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
                 Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
+                throw new ConectionException("Server returned non-OK code: "+ responseCode);
             }
 
         } catch (MalformedURLException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ConectionException(ex.getMessage(), ex.getCause());
         } catch (IOException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        	throw new ConectionException(ex.getMessage(), ex.getCause());
         }
 
     }
@@ -117,15 +102,15 @@ public final class Utils {
     public static byte[] downloadFromUrl(String UrlToDownload, String token) {
         ByteArrayOutputStream outputStream = null;
         try {
-            System.out.println("br.gov.serpro.certificate.ui.util.Utils.downloadFromUrl()");
             URL url = new URL(UrlToDownload);
             outputStream = new ByteArrayOutputStream();
             byte[] chunk = new byte[BUFFER_SIZE];
             int bytesRead;
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestProperty("Authorization", "Token "+token);
+            con.setRequestProperty("Accept", "application/zip");
+            con.setRequestMethod("POST");
             int responseCode = con.getResponseCode();
-            System.out.println("Response Code...: " + responseCode);
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
                 throw new ConectionException("Server returned non-OK code: " + responseCode);
@@ -139,8 +124,7 @@ public final class Utils {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        	throw new ConectionException(e.getMessage(), e.getCause());
         }
         return outputStream.toByteArray();
     }
@@ -172,9 +156,9 @@ public final class Utils {
                 in.close();
             }
         } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, ex.getMessage());
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
         return result;
     }
@@ -192,7 +176,7 @@ public final class Utils {
             os.flush();
             os.close();
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
     }
 
@@ -214,50 +198,50 @@ public final class Utils {
         return count;
     }
 
-    /**
-     * Create a random 1024 bit RSA key pair
-     *
-     * @return
-     * @throws java.lang.Exception
-     */
-    public static KeyPair generateRSAKeyPair() throws Exception {
-        KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
-        kpGen.initialize(2048, new SecureRandom());
-        return kpGen.generateKeyPair();
-    }
-
-    /**
-     * Converts a {@link X509Certificate} instance into a Base-64 encoded string
-     * (PEM format).
-     *
-     * @param x509Cert A X509 Certificate instance
-     * @return PEM formatted String
-     * @throws java.io.IOException
-     */
-    public static String convertToBase64PEMString(Certificate x509Cert) throws IOException {
-        StringWriter sw = new StringWriter();
-        try (PEMWriter pw = new PEMWriter(sw)) {
-            pw.writeObject(x509Cert);
-        }
-        return sw.toString();
-    }
-
-    public static PublicKey reconstructPublicKey(String algorithm, byte[] pub_key) {
-        PublicKey public_key = null;
-
-        try {
-            KeyFactory kf = KeyFactory.getInstance(algorithm, "BC");
-            EncodedKeySpec pub_key_spec = new X509EncodedKeySpec(pub_key);
-            public_key = kf.generatePublic(pub_key_spec);
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Could not reconstruct the public key, the given algorithm oculd not be found.");
-        } catch (InvalidKeySpecException e) {
-            System.out.println("Could not reconstruct the public key");
-        } catch (NoSuchProviderException ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return public_key;
-    }
+//    /**
+//     * Create a random 1024 bit RSA key pair
+//     *
+//     * @return
+//     * @throws java.lang.Exception
+//     */
+//    public static KeyPair generateRSAKeyPair() throws Exception {
+//        KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
+//        kpGen.initialize(2048, new SecureRandom());
+//        return kpGen.generateKeyPair();
+//    }
+//
+//    /**
+//     * Converts a {@link X509Certificate} instance into a Base-64 encoded string
+//     * (PEM format).
+//     *
+//     * @param x509Cert A X509 Certificate instance
+//     * @return PEM formatted String
+//     * @throws java.io.IOException
+//     */
+//    public static String convertToBase64PEMString(Certificate x509Cert) throws IOException {
+//        StringWriter sw = new StringWriter();
+//        try (PEMWriter pw = new PEMWriter(sw)) {
+//            pw.writeObject(x509Cert);
+//        }
+//        return sw.toString();
+//    }
+//
+//    public static PublicKey reconstructPublicKey(String algorithm, byte[] pub_key) {
+//        PublicKey public_key = null;
+//
+//        try {
+//            KeyFactory kf = KeyFactory.getInstance(algorithm, "BC");
+//            EncodedKeySpec pub_key_spec = new X509EncodedKeySpec(pub_key);
+//            public_key = kf.generatePublic(pub_key_spec);
+//        } catch (NoSuchAlgorithmException e) {
+//            System.out.println("Could not reconstruct the public key, the given algorithm oculd not be found.");
+//        } catch (InvalidKeySpecException e) {
+//            System.out.println("Could not reconstruct the public key");
+//        } catch (NoSuchProviderException ex) {
+//            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        return public_key;
+//    }
 
 }
