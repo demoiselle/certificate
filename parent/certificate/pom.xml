@@ -97,7 +97,7 @@
                             <Application-Library-Allowable-Codebase>*</Application-Library-Allowable-Codebase>
                             <Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
                             <Trusted-Only>true</Trusted-Only>
-                            <Trusted-Library>true</Trusted-Library>
+                            <Trusted-Library>false</Trusted-Library>
                         </manifestEntries>
                     </archive>
                 </configuration>
