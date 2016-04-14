@@ -102,7 +102,10 @@ public class Principal extends javax.swing.JFrame {
 		}
 		System.out.println("Utilizando implementacao da classe [" + className+ "]");
 
-		keystore = this.getKeyStore();// Recupera o repositorio de certificados digitais
+		while (keystore == null){
+			keystore = this.getKeyStore();// Recupera o repositorio de certificados digitais
+		}
+		
 
 		certificateModel = new CertificadoModel();
 		certificateModel.populate(keystore);
