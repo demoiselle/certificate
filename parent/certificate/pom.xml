@@ -122,13 +122,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.jdk.applet</groupId>
-            <artifactId>plugin</artifactId>
-            <version>1.6</version>
-            <scope>system</scope>
-            <systemPath>${java.home}/lib/plugin.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

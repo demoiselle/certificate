@@ -55,193 +55,210 @@ import java.util.logging.Logger;
 
 /**
  * @author SUPST/STDCS
-*/
+ */
 public final class Utils {
 
-    private static final int BUFFER_SIZE = 4096;
+	private static final int BUFFER_SIZE = 4096;
 
-    /**
-     *
-     * @param content O conteudo a ser enviado
-     * @param UrlToUpload A url para onde o conteudo sera enviado
-     */
-    public static void uploadToURL(byte[] content, String UrlToUpload, String token) {
-        try {
-            ByteArrayInputStream in = new ByteArrayInputStream(content);
-            URL url = new URL(UrlToUpload);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setDoOutput(true);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/zip");
-            con.setRequestProperty("Authorization", "Token "+token);
+	/**
+	 *
+	 * @param content
+	 *            O conteudo a ser enviado
+	 * @param UrlToUpload
+	 *            A url para onde o conteudo sera enviado
+	 */
+	public static void uploadToURL(byte[] content, String UrlToUpload,
+			String token) {
+		try {
+			ByteArrayInputStream in = new ByteArrayInputStream(content);
+			URL url = new URL(UrlToUpload);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Content-Type", "application/zip");
+			con.setRequestProperty("Authorization", "Token " + token);
 
-            try (OutputStream out = con.getOutputStream()) {
-                copy(in, out);
-                out.flush();
-            }
+			OutputStream out = con.getOutputStream();
+			copy(in, out);
+			out.flush();
+			out.close();
 
-            int responseCode = con.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
-                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-                throw new ConectionException("Server returned non-OK code: "+ responseCode);
-            }
+			int responseCode = con.getResponseCode();
+			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
+				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
+						"Server returned non-OK code: {0}", responseCode);
+				throw new ConectionException("Server returned non-OK code: "
+						+ responseCode);
+			}
 
-        } catch (MalformedURLException ex) {
-            throw new ConectionException(ex.getMessage(), ex.getCause());
-        } catch (IOException ex) {
-        	throw new ConectionException(ex.getMessage(), ex.getCause());
-        }
+		} catch (MalformedURLException ex) {
+			throw new ConectionException(ex.getMessage(), ex.getCause());
+		} catch (IOException ex) {
+			throw new ConectionException(ex.getMessage(), ex.getCause());
+		}
 
-    }
+	}
 
-    /**
-     *
-     * @param UrlToDownload
-     * @return
-     */
-    public static byte[] downloadFromUrl(String UrlToDownload, String token) {
-        ByteArrayOutputStream outputStream = null;
-        try {
-            URL url = new URL(UrlToDownload);
-            outputStream = new ByteArrayOutputStream();
-            byte[] chunk = new byte[BUFFER_SIZE];
-            int bytesRead;
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestProperty("Authorization", "Token "+token);
-            con.setRequestProperty("Accept", "application/zip");
-            con.setRequestMethod("POST");
-            int responseCode = con.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-                throw new ConectionException("Server returned non-OK code: " + responseCode);
-            }
-            else {
-                InputStream stream = con.getInputStream();
-                
-                while ((bytesRead = stream.read(chunk)) > 0) {
-                    outputStream.write(chunk, 0, bytesRead);
-                }
-            }
+	/**
+	 *
+	 * @param UrlToDownload
+	 * @return
+	 */
+	public static byte[] downloadFromUrl(String UrlToDownload, String token) {
+		ByteArrayOutputStream outputStream = null;
+		try {
+			URL url = new URL(UrlToDownload);
+			outputStream = new ByteArrayOutputStream();
+			byte[] chunk = new byte[BUFFER_SIZE];
+			int bytesRead;
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestProperty("Authorization", "Token " + token);
+			con.setRequestProperty("Accept", "application/zip");
+			con.setRequestMethod("POST");
+			int responseCode = con.getResponseCode();
+			if (responseCode != HttpURLConnection.HTTP_OK) {
+				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
+						"Server returned non-OK code: {0}", responseCode);
+				throw new ConectionException("Server returned non-OK code: "
+						+ responseCode);
+			} else {
+				InputStream stream = con.getInputStream();
 
-        } catch (IOException e) {
-        	throw new ConectionException(e.getMessage(), e.getCause());
-        }
-        return outputStream.toByteArray();
-    }
+				while ((bytesRead = stream.read(chunk)) > 0) {
+					outputStream.write(chunk, 0, bytesRead);
+				}
+			}
 
-    /**
-     * Read the given binary file, and return its contents as a byte array.
-     *
-     * @param file Caminho e nome do arquivo
-     * @return Conteudo lido
-     */
-    public static byte[] readContentFromDisk(String file) {
-        File f = new File(file);
+		} catch (IOException e) {
+			throw new ConectionException(e.getMessage(), e.getCause());
+		}
+		return outputStream.toByteArray();
+	}
 
-        byte[] result = new byte[(int) f.length()];
-        try {
-            InputStream in = null;
-            try {
-                int totalBytesRead = 0;
-                in = new BufferedInputStream(new FileInputStream(f));
-                while (totalBytesRead < result.length) {
-                    int bytesRemaining = result.length - totalBytesRead;
-                    int bytesRead = in.read(result, totalBytesRead, bytesRemaining);
-                    if (bytesRead > 0) {
-                        totalBytesRead = totalBytesRead + bytesRead;
-                    }
-                }
+	/**
+	 * Read the given binary file, and return its contents as a byte array.
+	 *
+	 * @param file
+	 *            Caminho e nome do arquivo
+	 * @return Conteudo lido
+	 */
+	public static byte[] readContentFromDisk(String file) {
+		File f = new File(file);
 
-            } finally {
-                in.close();
-            }
-        } catch (FileNotFoundException ex) {
-        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, ex.getMessage());
-        } catch (IOException ex) {
-        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, ex.getMessage());
-        }
-        return result;
-    }
+		byte[] result = new byte[(int) f.length()];
+		try {
+			InputStream in = null;
+			try {
+				int totalBytesRead = 0;
+				in = new BufferedInputStream(new FileInputStream(f));
+				while (totalBytesRead < result.length) {
+					int bytesRemaining = result.length - totalBytesRead;
+					int bytesRead = in.read(result, totalBytesRead,
+							bytesRemaining);
+					if (bytesRead > 0) {
+						totalBytesRead = totalBytesRead + bytesRead;
+					}
+				}
 
-    /**
-     *
-     * @param content Conteudo a ser gravado
-     * @param file Caminho e nome do arquivo
-     */
-    public static void writeContentToDisk(byte[] content, String file) {
-        try {
-            File f = new File(file);
-            FileOutputStream os = new FileOutputStream(f);
-            os.write(content);
-            os.flush();
-            os.close();
-        } catch (IOException ex) {
-        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, ex.getMessage());
-        }
-    }
+			} finally {
+				in.close();
+			}
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
+					ex.getMessage());
+		} catch (IOException ex) {
+			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
+					ex.getMessage());
+		}
+		return result;
+	}
 
-    /**
-     *
-     * @param input
-     * @param output
-     * @return
-     * @throws IOException
-     */
-    private static long copy(InputStream input, OutputStream output) throws IOException {
-        byte[] buffer = new byte[BUFFER_SIZE];
-        long count = 0L;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
-    }
+	/**
+	 *
+	 * @param content
+	 *            Conteudo a ser gravado
+	 * @param file
+	 *            Caminho e nome do arquivo
+	 */
+	public static void writeContentToDisk(byte[] content, String file) {
+		try {
+			File f = new File(file);
+			FileOutputStream os = new FileOutputStream(f);
+			os.write(content);
+			os.flush();
+			os.close();
+		} catch (IOException ex) {
+			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
+					ex.getMessage());
+		}
+	}
 
-//    /**
-//     * Create a random 1024 bit RSA key pair
-//     *
-//     * @return
-//     * @throws java.lang.Exception
-//     */
-//    public static KeyPair generateRSAKeyPair() throws Exception {
-//        KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
-//        kpGen.initialize(2048, new SecureRandom());
-//        return kpGen.generateKeyPair();
-//    }
-//
-//    /**
-//     * Converts a {@link X509Certificate} instance into a Base-64 encoded string
-//     * (PEM format).
-//     *
-//     * @param x509Cert A X509 Certificate instance
-//     * @return PEM formatted String
-//     * @throws java.io.IOException
-//     */
-//    public static String convertToBase64PEMString(Certificate x509Cert) throws IOException {
-//        StringWriter sw = new StringWriter();
-//        try (PEMWriter pw = new PEMWriter(sw)) {
-//            pw.writeObject(x509Cert);
-//        }
-//        return sw.toString();
-//    }
-//
-//    public static PublicKey reconstructPublicKey(String algorithm, byte[] pub_key) {
-//        PublicKey public_key = null;
-//
-//        try {
-//            KeyFactory kf = KeyFactory.getInstance(algorithm, "BC");
-//            EncodedKeySpec pub_key_spec = new X509EncodedKeySpec(pub_key);
-//            public_key = kf.generatePublic(pub_key_spec);
-//        } catch (NoSuchAlgorithmException e) {
-//            System.out.println("Could not reconstruct the public key, the given algorithm oculd not be found.");
-//        } catch (InvalidKeySpecException e) {
-//            System.out.println("Could not reconstruct the public key");
-//        } catch (NoSuchProviderException ex) {
-//            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        return public_key;
-//    }
+	/**
+	 *
+	 * @param input
+	 * @param output
+	 * @return
+	 * @throws IOException
+	 */
+	private static long copy(InputStream input, OutputStream output)
+			throws IOException {
+		byte[] buffer = new byte[BUFFER_SIZE];
+		long count = 0L;
+		int n = 0;
+		while (-1 != (n = input.read(buffer))) {
+			output.write(buffer, 0, n);
+			count += n;
+		}
+		return count;
+	}
+
+	// /**
+	// * Create a random 1024 bit RSA key pair
+	// *
+	// * @return
+	// * @throws java.lang.Exception
+	// */
+	// public static KeyPair generateRSAKeyPair() throws Exception {
+	// KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
+	// kpGen.initialize(2048, new SecureRandom());
+	// return kpGen.generateKeyPair();
+	// }
+	//
+	// /**
+	// * Converts a {@link X509Certificate} instance into a Base-64 encoded
+	// string
+	// * (PEM format).
+	// *
+	// * @param x509Cert A X509 Certificate instance
+	// * @return PEM formatted String
+	// * @throws java.io.IOException
+	// */
+	// public static String convertToBase64PEMString(Certificate x509Cert)
+	// throws IOException {
+	// StringWriter sw = new StringWriter();
+	// try (PEMWriter pw = new PEMWriter(sw)) {
+	// pw.writeObject(x509Cert);
+	// }
+	// return sw.toString();
+	// }
+	//
+	// public static PublicKey reconstructPublicKey(String algorithm, byte[]
+	// pub_key) {
+	// PublicKey public_key = null;
+	//
+	// try {
+	// KeyFactory kf = KeyFactory.getInstance(algorithm, "BC");
+	// EncodedKeySpec pub_key_spec = new X509EncodedKeySpec(pub_key);
+	// public_key = kf.generatePublic(pub_key_spec);
+	// } catch (NoSuchAlgorithmException e) {
+	// System.out.println("Could not reconstruct the public key, the given algorithm oculd not be found.");
+	// } catch (InvalidKeySpecException e) {
+	// System.out.println("Could not reconstruct the public key");
+	// } catch (NoSuchProviderException ex) {
+	// Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+	// }
+	//
+	// return public_key;
+	// }
 
 }
