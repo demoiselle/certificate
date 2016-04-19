@@ -101,6 +101,9 @@ public class PinCallbackHandler implements CallbackHandler {
                 // return password
                 passwordCallback.setPassword(txtPwd.getText().toCharArray());
                 break;
+            case JOptionPane.CANCEL_OPTION:
+                // return password
+            	System.exit(0);
             default:
                 // canceled by user
                 throw new CancellationException("Password Callback canceled by user");
