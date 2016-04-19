@@ -42,8 +42,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.KeyStore;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -53,7 +51,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
@@ -84,19 +81,14 @@ public class Principal extends javax.swing.JFrame {
 	private JButton btnExecutar;
 	private JPanel panelbottom;
 	private JPanel paneltop;
-	private JScrollPane scrollPaneCertificate;
-	private JScrollPane scrollPaneFile;
-	private JTable tableCertificate;
-	private JTable tableFile;
-	
+	private JScrollPane scrollPane;
+	private JTable tableCertificates;
 	
 	KeyStore keystore = null;
 	private boolean loaded = false;
-	private boolean enableListFiles = false;
 	String alias = "";
 	String className = "";
 	CertificadoModel certificateModel;
-	ArquivosModel arquivosModel;
 
 	/**
 	 * Creates new form NovoJFrame
@@ -117,59 +109,39 @@ public class Principal extends javax.swing.JFrame {
 
 		certificateModel = new CertificadoModel();
 		certificateModel.populate(keystore);
-		tableCertificate.setModel(certificateModel);
-		
-		if (tableCertificate.getRowCount() == 0) {
+		tableCertificates.setModel(certificateModel);
+
+		if (tableCertificates.getRowCount() == 0) {
 			btnExecutar.setEnabled(false);
 		} else {
-			tableCertificate.setRowSelectionInterval(0, 0);
+			tableCertificates.setRowSelectionInterval(0, 0);
 		}
 
 		alias = this.getAlias();
 
-		tableCertificate.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tableCertificates.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// Dimensiona cada coluna separadamente
-		TableColumn tableColumn1 = tableCertificate.getColumnModel().getColumn(0);
+		TableColumn tableColumn1 = tableCertificates.getColumnModel().getColumn(0);
 		tableColumn1.setPreferredWidth(200);
 
-		TableColumn tableColumn2 = tableCertificate.getColumnModel().getColumn(1);
+		TableColumn tableColumn2 = tableCertificates.getColumnModel().getColumn(1);
 		tableColumn2.setPreferredWidth(140);
 
-		TableColumn tableColumn3 = tableCertificate.getColumnModel().getColumn(2);
+		TableColumn tableColumn3 = tableCertificates.getColumnModel().getColumn(2);
 		tableColumn3.setPreferredWidth(140);
 
-		TableColumn tableColumn4 = tableCertificate.getColumnModel().getColumn(3);
+		TableColumn tableColumn4 = tableCertificates.getColumnModel().getColumn(3);
 		tableColumn4.setPreferredWidth(300);
 
-		enableListFiles = true;
-		if (enableListFiles){
-			List<String> files = new ArrayList<String>();
-			files.add("Teste 1");
-			files.add("Teste 2");
-			files.add("Teste 4");
-
-			arquivosModel = new ArquivosModel();
-			arquivosModel.populate(files);
-			
-			
-			tableFile.setModel(arquivosModel);
-			
-		}
-		
-		
 		this.setLocationRelativeTo(null); // Centraliza o frame
-		
-		
 	}
 
 	private void initComponents() {
 
 		paneltop = new JPanel();
-		scrollPaneCertificate = new JScrollPane();
-		scrollPaneFile = new JScrollPane();
-		tableCertificate = new JTable();
-		tableFile = new JTable();
+		scrollPane = new JScrollPane();
+		tableCertificates = new JTable();
 		panelbottom = new JPanel();
 		btnExecutar = new JButton();
 		btnCancelar = new JButton();
@@ -186,66 +158,27 @@ public class Principal extends javax.swing.JFrame {
 				TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font(FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT.getValue(), FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT_STYLE.getValueInt(), FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT_SIZE.getValueInt()))); // NOI18N
 
-		scrollPaneCertificate.setAutoscrolls(true);
-		scrollPaneCertificate.setViewportView(tableCertificate);
-		
+		scrollPane.setAutoscrolls(true);
+		scrollPane.setViewportView(tableCertificates);
 
-		tableCertificate.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-		tableCertificate.setModel(new DefaultTableModel(
+		tableCertificates.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+		tableCertificates.setModel(new DefaultTableModel(
 				new Object[][] { { null, null, null, null },
 						{ null, null, null, null }, { null, null, null, null },
 						{ null, null, null, null } }, new String[] { "Title 1",
 						"Title 2", "Title 3", "Title 4" }));
-		tableCertificate.setFillsViewportHeight(true);
-		tableCertificate.setRowHeight(FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_ROW_HEIGHT.getValueInt());
+		tableCertificates.setFillsViewportHeight(true);
+		tableCertificates.setRowHeight(FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_ROW_HEIGHT.getValueInt());
 
-		
-		scrollPaneFile.setAutoscrolls(true);
-		scrollPaneFile.setViewportView(tableFile);
-
-		tableFile.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-		tableFile.setFillsViewportHeight(true);
-		tableFile.setRowHeight(FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_ROW_HEIGHT.getValueInt());
-		tableFile.setCellSelectionEnabled(false);
-		
-		
 		GroupLayout paneltopLayout = new GroupLayout(paneltop);
 		paneltop.setLayout(paneltopLayout);
 		
-		JTextField field = new JTextField("Teste");
-		JTextField field2 = new JTextField("Teste 2");
+		paneltopLayout.setHorizontalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), Short.MAX_VALUE));
 		
-		enableListFiles = true;
-		if (enableListFiles){
-			paneltopLayout.setHorizontalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
-					.addGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
-							.addComponent(scrollPaneCertificate, 0,100,200)
-							.addComponent(scrollPaneFile, 0,100,100)));
-			paneltopLayout.setVerticalGroup(paneltopLayout.createSequentialGroup()
-					.addComponent(scrollPaneCertificate,0,100,200)
-					.addComponent(scrollPaneFile,0,100,100));
-			
-		}
-		else {
-			paneltopLayout.setHorizontalGroup(paneltopLayout
-					.createParallelGroup(Alignment.LEADING).addComponent(
-							scrollPaneCertificate,
-							GroupLayout.DEFAULT_SIZE,
-							FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH
-									.getValueInt(), Short.MAX_VALUE));
-			paneltopLayout.setVerticalGroup(paneltopLayout.createParallelGroup(
-					Alignment.LEADING).addComponent(
-							scrollPaneCertificate,
-					GroupLayout.PREFERRED_SIZE,
-					FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT
-							.getValueInt(), GroupLayout.PREFERRED_SIZE));
-
-		}
-		
-		
-
-
-		
+		paneltopLayout.setVerticalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE));
+	
 		panelbottom.setBorder(BorderFactory.createEtchedBorder());
 
 		btnExecutar.setText(FrameConfig.LABEL_DIALOG_BUTTON_RUN.getValue());
@@ -353,9 +286,9 @@ public class Principal extends javax.swing.JFrame {
 	 * @return O apelido associado ao certificado
 	 */
 	public String getAlias() {
-		if (tableCertificate.getModel().getRowCount() != 0) {
-			int row = tableCertificate.getSelectedRow();
-			Item item = (Item) tableCertificate.getModel().getValueAt(row, 0);
+		if (tableCertificates.getModel().getRowCount() != 0) {
+			int row = tableCertificates.getSelectedRow();
+			Item item = (Item) tableCertificates.getModel().getValueAt(row, 0);
 			return item.getAlias();
 		} else {
 			return "";
