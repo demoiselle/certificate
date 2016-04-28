@@ -66,6 +66,7 @@ import com.sun.java.browser.dom.DOMUnsupportedException;
  * @author SUPST/STDCS
  * 
  */
+@Deprecated
 public abstract class AbstractAppletExecute implements AppletExecute {
 
 	@Override

@@ -40,6 +40,7 @@ package br.gov.frameworkdemoiselle.certificate.applet.factory;
 /**
  * Excecoes geradas pela package Factory
  */
+@Deprecated
 public class FactoryException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

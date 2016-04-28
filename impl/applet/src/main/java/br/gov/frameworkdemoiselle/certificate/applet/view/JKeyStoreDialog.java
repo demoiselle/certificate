@@ -75,6 +75,7 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.factory.KeyStoreLo
  * @author SUPST/STCTA
  * 
  */
+@Deprecated
 public class JKeyStoreDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;

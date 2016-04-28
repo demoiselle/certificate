@@ -46,6 +46,7 @@ import javax.swing.table.AbstractTableModel;
 
 import br.gov.frameworkdemoiselle.certificate.applet.tiny.Item;
 
+@Deprecated
 public class ListaCertificadosModel extends AbstractTableModel {
 
 	private Object[][] dados;

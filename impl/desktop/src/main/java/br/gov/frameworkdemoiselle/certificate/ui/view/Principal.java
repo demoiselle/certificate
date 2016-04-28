@@ -41,12 +41,16 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.server.LoaderHandler;
 import java.security.KeyStore;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -82,10 +86,13 @@ public class Principal extends javax.swing.JFrame {
 	private JPanel panelbottom;
 	private JPanel paneltop;
 	private JScrollPane scrollPane;
+	private JScrollPane scrollPaneFiles;
 	private JTable tableCertificates;
+	private static JList<String> listFiles;
+	
 	
 	KeyStore keystore = null;
-	private boolean loaded = false;
+	private static boolean loadedFiles = false;
 	String alias = "";
 	String className = "";
 	CertificadoModel certificateModel;
@@ -101,11 +108,11 @@ public class Principal extends javax.swing.JFrame {
 			className = "br.gov.serpro.certificate.ui.user.App";
 		}
 		System.out.println("Utilizando implementacao da classe [" + className+ "]");
+		FrameExecute frameExecute = FrameExecuteFactory.factory(className);
 
 		while (keystore == null){
 			keystore = this.getKeyStore();// Recupera o repositorio de certificados digitais
 		}
-		
 
 		certificateModel = new CertificadoModel();
 		certificateModel.populate(keystore);
@@ -141,26 +148,29 @@ public class Principal extends javax.swing.JFrame {
 
 		paneltop = new JPanel();
 		scrollPane = new JScrollPane();
+		scrollPaneFiles = new JScrollPane();
 		tableCertificates = new JTable();
 		panelbottom = new JPanel();
 		btnExecutar = new JButton();
 		btnCancelar = new JButton();
-
+		listFiles = new JList();
+				
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocation(new Point(0, 0));
 		setResizable(false);
 		setTitle(FrameConfig.LABEL_DIALOG_FRAME_TITLE.getValue());
 
-		paneltop.setBorder(BorderFactory.createTitledBorder(
+
+		scrollPane.setAutoscrolls(true);
+		scrollPane.setViewportView(tableCertificates);
+		scrollPane.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEtchedBorder(),
 				FrameConfig.CONFIG_DIALOG_TABLE_LABEL.getValue(),
 				TitledBorder.DEFAULT_JUSTIFICATION,
 				TitledBorder.DEFAULT_POSITION,
 				new java.awt.Font(FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT.getValue(), FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT_STYLE.getValueInt(), FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT_SIZE.getValueInt()))); // NOI18N
 
-		scrollPane.setAutoscrolls(true);
-		scrollPane.setViewportView(tableCertificates);
-
+		
 		tableCertificates.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		tableCertificates.setModel(new DefaultTableModel(
 				new Object[][] { { null, null, null, null },
@@ -170,14 +180,29 @@ public class Principal extends javax.swing.JFrame {
 		tableCertificates.setFillsViewportHeight(true);
 		tableCertificates.setRowHeight(FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_ROW_HEIGHT.getValueInt());
 
+		scrollPaneFiles.setAutoscrolls(true);
+		scrollPaneFiles.setViewportView(listFiles);
+		scrollPaneFiles.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createEtchedBorder(),
+				FrameConfig.CONFIG_DIALOG_LIST_FILES_LABEL.getValue(),
+				TitledBorder.DEFAULT_JUSTIFICATION,
+				TitledBorder.DEFAULT_POSITION,
+				new java.awt.Font(FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT.getValue(), FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT_STYLE.getValueInt(), FrameConfig.CONFIG_DIALOG_TABLE_LABEL_FONT_SIZE.getValueInt())));
+
+
+		listFiles.setEnabled(false);
+		System.out.println("Tamanho: "+listFiles.getModel().getSize());
+		
 		GroupLayout paneltopLayout = new GroupLayout(paneltop);
 		paneltop.setLayout(paneltopLayout);
 		
 		paneltopLayout.setHorizontalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), Short.MAX_VALUE));
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), Short.MAX_VALUE)
+				.addComponent(scrollPaneFiles, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_LIST_FILES_WIDTH.getValueInt(), Short.MAX_VALUE));
 		
-		paneltopLayout.setVerticalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE));
+		paneltopLayout.setVerticalGroup(paneltopLayout.createSequentialGroup()
+				.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE)
+				.addComponent(scrollPaneFiles,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_LIST_FILES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE));
 	
 		panelbottom.setBorder(BorderFactory.createEtchedBorder());
 
@@ -235,7 +260,6 @@ public class Principal extends javax.swing.JFrame {
 	private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {
 		FrameExecute frameExecute = FrameExecuteFactory.factory(className);
 		frameExecute.execute(keystore, alias, this);
-
 	}
 
 	private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,19 +276,15 @@ public class Principal extends javax.swing.JFrame {
 		try {
 			Cursor hourGlassCursor = new Cursor(Cursor.WAIT_CURSOR);
 			setCursor(hourGlassCursor);
-			KeyStoreLoader loader = KeyStoreLoaderFactory
-					.factoryKeyStoreLoader();
+			KeyStoreLoader loader = KeyStoreLoaderFactory.factoryKeyStoreLoader();
 			loader.setCallbackHandler(new PinCallbackHandler());
 			keystore = loader.getKeyStore();
-			loaded = true;
 			return keystore;
 
 		} catch (DriverNotAvailableException e) {
-			showFailDialog(FrameConfig.MESSAGE_ERROR_DRIVER_NOT_AVAILABLE
-					.getValue());
+			showFailDialog(FrameConfig.MESSAGE_ERROR_DRIVER_NOT_AVAILABLE.getValue());
 		} catch (PKCS11NotFoundException e) {
-			showFailDialog(FrameConfig.MESSAGE_ERROR_PKCS11_NOT_FOUND
-					.getValue());
+			showFailDialog(FrameConfig.MESSAGE_ERROR_PKCS11_NOT_FOUND.getValue());
 		} catch (CertificateValidatorException e) {
 			showFailDialog(FrameConfig.MESSAGE_ERROR_LOAD_TOKEN.getValue());
 		} catch (InvalidPinException e) {
@@ -304,7 +324,8 @@ public class Principal extends javax.swing.JFrame {
 		JOptionPane.showMessageDialog(this, message,
 				FrameConfig.LABEL_DIALOG_OPTION_PANE_TITLE.getValue(),
 				JOptionPane.ERROR_MESSAGE);
-	}
+	}   
+
 	
     /**
      * @param args the command line arguments
@@ -344,4 +365,13 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 	
+    public static void setListFileName(List<String> list){
+    	DefaultListModel<String> files= new DefaultListModel<String>();
+		listFiles.setModel(files);
+		for (String string : list) {
+			files.addElement(string);
+		}
+		loadedFiles = true;
+    }
+
 }

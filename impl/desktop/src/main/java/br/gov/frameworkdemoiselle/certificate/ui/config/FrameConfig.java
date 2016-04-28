@@ -59,10 +59,16 @@ public enum FrameConfig {
 	CONFIG_DIALOG_TABLE_LABEL_FONT("config.dialog.title.label.font"), 
 	CONFIG_DIALOG_TABLE_LABEL_FONT_STYLE("config.dialog.title.label.font.style"), 
 	CONFIG_DIALOG_TABLE_LABEL_FONT_SIZE("config.dialog.title.label.font.size"),
+	
+	CONFIG_DIALOG_LIST_FILES_LABEL("label.dialog.lable.files"), 
 
 	CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH("config.dialog.table.certificates.width"), 
 	CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT("config.dialog.table.certificates.height"), 
 	CONFIG_DIALOG_TABLE_CERTIFICATES_ROW_HEIGHT("config.dialog.table.certificates.row.heigth"),
+
+	CONFIG_DIALOG_LIST_FILES_WIDTH("config.dialog.table.certificates.width"), 
+	CONFIG_DIALOG_LIST_FILES_HEIGHT("config.dialog.table.certificates.height"), 
+	CONFIG_DIALOG_LIST_FILES_ROW_HEIGHT("config.dialog.table.certificates.row.heigth"),
 
 	CONFIG_DIALOG_BUTTON_RUN_WIDTH("config.dialog.button-run.width"), 
 	CONFIG_DIALOG_BUTTON_RUN_HEIGHT("config.dialog.button-run.height"),

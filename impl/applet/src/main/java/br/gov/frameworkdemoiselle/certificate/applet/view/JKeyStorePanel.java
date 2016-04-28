@@ -74,6 +74,7 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.factory.KeyStoreLo
  * @author SUPST/STCTA
  * 
  */
+@Deprecated
 public class JKeyStorePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;

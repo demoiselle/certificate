@@ -55,6 +55,7 @@ import br.gov.frameworkdemoiselle.certificate.applet.config.AppletConfig;
 import br.gov.frameworkdemoiselle.certificate.applet.factory.AppletExecuteFactory;
 import br.gov.frameworkdemoiselle.certificate.applet.factory.FactoryException;
 
+@Deprecated
 public class JPanelApplet extends JApplet {
 
 	private static final long serialVersionUID = -8768328158163719122L;

@@ -45,6 +45,7 @@ import br.gov.frameworkdemoiselle.certificate.applet.action.AppletExecute;
  * @author SUPST/STDCS
  * 
  */
+@Deprecated
 public class AppletExecuteFactory {
 
 	/**

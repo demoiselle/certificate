@@ -50,6 +50,7 @@ import br.gov.frameworkdemoiselle.certificate.extension.ICPBrasilExtensionType;
  * Certificate
  * 
  */
+@Deprecated
 public class ICPBrasilCertificate {
 
 	@ICPBrasilExtension(type = ICPBrasilExtensionType.CPF)

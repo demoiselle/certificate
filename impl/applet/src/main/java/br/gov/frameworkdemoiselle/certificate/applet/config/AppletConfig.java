@@ -50,6 +50,7 @@ import java.util.ResourceBundle;
  * nenhum outro resource.
  * 
  */
+@Deprecated
 public enum AppletConfig {
 
 	PARAM_APPLET_ACTION_EXECUTE("factory.applet.action"),

@@ -44,6 +44,7 @@ import java.security.KeyStore;
  * Interface que define a acao a ser executado pelo applet logo apos o
  * carregametno do keystore
  */
+@Deprecated
 public interface AppletExecute {
 
 	/**
