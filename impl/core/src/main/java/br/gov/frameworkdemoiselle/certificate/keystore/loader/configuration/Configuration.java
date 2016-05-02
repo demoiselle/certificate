@@ -36,14 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration;
 
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe responsável por recuperar informações do sistema tais como versão do
@@ -55,7 +53,7 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderExce
  */
 public class Configuration {
 
-    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
+    private static final Logger LOGGER = Logger.getLogger(Configuration.class.getName());
     protected static final String NAME_NULL = "Nome do driver deve ser informado";
     protected static final String PATH_NULL = "Path do driver deve ser informado";
     protected static final String PATH_INVALID = "Path do driver é inválido. O path deve conter o diretório e o nome do arquivo";
@@ -118,20 +116,19 @@ public class Configuration {
         map.put("TokenOuSmartCard_37", "/usr/local/ngsrv/libepsng_p11.so.1.2.2");
         map.put("TokenOuSmartCard_38", "/usr/local/lib/libetpkcs11.dylib");
         map.put("TokenOuSmartCard_39", "/usr/local/lib/libaetpkss.dylib");
-        
 
         for (String driver : map.keySet()) {
             try {
                 this.addDriver(driver, map.get(driver));
             } catch (Throwable error) {
-                Configuration.logger.error(DRIVER_ERROR_LOAD + " " + driver, error);
+                Configuration.LOGGER.log(Level.WARNING, DRIVER_ERROR_LOAD + " " + driver, error);
             }
         }
 
         try {
             this.getPKCS11DriverFromVariable();
         } catch (Throwable error) {
-            Configuration.logger.error(DRIVER_ERROR_LOAD, error);
+            Configuration.LOGGER.log(Level.WARNING, DRIVER_ERROR_LOAD, error);
         }
 
     }
@@ -201,7 +198,7 @@ public class Configuration {
             throw new KeyStoreLoaderException(Configuration.PATH_INVALID);
         }
 
-        Configuration.logger.debug("Adicionando o driver " + name + "::" + fileName + " na lista de drivers");
+        Configuration.LOGGER.log(Level.FINE, "Adicionando o driver {0}::{1} na lista de drivers", new Object[]{name, fileName});
         this.drivers.put(name, fileName);
 
     }

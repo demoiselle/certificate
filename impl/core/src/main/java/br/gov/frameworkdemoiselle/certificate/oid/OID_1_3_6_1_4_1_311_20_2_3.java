@@ -36,8 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.oid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 /**
  * Class OID 1.3.6.1.4.1.311.20.2.3 <br>
@@ -58,7 +57,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OID_1_3_6_1_4_1_311_20_2_3 extends OIDGeneric {
 
-    private static final Logger logger = LoggerFactory.getLogger(OID_1_3_6_1_4_1_311_20_2_3.class);
+    private static final Logger logger = Logger.getLogger(OID_1_3_6_1_4_1_311_20_2_3.class.getName());
 
     public static final String OID = "1.3.6.1.4.1.311.20.2.3";
 

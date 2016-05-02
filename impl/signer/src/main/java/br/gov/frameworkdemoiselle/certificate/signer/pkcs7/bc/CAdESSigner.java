@@ -36,6 +36,27 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc;
 
+import br.gov.frameworkdemoiselle.certificate.CertificateException;
+import br.gov.frameworkdemoiselle.certificate.CertificateManager;
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.IValidator;
+import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -58,7 +79,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
@@ -71,30 +93,6 @@ import org.bouncycastle.cms.CMSSignedDataGenerator;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import br.gov.frameworkdemoiselle.certificate.CertificateException;
-import br.gov.frameworkdemoiselle.certificate.CertificateManager;
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.certificate.IValidator;
-import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS1Factory;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAdapter;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute.BCAttribute;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1_0;
 
 /**
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
@@ -103,7 +101,7 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1
  */
 public class CAdESSigner implements PKCS7Signer {
 
-    private static final Logger logger = LoggerFactory.getLogger(CAdESSigner.class);
+    private static final Logger LOGGER = Logger.getLogger(CAdESSigner.class.getName());
     private final PKCS1Signer pkcs1 = PKCS1Factory.getInstance().factoryDefault();
     private X509Certificate certificate;
     private Certificate certificateChain[];
@@ -183,7 +181,7 @@ public class CAdESSigner implements PKCS7Signer {
 
         SignerInformationStore signerInformationStore = signedData.getSignerInfos();
         SignerInformation signerInformation = (SignerInformation) signerInformationStore.getSigners().iterator().next();
-        
+
         /*
          * Retirando o Certificado Digital e a chave Pública da assinatura
          */
@@ -239,7 +237,7 @@ public class CAdESSigner implements PKCS7Signer {
                 if (policy != null) {
                     policy.validate(content, signed);
                 } else {
-                    logger.warn("Não existe validador para a política " + policyOID);
+                    LOGGER.log(Level.WARNING, "N\u00e3o existe validador para a pol\u00edtica {0}", policyOID);
                 }
             }
         } else {
@@ -512,7 +510,7 @@ public class CAdESSigner implements PKCS7Signer {
 
         // Valida o certificado usando a politica de certificacao
         this.signaturePolicy.validate(this.certificate, this.pkcs1.getPrivateKey());
-        
+
         //Recupera o(s) certificado(s) de confianca para validacao
         Collection<X509Certificate> trustedCas = CAManager.getInstance().getSignaturePolicyRootCAs(signaturePolicy.getSignaturePolicyId().getSigPolicyId());
         //Efetua a validacao das cadeias do certificado baseado na politica

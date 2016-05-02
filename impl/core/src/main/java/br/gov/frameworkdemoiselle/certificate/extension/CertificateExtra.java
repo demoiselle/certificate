@@ -51,8 +51,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 /**
  * Class Certificate Extra <br>
@@ -65,7 +64,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CertificateExtra {
 
-    private static final Logger logger = LoggerFactory.getLogger(CertificateExtra.class);
+    private static final Logger LOGGER = Logger.getLogger(CertificateExtra.class.getName());
 
     private static final Integer ZERO = 0;
     private static final Integer UM = 1;
@@ -106,9 +105,9 @@ public class CertificateExtra {
                 }
             }
         } catch (CertificateParsingException ex) {
-            logger.info(ex.getMessage());
+            LOGGER.info(ex.getMessage());
         } catch (Exception ex) {
-            logger.info(ex.getMessage());
+            LOGGER.info(ex.getMessage());
         }
     }
 

@@ -39,6 +39,7 @@ package br.gov.frameworkdemoiselle.certificate.oid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -47,8 +48,6 @@ import org.bouncycastle.asn1.DERPrintableString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERUTF8String;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Classe Generica   para   tratamento   de   atributos   de  alguns   atributos
@@ -59,7 +58,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OIDGeneric {
 
-    private static final Logger logger = LoggerFactory.getLogger(OIDGeneric.class);
+    private static final Logger LOGGER = Logger.getLogger(OIDGeneric.class.getName());
 
     /**
      * Instance for object.
@@ -109,16 +108,12 @@ public class OIDGeneric {
 
         if (octetString != null) {
             oidGenerico.setData(new String(octetString.getOctets()));
+        } else if (printableString != null) {
+            oidGenerico.setData(printableString.getString());
+        } else if (utf8String != null) {
+            oidGenerico.setData(utf8String.getString());
         } else {
-            if (printableString != null) {
-                oidGenerico.setData(printableString.getString());
-            } else {
-                if (utf8String != null) {
-                    oidGenerico.setData(utf8String.getString());
-                } else {
-                    oidGenerico.setData(ia5String.getString());
-                }
-            }
+            oidGenerico.setData(ia5String.getString());
         }
         oidGenerico.initialize();
         return oidGenerico;
