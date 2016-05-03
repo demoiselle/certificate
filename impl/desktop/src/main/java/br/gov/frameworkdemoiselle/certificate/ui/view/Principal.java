@@ -124,8 +124,6 @@ public class Principal extends javax.swing.JFrame {
 			tableCertificates.setRowSelectionInterval(0, 0);
 		}
 
-		alias = this.getAlias();
-
 		tableCertificates.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// Dimensiona cada coluna separadamente
@@ -259,11 +257,13 @@ public class Principal extends javax.swing.JFrame {
 
 	private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt) {
 		FrameExecute frameExecute = FrameExecuteFactory.factory(className);
+		alias = this.getAlias();
 		frameExecute.execute(keystore, alias, this);
 	}
 
 	private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
 		FrameExecute frameExecute = FrameExecuteFactory.factory(className);
+		alias = this.getAlias();
 		frameExecute.cancel(keystore, alias, this);
 	}
 
