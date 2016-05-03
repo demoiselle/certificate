@@ -117,10 +117,10 @@
             <artifactId>bcmail-jdk15</artifactId>
             <version>1.45</version>
         </dependency>
-        <dependency>
+        <!--        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

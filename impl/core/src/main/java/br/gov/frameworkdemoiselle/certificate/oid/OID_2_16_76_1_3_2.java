@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Demoiselle Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
+ /*
  * Demoiselle Framework
  * Copyright (C) 2010 SERPRO
  * ----------------------------------------------------------------------------
@@ -62,8 +62,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.oid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 /**
  * OID = 2.16.76.1.3.2 e conteúdo = nome do responsável pelo certificado;
@@ -72,7 +71,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OID_2_16_76_1_3_2 extends OIDGeneric {
 
-    private static final Logger logger = LoggerFactory.getLogger(OID_2_16_76_1_3_2.class);
+    private static final Logger LOGGER = Logger.getLogger(OID_2_16_76_1_3_2.class.getName());
 
     public static final String OID = "2.16.76.1.3.2";
 

@@ -37,12 +37,11 @@
 package br.gov.frameworkdemoiselle.certificate.extension;
 
 import java.security.cert.X509Certificate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 public class ICPBRSubjectAlternativeNames {
 
-    private static final Logger logger = LoggerFactory.getLogger(ICPBRSubjectAlternativeNames.class);
+    private static final Logger LOGGER = Logger.getLogger(ICPBRSubjectAlternativeNames.class.getName());
 
     private String email = null;
     private ICPBRCertificatePF icpBRCertificatePF = null;

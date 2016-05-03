@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Sequence;
@@ -58,8 +59,6 @@ import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
 import org.bouncycastle.asn1.x509.PolicyInformation;
 import org.bouncycastle.asn1.x509.X509Extensions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Basic Information for ICP-BRASIL (DOC-ICP-04) Certificates. Abstracts the
@@ -70,7 +69,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BasicCertificate {
 
-    private static final Logger logger = LoggerFactory.getLogger(BasicCertificate.class);
+    private static final Logger LOGGER = Logger.getLogger(BasicCertificate.class.getName());
 
     public static final String OID_A1_CERTIFICATE = "2.16.76.1.2.1";
     public static final String OID_A2_CERTIFICATE = "2.16.76.1.2.2";
@@ -558,7 +557,7 @@ public class BasicCertificate {
             DEROctetString oct = (DEROctetString) (new ASN1InputStream(extvalue).readObject());
             return (new ASN1InputStream(oct.getOctets()).readObject());
         } catch (IOException ex) {
-            logger.info(ex.getMessage());
+            LOGGER.info(ex.getMessage());
         }
         return null;
     }
@@ -626,7 +625,7 @@ public class BasicCertificate {
             builder.append("Subject KeyID...........[").append(this.getSubjectKeyIdentifier()).append("]\n");
             builder.append("CRL DistPoint...........[").append(this.getCRLDistributionPoint()).append("]\n");
         } catch (IOException ex) {
-            logger.info(ex.getMessage());
+            LOGGER.info(ex.getMessage());
         }
 
         return builder.toString();
