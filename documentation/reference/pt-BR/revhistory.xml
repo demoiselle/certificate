@@ -3,6 +3,19 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
     <revision>
+        <revnumber>1.0.12</revnumber>
+        <date>04/05/2016</date>
+        <authorinitials>eos</authorinitials>
+        <revremark>
+            <itemizedlist>
+                <listitem>
+                    <para>Atualização das cadeias de certificados.</para>
+                </listitem>
+            </itemizedlist>
+        </revremark>
+    </revision>
+
+    <revision>
         <revnumber>1.0.11</revnumber>
         <date>04/05/2015</date>
         <authorinitials>eos</authorinitials>
