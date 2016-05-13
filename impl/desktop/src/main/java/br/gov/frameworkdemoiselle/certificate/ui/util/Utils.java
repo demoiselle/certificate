@@ -50,8 +50,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 /**
  * @author SUPST/STDCS
@@ -66,13 +74,21 @@ public final class Utils {
 	 *            O conteudo a ser enviado
 	 * @param UrlToUpload
 	 *            A url para onde o conteudo sera enviado
+	 * @param token
+	 *            Token que identifica o conteudo a ser enviado	 
+	 * @param certificate
+	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
 	 */
-	public static void uploadToURL(byte[] content, String UrlToUpload,
-			String token) {
+	public static void uploadToURL(byte[] content, String UrlToUpload, String token, InputStream certificate) {
 		try {
 			ByteArrayInputStream in = new ByteArrayInputStream(content);
-			URL url = new URL(UrlToUpload);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			HttpURLConnection con = null;
+			if (certificate != null){
+				con = getHttpsURLConnection(UrlToUpload, certificate);
+			}else{
+				URL url = new URL(UrlToUpload);
+				con = (HttpURLConnection) url.openConnection();
+			}
 			con.setDoOutput(true);
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/zip");
@@ -85,10 +101,8 @@ public final class Utils {
 
 			int responseCode = con.getResponseCode();
 			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
-				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
-						"Server returned non-OK code: {0}", responseCode);
-				throw new ConectionException("Server returned non-OK code: "
-						+ responseCode);
+				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
+				throw new ConectionException("Server returned non-OK code: "+ responseCode);
 			}
 
 		} catch (MalformedURLException ex) {
@@ -101,26 +115,35 @@ public final class Utils {
 
 	/**
 	 *
-	 * @param UrlToDownload
-	 * @return
+	 * @param token
+	 *            Token que identifica o conteudo a ser enviado	 
+	 * @param certificate
+	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	 * @return
 	 */
-	public static byte[] downloadFromUrl(String UrlToDownload, String token) {
+	public static byte[] downloadFromUrl(String UrlToDownload, String token, InputStream certificate) {
 		ByteArrayOutputStream outputStream = null;
 		try {
-			URL url = new URL(UrlToDownload);
 			outputStream = new ByteArrayOutputStream();
 			byte[] chunk = new byte[BUFFER_SIZE];
 			int bytesRead;
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			HttpURLConnection con = null;
+			if (certificate != null){
+				System.out.println("Pegando a conexão HTTPS");
+				con = getHttpsURLConnection(UrlToDownload, certificate);
+			}else{
+				URL url = new URL(UrlToDownload);
+				con = (HttpURLConnection) url.openConnection();
+			}
+			System.out.println("Configruando Header");
 			con.setRequestProperty("Authorization", "Token " + token);
 			con.setRequestProperty("Accept", "application/zip");
-			con.setRequestMethod("POST");
+			con.setRequestMethod("GET");
+			System.out.println("Pegando ResponseCOde");
 			int responseCode = con.getResponseCode();
+			System.out.println("ResponseCOde: " + responseCode);
 			if (responseCode != HttpURLConnection.HTTP_OK) {
-				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
-						"Server returned non-OK code: {0}", responseCode);
-				throw new ConectionException("Server returned non-OK code: "
-						+ responseCode);
+				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
+				throw new ConectionException("Server returned non-OK code: " + responseCode);
 			} else {
 				InputStream stream = con.getInputStream();
 
@@ -133,6 +156,24 @@ public final class Utils {
 			throw new ConectionException(e.getMessage(), e.getCause());
 		}
 		return outputStream.toByteArray();
+	}
+	
+	private static HttpURLConnection getHttpsURLConnection(String UrlToDownload, InputStream certificate){
+		HttpURLConnection con = null;
+		try {
+			URL url = new URL(UrlToDownload);
+			con =  (HttpsURLConnection) url.openConnection();
+			SSLContext sslContext = getSSLContextCustomTrustCertificate(certificate);
+			System.out.println("Protoclo: " + sslContext.getProtocol());
+			((HttpsURLConnection) con).setSSLSocketFactory(sslContext.getSocketFactory());
+	        System.setProperty ("https.protocols", "TLSv1.2");
+			
+		} catch (MalformedURLException e) {
+			throw new ConectionException(e.getMessage(), e.getCause());
+		} catch (IOException e) {
+			throw new ConectionException(e.getMessage(), e.getCause());
+		}
+		return con;
 	}
 
 	/**
@@ -164,11 +205,9 @@ public final class Utils {
 				in.close();
 			}
 		} catch (FileNotFoundException ex) {
-			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
-					ex.getMessage());
+			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,ex.getMessage());
 		} catch (IOException ex) {
-			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
-					ex.getMessage());
+			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,ex.getMessage());
 		}
 		return result;
 	}
@@ -188,8 +227,7 @@ public final class Utils {
 			os.flush();
 			os.close();
 		} catch (IOException ex) {
-			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,
-					ex.getMessage());
+			Logger.getLogger(Utils.class.getName()).log(Level.SEVERE,ex.getMessage());
 		}
 	}
 
@@ -211,54 +249,73 @@ public final class Utils {
 		}
 		return count;
 	}
+	
+	 /**
+     * Define um certificado personalizado para confiar durante conexões. Conexões HTTPS
+     * feitas após definir essa cadeia o usarão para confiar em servidores
+     * remotos seguros.
+     */
+	private static SSLContext getSSLContextCustomTrustCertificate(InputStream certificateInputStream) {
+		SSLContext context = null;
+		
+		// Carrega o arquivo informado como um certificado
+	    Certificate ca;
+	    try {
+	        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+	        ca = cf.generateCertificate(certificateInputStream);
+	    } catch (CertificateException e) {
+	        e.printStackTrace();
+	        ca = null;
+		} finally {
+	        try {
+	            certificateInputStream.close();
+	        } catch (IOException e) {
+	        }
+	    }
 
-	// /**
-	// * Create a random 1024 bit RSA key pair
-	// *
-	// * @return
-	// * @throws java.lang.Exception
-	// */
-	// public static KeyPair generateRSAKeyPair() throws Exception {
-	// KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
-	// kpGen.initialize(2048, new SecureRandom());
-	// return kpGen.generateKeyPair();
-	// }
-	//
-	// /**
-	// * Converts a {@link X509Certificate} instance into a Base-64 encoded
-	// string
-	// * (PEM format).
-	// *
-	// * @param x509Cert A X509 Certificate instance
-	// * @return PEM formatted String
-	// * @throws java.io.IOException
-	// */
-	// public static String convertToBase64PEMString(Certificate x509Cert)
-	// throws IOException {
-	// StringWriter sw = new StringWriter();
-	// try (PEMWriter pw = new PEMWriter(sw)) {
-	// pw.writeObject(x509Cert);
-	// }
-	// return sw.toString();
-	// }
-	//
-	// public static PublicKey reconstructPublicKey(String algorithm, byte[]
-	// pub_key) {
-	// PublicKey public_key = null;
-	//
-	// try {
-	// KeyFactory kf = KeyFactory.getInstance(algorithm, "BC");
-	// EncodedKeySpec pub_key_spec = new X509EncodedKeySpec(pub_key);
-	// public_key = kf.generatePublic(pub_key_spec);
-	// } catch (NoSuchAlgorithmException e) {
-	// System.out.println("Could not reconstruct the public key, the given algorithm oculd not be found.");
-	// } catch (InvalidKeySpecException e) {
-	// System.out.println("Could not reconstruct the public key");
-	// } catch (NoSuchProviderException ex) {
-	// Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-	// }
-	//
-	// return public_key;
-	// }
+	    
+	    // Cria uma keystore contendo nosso certificado
+	    KeyStore keyStore = null;
+	    if (ca != null) {
+	        try {
+	            String keyStoreType = KeyStore.getDefaultType();
+	            keyStore = KeyStore.getInstance(keyStoreType);
+	            keyStore.load(null, null);
+	            keyStore.setCertificateEntry("ca", ca);
+	        } catch (Exception e) {
+	            keyStore = null;
+	        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Erro criando keystore a partir do certificado informado");
+	            throw new ConectionException(e.getMessage(), e.getCause());	            
+	        }
+	    }
 
+	    // Cria um gestor de confiança que confia em nossa keystore
+	    TrustManagerFactory tmf = null;
+	    if (keyStore != null) {
+	        try {
+	            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+	            tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+	            tmf.init(keyStore);
+	        } catch (Exception e) {
+	        	tmf = null;
+	        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Erro criando gestor de confiança a partir do certificado informado");
+	            throw new ConectionException(e.getMessage(), e.getCause());
+	        }
+	    }
+
+	    // Cria um contexto SSL. A partir daqui podemos fabricar sockets seguros
+	    // que confiam no certificado carregado.
+	    if (tmf != null) {
+	        try {
+	            context = SSLContext.getInstance("TLSv1.2");
+	            context.init(null, tmf.getTrustManagers(), null);
+	        } catch (Exception e) {
+	        	context = null;
+	        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Erro criando contexto SSL a partir do certificado informado");
+	            throw new ConectionException(e.getMessage(), e.getCause());
+	        }
+	    }
+		return context;
+	}	
+	
 }

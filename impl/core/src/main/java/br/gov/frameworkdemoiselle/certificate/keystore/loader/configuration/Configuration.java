@@ -121,14 +121,14 @@ public class Configuration {
             try {
                 this.addDriver(driver, map.get(driver));
             } catch (Throwable error) {
-                Configuration.LOGGER.log(Level.WARNING, DRIVER_ERROR_LOAD + " " + driver, error);
+                //Configuration.LOGGER.log(Level.FINE, DRIVER_ERROR_LOAD + " " + driver, error);
             }
         }
 
         try {
             this.getPKCS11DriverFromVariable();
         } catch (Throwable error) {
-            Configuration.LOGGER.log(Level.WARNING, DRIVER_ERROR_LOAD, error);
+            Configuration.LOGGER.log(Level.FINE, DRIVER_ERROR_LOAD, error);
         }
 
     }
