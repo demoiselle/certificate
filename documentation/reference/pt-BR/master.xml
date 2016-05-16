@@ -23,6 +23,9 @@
     <!-- Demoiselle Applet -->
     <xi:include href="applet/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
+	<!-- Demoiselle Applet -->
+    <xi:include href="desktop/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
     <!-- Demoiselle Core -->
     <xi:include href="core/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 

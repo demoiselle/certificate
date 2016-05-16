@@ -101,10 +101,10 @@ public enum FrameConfig {
 			return rb;
 		}
 		try {
-			rb = getBundle("webstart-config");
+			rb = getBundle("desktop-config");
 		} catch (MissingResourceException mre) {
 			try {
-				rb = getBundle("webstart-config-default");
+				rb = getBundle("desktop-config-default");
 			} catch (MissingResourceException e) {
 				throw new RuntimeException("key '" + key
 						+ "' not found for resource ''");
