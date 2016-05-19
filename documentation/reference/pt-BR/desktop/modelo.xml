@@ -1,22 +1,17 @@
 <?xml version='1.0' encoding="utf-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
-<chapter id="desktop-projeto-exemplo">
+<chapter id="desktop-modelo">
 
-    <title>Criando o projeto exemplo</title>
+    <title>Modelo de aplicação Java Web Start</title>
     <para>
-        Nesta seção apresentaremos o passo-a-passo para construção de um projeto de exemplo do <emphasis>demoiselle-desktop</emphasis>. Nele será construída uma página html que executará uma aplicação via Java Web Start para
-        obtenção de certificados A1 ou A3 e obtenção via serviços dos arquivos a serem assinados.
+		Segue abaixo um modelo para aplicação Java Web Start utilizano serviços REST para comunicação com o servidor de aplicação.
     </para>
     
     <para>
-    	Primeiro descrevemos abaixo o modelo a ser utilizado para construção da aplicação desktop e interação com a aplicação web
-    </para>
-
-    <para>
         <figure>
             <title>
-                Aplicação Web
+                Aplicação Web 
             </title>
             <mediaobject>
                 <imageobject>
@@ -57,13 +52,13 @@
             <title>Aplicação Java SE</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="images/assinador_2.png" format="PNG" align="center" scalefit="1" width="75%"/>
+                    <imagedata fileref="images/assinador_3.png" format="PNG" align="center" scalefit="1" width="75%"/>
                 </imageobject>
             </mediaobject>
         </figure>
     </para> 
     
-    <procudere>
+    <procedure>
     	<step><para>Após o download da aplicação Java SE, o usuário deve executá-la (ou ela deve executar automaticamente). Durante o processo de inicialização, a aplicação deve acessar a URL auxiliar definida nos atributos do JNLP para obter os arquivos.</para></step>
     	<step><para>A aplicação deve disparar uma requisição GET via HTTPS para a URL informando o Token, ambos obtidos nos atributos do JNLP. O Token deve ser passado no cabeçalho Authorization: TOKEN Token. Por questões de segurança, NUNCA trafegue o Token na URL. Definir o cabeçalho Accept: application/zip.</para></step>
     	<step><para>Ao receber a requisiçao, o serviço (ou página dinâmica) que responde pela URL deve resgatar da base os arquivos associados ao Token.</para></step>
@@ -73,6 +68,6 @@
     	<step><para>Após a conclusão do processo de assinatura, a aplicação deve fazer uma requisição POST via HTTPS para a URL informando o Token no cabeçalho Authorization: TOKEN Token e as assinaturas zipadas no corpo. Os arquivos a serem assinados devem estar agrupados na raiz do ZIP. No cabeçalho da requisição deve conter também Content-Type: application/zip.</para></step>
     	<step><para>Ao receber a requisiçao, o serviço (ou página dinâmica) deve resgatar da base os arquivos associados ao Token, verificar se a assinatura corresponde ao arquivo no servidor, guarda a assinatura na base de dados associando-as aos arquivos originais, desassocia o Token dos arquivos e descarta o Token.</para></step>
     	<step><para>O serviço (ou página dinâmica) devolve a resposta com o status HTTP 204 e a aplicação cliente se encerra.</para></step>
-    </procudere>
+    </procedure>
     
 </chapter>

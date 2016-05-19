@@ -5,8 +5,8 @@
 
 	<title id="funcionalidades">Funcionalidades</title>
 	<para>
-		O princípio do componente é prover ao desenvolvedor o Keystore de um dispositivo. A partir do keystore a aplicação pode construir outras funcionalidades como autenticação e
-		assinatura de documentos. Existem duas formas de se obter o Keystore do certificado, descritas a seguir.
+		O componente demoiselle-desktop podemos prover ao desenvolvedor o Keystore de um dispositivo e utilitário
+		para conexão via HTTP/HTTPS. 
 	</para>
-
+	
 </chapter>
