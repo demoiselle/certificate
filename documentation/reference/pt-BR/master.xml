@@ -7,11 +7,11 @@
 
     <!-- prefácio -->
     <preface>
-        <title>Sobre o Demoiselle Components</title>
+        <title>Sobre o Demoiselle Certificate</title>
         <para>
-            O <emphasis>Demoiselle Components Guide</emphasis> agrega em um único lugar toda a
-            documentação referente a todos os componentes disponibilizados e que são
-            compatíveis com a versão mais recente do <emphasis>Demoiselle Framework</emphasis>.
+            O Demoiselle Certificate simplifica a construção de Applets para manipulação de certificados digitais. Seu objetivo é o carregamento do Repositório de Chaves e Certificados
+            (Keystore) de Certificados A3, cujo armazenamento é realizado por dispositivos seguros como Tokens USB ou Smart Cards, ou de Certificados A1, cujo armazenamento é
+            feito em arquivos
         </para>
     </preface>
 
@@ -19,12 +19,11 @@
     <toc />
 
     <!-- partes -->
+	<!-- Demoiselle Desktop -->
+    <xi:include href="desktop/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <!-- Demoiselle Applet -->
     <xi:include href="applet/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-	<!-- Demoiselle Applet -->
-    <xi:include href="desktop/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <!-- Demoiselle Core -->
     <xi:include href="core/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
