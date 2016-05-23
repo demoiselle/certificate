@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="desktop-exemplo">
+
+	<title id="exemplo">Projeto Exemplo</title>
+	<para>
+		O componente <emphasis>demoiselle-certificate-desktop</emphasis> provê ao desenvolvedor o Keystore de um dispositivo e métodos
+		para conexão via HTTP/HTTPS. 
+	</para>
+	<para>
+    	Seguindo o modelo apresentado na apítulo anterior disponibilizamos uma aplicação de exemplo no 
+    	<ulink url="https://github.com/demoiselle/certificate">GitHub</ulink>.
+    	Essa aplicação tem um projeto JAR que é nossa aplicação desktop para assinatura e um projeto WAR que é a nossa
+    	aplicação de uso da assinatura digital.
+    </para>
+    
+
+	
+	
+</chapter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="utf-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
-<chapter id="assinatura-jar2">
+<appendix id="assinatura-jar">
 
     <title>Assinatura de Jars</title>
 
@@ -160,4 +160,4 @@ library = /usr/lib/libeTPkcs11.so]]></programlisting>
 
         <programlisting role="XHTML"><![CDATA[jarsigner -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg token.config -storepass PASSWORD -sigfile DSANAME -signedjar JARFILESIGNED -verbose JARFILE "ALIAS"]]></programlisting>
     </section>
-</chapter>
+</appendix>

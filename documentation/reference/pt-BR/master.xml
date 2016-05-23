@@ -9,10 +9,46 @@
     <preface>
         <title>Sobre o Demoiselle Certificate</title>
         <para>
-            O Demoiselle Certificate simplifica a construção de Applets para manipulação de certificados digitais. Seu objetivo é o carregamento do Repositório de Chaves e Certificados
-            (Keystore) de Certificados A3, cujo armazenamento é realizado por dispositivos seguros como Tokens USB ou Smart Cards, ou de Certificados A1, cujo armazenamento é
-            feito em arquivos
+            O Demoiselle Certificate é um componente para facilitar a implementação de assinatura digital usando certificado. 
+            O componente implementa o padrão de assinatura básica ADRB em CADES do ICPBrasil, conforme o 
+            <ulink url="http://www.iti.gov.br/legislacao/143-icp-brasil/legislacao/790-doc-icp">DOC-ICP-15</ulink>.
         </para>
+        <para>
+        	O componente é dividido de acordo com suas funcionalidades:
+        	<itemizedlist>
+    			<listitem>
+    				<para><emphasis>demoiselle-certificate-core: </emphasis>fornece acesso ao token, carregamento de certificado e API para dados de um certificado ICPBrasil</para>
+	    		</listitem>
+    			<listitem>
+    				<para><emphasis>demoiselle-certificate-ca-icpbrasil: </emphasis>possui as cadeias de autoridades certificadores ICPBrasil válidas</para>
+	    		</listitem>
+    			<listitem>
+    				<para><emphasis>demoiselle-certificate-criprography: </emphasis>provê funcionalidades de criptografia</para>
+	    		</listitem>
+    			<listitem>
+    				<para><emphasis>demoiselle-certificate-signer: </emphasis>assinatura digital e verificação de assinatura</para>
+	    		</listitem>
+    			<listitem>
+    				<para><emphasis>demoiselle-certificate-desktop: </emphasis>funcionalidades para desenvolvimento aplicação desktop (Java Swing) para ser iniciada via Java Web Start</para>
+	    		</listitem>
+    		</itemizedlist>
+        </para>
+        <para>
+        	Funcionalidades ainda não implementadas no componente:
+        	<itemizedlist>
+    			<listitem>
+    				<para>Assinatura com carimbo de tempo</para>
+	    		</listitem>
+    			<listitem>
+    				<para>Assinatura em XML (XADES)</para>
+	    		</listitem>
+    			<listitem>
+    				<para>Assinatura em PDF</para>
+	    		</listitem>
+    		</itemizedlist>
+        </para>
+
+        
     </preface>
 
     <!-- índice -->
@@ -39,5 +75,11 @@
 
     <!-- Demoiselle CA ICP-Brasil Homologacao-->
     <xi:include href="ca-icp-brasil-homologacao/master.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+	<!-- Apendice sobre assinatura de código-->
+	<xi:include href="regras-seguranca-jdk.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    
+    <!-- Apendice sobre assinatura de código-->
+	<xi:include href="assinatura-jar.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
 </book>

@@ -13,16 +13,16 @@
     <para>
     	<itemizedlist>
     		<listitem>
-    			<para><emphasis>Chrome:</emphasis> sem suporte a partir da versão 45</para>
+    			<para><emphasis role="bold">Chrome:</emphasis> sem suporte a partir da versão 45</para>
     		</listitem>
 			<listitem>
-    			<para><emphasis>Mozilla Firefox:</emphasis> anunciou que suspenderá o suporte até o final de 2016</para>
+    			<para><emphasis role="bold">Mozilla Firefox:</emphasis> anunciou que suspenderá o suporte até o final de 2016</para>
     		</listitem>
 			<listitem>
-    			<para><emphasis>Interner Explore:</emphasis> Não se manifestou, mas este browser será descontinuado </para>
+    			<para><emphasis role="bold">Interner Explore:</emphasis> Não se manifestou, mas este browser será descontinuado </para>
     		</listitem>
     		<listitem>
-    			<para><emphasis>Microsoft EDGE:</emphasis> Browser que vai substituir o IE e foi lançado sem o suporte </para>
+    			<para><emphasis role="bold">Microsoft EDGE:</emphasis> Browser que vai substituir o IE e foi lançado sem o suporte </para>
     		</listitem>    		
     	</itemizedlist>
     </para>
