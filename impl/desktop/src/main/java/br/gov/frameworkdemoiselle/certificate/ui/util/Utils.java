@@ -54,12 +54,18 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * @author SUPST/STDCS
@@ -68,6 +74,8 @@ public final class Utils {
 
 	private static final int BUFFER_SIZE = 4096;
 
+	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
+	
 	/**
 	 *
 	 * @param content
@@ -102,7 +110,7 @@ public final class Utils {
 			int responseCode = con.getResponseCode();
 			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-				throw new ConectionException("Server returned non-OK code: "+ responseCode);
+				//throw new ConectionException("Server returned non-OK code: "+ responseCode);
 			}
 
 		} catch (MalformedURLException ex) {
@@ -110,7 +118,6 @@ public final class Utils {
 		} catch (IOException ex) {
 			throw new ConectionException(ex.getMessage(), ex.getCause());
 		}
-
 	}
 
 	/**
@@ -128,22 +135,18 @@ public final class Utils {
 			int bytesRead;
 			HttpURLConnection con = null;
 			if (certificate != null){
-				System.out.println("Pegando a conexão HTTPS");
 				con = getHttpsURLConnection(UrlToDownload, certificate);
 			}else{
 				URL url = new URL(UrlToDownload);
 				con = (HttpURLConnection) url.openConnection();
 			}
-			System.out.println("Configruando Header");
 			con.setRequestProperty("Authorization", "Token " + token);
 			con.setRequestProperty("Accept", "application/zip");
 			con.setRequestMethod("GET");
-			System.out.println("Pegando ResponseCOde");
 			int responseCode = con.getResponseCode();
-			System.out.println("ResponseCOde: " + responseCode);
 			if (responseCode != HttpURLConnection.HTTP_OK) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-				throw new ConectionException("Server returned non-OK code: " + responseCode);
+				//throw new ConectionException("Server returned non-OK code: " + responseCode);
 			} else {
 				InputStream stream = con.getInputStream();
 
@@ -158,13 +161,40 @@ public final class Utils {
 		return outputStream.toByteArray();
 	}
 	
+	public static void cancelar(String urlToCancel, String token, InputStream certificate) {
+		try {
+			HttpURLConnection con = null;
+			if (certificate != null){
+				con = getHttpsURLConnection(urlToCancel, certificate);
+			}else{
+				URL url = new URL(urlToCancel);
+				con = (HttpURLConnection) url.openConnection();
+			}
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Content-Type", "application/zip");
+			con.setRequestProperty("Authorization", "Token " + token);
+
+
+			int responseCode = con.getResponseCode();
+			if (responseCode != HttpURLConnection.HTTP_OK) {
+				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
+				//throw new ConectionException("Server returned non-OK code: "+ responseCode);
+			}
+
+		} catch (MalformedURLException ex) {
+			throw new ConectionException(ex.getMessage(), ex.getCause());
+		} catch (IOException ex) {
+			throw new ConectionException(ex.getMessage(), ex.getCause());
+		}
+	}
+	
 	private static HttpURLConnection getHttpsURLConnection(String UrlToDownload, InputStream certificate){
 		HttpURLConnection con = null;
+		LOGGER.info("Conexão via HTTPS: " + UrlToDownload);
 		try {
 			URL url = new URL(UrlToDownload);
 			con =  (HttpsURLConnection) url.openConnection();
 			SSLContext sslContext = getSSLContextCustomTrustCertificate(certificate);
-			System.out.println("Protoclo: " + sslContext.getProtocol());
 			((HttpsURLConnection) con).setSSLSocketFactory(sslContext.getSocketFactory());
 	        System.setProperty ("https.protocols", "TLSv1.2");
 			
@@ -317,5 +347,58 @@ public final class Utils {
 	    }
 		return context;
 	}	
+	
+	/*
+	 * Retorna os certificados em string hexadecimal separados por vírgula
+	 */
+	public static byte[] getSSLCertificate(String url) {
+		
+		byte[] certificate = null;
+		SSLSocket socket = null;
+		// create custom trust manager to ignore trust paths
+		TrustManager trm = new X509TrustManager() {
+			public X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			public void checkClientTrusted(X509Certificate[] certs,
+					String authType) {
+			}
+
+			public void checkServerTrusted(X509Certificate[] certs,
+					String authType) {
+			}
+		};
+
+		try {
+			URL aURL = new URL(url);
+			String host = aURL.getHost();
+			int port = (aURL.getPort() < 0) ? 443 : aURL.getPort();
+			SSLContext sc = SSLContext.getInstance("TLSv1.2");
+			sc.init(null, new TrustManager[] { trm }, null);
+			SSLSocketFactory factory = sc.getSocketFactory();
+			socket = (SSLSocket) factory.createSocket(host, port);
+			socket.startHandshake();
+			SSLSession session = socket.getSession();
+			java.security.cert.Certificate[] servercerts = session.getPeerCertificates();
+			for (int i = 0; i < servercerts.length; i++) {
+				certificate = servercerts[i].getEncoded();
+			}
+			socket.close();
+		} catch (Exception e) {
+			throw new ConectionException(e.getMessage(), e.getCause());
+		}
+		
+		return certificate;
+	}
+	
+    public static String convertByteArrayToHexString(byte[] arrayBytes) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0; i < arrayBytes.length; i++) {
+            stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
+                    .substring(1));
+        }
+        return stringBuffer.toString();
+    }
 	
 }
