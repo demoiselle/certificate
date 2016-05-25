@@ -1,4 +1,8 @@
 /target
+/impl/policy
+/impl/swing
+/impl/timestamp
+/documentation/quickstart
 /.project
 /.classpath
 /.settings

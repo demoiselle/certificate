@@ -1,4 +1,4 @@
 demoiselle-certificate
 ======================
 
-Componente do Demoiselle para uso de certificados digitais
+Componente do Demoiselle para uso assinatura digital com certificado ICPBrasil. 
