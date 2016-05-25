@@ -73,7 +73,9 @@ public enum FrameConfig {
 	CONFIG_DIALOG_BUTTON_RUN_WIDTH("config.dialog.button-run.width"), 
 	CONFIG_DIALOG_BUTTON_RUN_HEIGHT("config.dialog.button-run.height"),
 	CONFIG_DIALOG_BUTTON_CANCEL_WIDTH("config.dialog.button-cancel.width"), 
-	CONFIG_DIALOG_BUTTON_CANCEL_HEIGHT(	"config.dialog.button-cancel.height");
+	CONFIG_DIALOG_BUTTON_CANCEL_HEIGHT(	"config.dialog.button-cancel.height"),
+	
+	CONFIG_HTTPS_PROTOCOL("config.https.protocol");
 
 	private String key;
 	private static ResourceBundle rb;
