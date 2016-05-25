@@ -222,14 +222,24 @@ public class Principal extends javax.swing.JFrame {
 		
 		GroupLayout paneltopLayout = new GroupLayout(paneltop);
 		paneltop.setLayout(paneltopLayout);
+
+		if(loadedFiles){
+			paneltopLayout.setHorizontalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), Short.MAX_VALUE)
+					.addComponent(scrollPaneFiles, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_LIST_FILES_WIDTH.getValueInt(), Short.MAX_VALUE));
+			
+			paneltopLayout.setVerticalGroup(paneltopLayout.createSequentialGroup()
+					.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPaneFiles,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_LIST_FILES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE));
+
+		}else{
+			paneltopLayout.setHorizontalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), Short.MAX_VALUE));
+			
+			paneltopLayout.setVerticalGroup(paneltopLayout.createSequentialGroup()
+					.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE));
+		}
 		
-		paneltopLayout.setHorizontalGroup(paneltopLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_WIDTH.getValueInt(), Short.MAX_VALUE)
-				.addComponent(scrollPaneFiles, GroupLayout.DEFAULT_SIZE,	FrameConfig.CONFIG_DIALOG_LIST_FILES_WIDTH.getValueInt(), Short.MAX_VALUE));
-		
-		paneltopLayout.setVerticalGroup(paneltopLayout.createSequentialGroup()
-				.addComponent(scrollPane,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_TABLE_CERTIFICATES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE)
-				.addComponent(scrollPaneFiles,GroupLayout.PREFERRED_SIZE,FrameConfig.CONFIG_DIALOG_LIST_FILES_HEIGHT.getValueInt(),GroupLayout.PREFERRED_SIZE));
 	
 		panelbottom.setBorder(BorderFactory.createEtchedBorder());
 
