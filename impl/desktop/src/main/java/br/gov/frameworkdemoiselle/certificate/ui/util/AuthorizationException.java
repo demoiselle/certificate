@@ -1,6 +1,6 @@
 package br.gov.frameworkdemoiselle.certificate.ui.util;
 
-public class AuthorizedException extends RuntimeException{
+public class AuthorizationException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
 
 
@@ -10,7 +10,7 @@ public class AuthorizedException extends RuntimeException{
 	 * @param message
 	 * @param error
 	 */
-	public AuthorizedException(String message, Throwable error) {
+	public AuthorizationException(String message, Throwable error) {
 		super(message, error);
 	}
 
@@ -20,7 +20,7 @@ public class AuthorizedException extends RuntimeException{
 	 * 
 	 * @param message
 	 */
-	public AuthorizedException(String message) {
+	public AuthorizationException(String message) {
 		super(message);
 	}
 
