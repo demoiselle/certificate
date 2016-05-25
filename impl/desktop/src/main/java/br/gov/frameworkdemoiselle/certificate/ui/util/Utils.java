@@ -83,7 +83,7 @@ public final class Utils {
 	 * @param content
 	 *            O conteudo a ser enviado
 	 * @param UrlToUpload
-	 *            A url para onde o conteudo sera enviado
+	 *            A url para onde o conteudo sera enviado via HTTPS
 	 * @param token
 	 *            Token que identifica o conteudo a ser enviado	 
 	 * @param certificate
@@ -110,6 +110,10 @@ public final class Utils {
 			out.close();
 
 			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+				throw new AuthorizedException("Erro de autorização ao acesso o serviço: " + UrlToUpload + " com o token " + token);
+			}
+
 			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
 				throw new ConectionException("HTTP error code: "+ responseCode);
@@ -121,6 +125,19 @@ public final class Utils {
 			throw new ConectionException(ex.getMessage(), ex.getCause());
 		}
 	}
+	
+	/**
+	 *
+	 * @param content
+	 *            O conteudo a ser enviado
+	 * @param UrlToUpload
+	 *            A url para onde o conteudo sera enviado via HTTP
+	 * @param token
+	 *            Token que identifica o conteudo a ser enviado	 
+	 */
+	public static void uploadToURL(byte[] content, String UrlToUpload, String token) {
+		uploadToURL(content, UrlToUpload, token, null);
+	}	
 
 	/**
 	 *
@@ -146,6 +163,9 @@ public final class Utils {
 			con.setRequestProperty("Accept", "application/zip");
 			con.setRequestMethod("GET");
 			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+				throw new AuthorizedException("Erro de autorização ao acesso o serviço: " + UrlToDownload + " com o token " + token);
+			}
 			if (responseCode != HttpURLConnection.HTTP_OK) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
 				throw new ConectionException("HTTP error code: "+ responseCode);
@@ -196,6 +216,9 @@ public final class Utils {
 			out.close();
 
 			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+				throw new AuthorizedException("Erro de autorização ao acesso o serviço: " + urlToCancel + " com o token " + token);
+			}
 			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
 				throw new ConectionException("HTTP error code: "+ responseCode);
