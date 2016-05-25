@@ -49,5 +49,7 @@ public interface FrameExecute {
     public void execute(KeyStore ks, String alias, Principal principal);
 
     public void cancel(KeyStore ks, String alias, Principal principal);
+    
+    public void close(Principal principal);
 
 }

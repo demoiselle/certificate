@@ -51,5 +51,8 @@ public abstract class AbstractFrameExecute implements FrameExecute {
 
     @Override
     public abstract void cancel(KeyStore ks, String alias, Principal principal);
+    
+    @Override
+    public abstract void close(Principal principal);
 
 }

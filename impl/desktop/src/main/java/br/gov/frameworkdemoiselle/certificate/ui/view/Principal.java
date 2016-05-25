@@ -41,7 +41,8 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.server.LoaderHandler;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.security.KeyStore;
 import java.util.List;
 
@@ -56,6 +57,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -140,6 +142,33 @@ public class Principal extends javax.swing.JFrame {
 		tableColumn4.setPreferredWidth(300);
 
 		this.setLocationRelativeTo(null); // Centraliza o frame
+
+		this.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowIconified(WindowEvent e) {}
+			@Override
+			public void windowDeiconified(WindowEvent e) {}
+			@Override
+			public void windowDeactivated(WindowEvent e) {}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {}
+
+			@Override
+			public void windowOpened(WindowEvent e) {}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				closeWindow(e);
+			}
+
+		});
+		
+		
 	}
 
 	private void initComponents() {
@@ -266,7 +295,14 @@ public class Principal extends javax.swing.JFrame {
 		alias = this.getAlias();
 		frameExecute.cancel(keystore, alias, this);
 	}
-
+	
+	private void closeWindow(WindowEvent e) {
+		FrameExecute frameExecute = FrameExecuteFactory.factory(className);
+		alias = this.getAlias();
+		frameExecute.close(this);
+	}
+	
+	
 	/**
 	 * Retorna o keystore do dispositivo a partir do valor de pin
 	 *

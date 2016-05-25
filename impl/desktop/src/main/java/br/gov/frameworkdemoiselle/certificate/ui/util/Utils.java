@@ -67,6 +67,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import br.gov.frameworkdemoiselle.certificate.ui.config.FrameConfig;
+
 /**
  * @author SUPST/STDCS
  */
@@ -110,7 +112,7 @@ public final class Utils {
 			int responseCode = con.getResponseCode();
 			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-				//throw new ConectionException("Server returned non-OK code: "+ responseCode);
+				throw new ConectionException("HTTP error code: "+ responseCode);
 			}
 
 		} catch (MalformedURLException ex) {
@@ -146,7 +148,7 @@ public final class Utils {
 			int responseCode = con.getResponseCode();
 			if (responseCode != HttpURLConnection.HTTP_OK) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-				//throw new ConectionException("Server returned non-OK code: " + responseCode);
+				throw new ConectionException("HTTP error code: "+ responseCode);
 			} else {
 				InputStream stream = con.getInputStream();
 
@@ -161,8 +163,21 @@ public final class Utils {
 		return outputStream.toByteArray();
 	}
 	
-	public static void cancelar(String urlToCancel, String token, InputStream certificate) {
+	/**
+	 *
+	 * @param message
+	 *            Mensagem customizada para o serviço
+	 * @param urlToCancel
+	 *            A url para onde a mensagem sera enviada
+	 * @param token
+	 *            Token que identifica a mensagem a ser enviada	 
+	 * @param certificate
+	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
+	 */
+	public static void cancel(String message, String urlToCancel, String token, InputStream certificate) {
 		try {
+			InputStream in = new ByteArrayInputStream(message.getBytes());
+			
 			HttpURLConnection con = null;
 			if (certificate != null){
 				con = getHttpsURLConnection(urlToCancel, certificate);
@@ -170,15 +185,20 @@ public final class Utils {
 				URL url = new URL(urlToCancel);
 				con = (HttpURLConnection) url.openConnection();
 			}
+			con.setDoOutput(true);
 			con.setRequestMethod("POST");
-			con.setRequestProperty("Content-Type", "application/zip");
+			con.setRequestProperty("Content-Type", "application/octet-stream");
 			con.setRequestProperty("Authorization", "Token " + token);
-
+			
+			OutputStream out = con.getOutputStream();
+			copy(in, out);
+			out.flush();
+			out.close();
 
 			int responseCode = con.getResponseCode();
-			if (responseCode != HttpURLConnection.HTTP_OK) {
+			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
-				//throw new ConectionException("Server returned non-OK code: "+ responseCode);
+				throw new ConectionException("HTTP error code: "+ responseCode);
 			}
 
 		} catch (MalformedURLException ex) {
@@ -188,11 +208,24 @@ public final class Utils {
 		}
 	}
 	
-	private static HttpURLConnection getHttpsURLConnection(String UrlToDownload, InputStream certificate){
+	/**
+	 *
+	 * @param urlToCancel
+	 *            A url para onde a mensagem sera enviada
+	 * @param token
+	 *            Token que identifica a mensagem a ser enviada	 
+	 * @param certificate
+	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
+	 */
+	public static void cancel(String urlToCancel, String token, InputStream certificate) {
+		cancel("", urlToCancel, token, certificate);
+	}	
+	
+
+	private static HttpURLConnection getHttpsURLConnection(String urlConnection, InputStream certificate){
 		HttpURLConnection con = null;
-		LOGGER.info("Conexão via HTTPS: " + UrlToDownload);
 		try {
-			URL url = new URL(UrlToDownload);
+			URL url = new URL(urlConnection);
 			con =  (HttpsURLConnection) url.openConnection();
 			SSLContext sslContext = getSSLContextCustomTrustCertificate(certificate);
 			((HttpsURLConnection) con).setSSLSocketFactory(sslContext.getSocketFactory());
@@ -337,7 +370,7 @@ public final class Utils {
 	    // que confiam no certificado carregado.
 	    if (tmf != null) {
 	        try {
-	            context = SSLContext.getInstance("TLSv1.2");
+	            context = SSLContext.getInstance(FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
 	            context.init(null, tmf.getTrustManagers(), null);
 	        } catch (Exception e) {
 	        	context = null;
@@ -348,8 +381,10 @@ public final class Utils {
 		return context;
 	}	
 	
-	/*
-	 * Retorna os certificados em string hexadecimal separados por vírgula
+	/**
+	 *
+	 * @param url
+	 *            url da qual deseja oberto o certificado
 	 */
 	public static byte[] getSSLCertificate(String url) {
 		
@@ -374,7 +409,7 @@ public final class Utils {
 			URL aURL = new URL(url);
 			String host = aURL.getHost();
 			int port = (aURL.getPort() < 0) ? 443 : aURL.getPort();
-			SSLContext sc = SSLContext.getInstance("TLSv1.2");
+			SSLContext sc = SSLContext.getInstance(FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
 			sc.init(null, new TrustManager[] { trm }, null);
 			SSLSocketFactory factory = sc.getSocketFactory();
 			socket = (SSLSocket) factory.createSocket(host, port);
@@ -391,14 +426,5 @@ public final class Utils {
 		
 		return certificate;
 	}
-	
-    public static String convertByteArrayToHexString(byte[] arrayBytes) {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < arrayBytes.length; i++) {
-            stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
-                    .substring(1));
-        }
-        return stringBuffer.toString();
-    }
 	
 }
