@@ -188,7 +188,7 @@ public final class Utils {
 	 * @param message
 	 *            Mensagem customizada para o serviço
 	 * @param urlToCancel
-	 *            A url para onde a mensagem sera enviada
+	 *            A url para onde a mensagem sera enviada via HTTPS
 	 * @param token
 	 *            Token que identifica a mensagem a ser enviada	 
 	 * @param certificate
@@ -233,15 +233,17 @@ public final class Utils {
 	
 	/**
 	 *
+	 * @param message
+	 *            Mensagem customizada para o serviço
 	 * @param urlToCancel
-	 *            A url para onde a mensagem sera enviada
+	 *            A url para onde a mensagem sera enviada via HTTP
 	 * @param token
 	 *            Token que identifica a mensagem a ser enviada	 
 	 * @param certificate
 	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
 	 */
-	public static void cancel(String urlToCancel, String token, InputStream certificate) {
-		cancel("", urlToCancel, token, certificate);
+	public static void cancel(String message, String urlToCancel, String token) {
+		cancel(message, urlToCancel, token, null);
 	}	
 	
 
@@ -407,7 +409,7 @@ public final class Utils {
 	/**
 	 *
 	 * @param url
-	 *            url da qual deseja oberto o certificado
+	 *            url da qual deseja obter o certificado
 	 */
 	public static byte[] getSSLCertificate(String url) {
 		
