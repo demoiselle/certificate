@@ -5,7 +5,7 @@
 
 	<title id="funcionalidades">Funcionalidades</title>
 	<para>
-		O compomente <command>demoiselle-certificate-desktop</command> disponibiliza facilidades para desenvolver aplicações Java Swing
+		O compomente <command>demoiselle-certificate-desktop</command> disponibiliza facilidades para desenvolver aplicações Java Swing,
 		para carregamento da KeyStore e comunicação da aplicação desktop com serviços web.  
 	</para>
 

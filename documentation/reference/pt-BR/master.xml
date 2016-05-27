@@ -17,19 +17,19 @@
         	O componente é dividido de acordo com suas funcionalidades:
         	<itemizedlist>
     			<listitem>
-    				<para><emphasis>demoiselle-certificate-core: </emphasis>fornece acesso ao token, carregamento de certificado e API para dados de um certificado ICPBrasil</para>
+    				<para><emphasis role="bold">demoiselle-certificate-core: </emphasis>fornece acesso ao token, carregamento de certificado e API para dados de um certificado ICPBrasil</para>
 	    		</listitem>
     			<listitem>
-    				<para><emphasis>demoiselle-certificate-ca-icpbrasil: </emphasis>possui as cadeias de autoridades certificadores ICPBrasil válidas</para>
+    				<para><emphasis role="bold">demoiselle-certificate-ca-icpbrasil: </emphasis>possui as cadeias de autoridades certificadores ICPBrasil válidas</para>
 	    		</listitem>
     			<listitem>
-    				<para><emphasis>demoiselle-certificate-criprography: </emphasis>provê funcionalidades de criptografia</para>
+    				<para><emphasis role="bold">demoiselle-certificate-criprography: </emphasis>provê funcionalidades de criptografia</para>
 	    		</listitem>
     			<listitem>
-    				<para><emphasis>demoiselle-certificate-signer: </emphasis>assinatura digital e verificação de assinatura</para>
+    				<para><emphasis role="bold">demoiselle-certificate-signer: </emphasis>realiza assinatura digital e verificação de assinatura</para>
 	    		</listitem>
     			<listitem>
-    				<para><emphasis>demoiselle-certificate-desktop: </emphasis>funcionalidades para desenvolvimento aplicação desktop (Java Swing) para ser iniciada via Java Web Start</para>
+    				<para><emphasis role="bold">demoiselle-certificate-desktop: </emphasis>possui funcionalidades para desenvolvimento aplicação desktop (Java Swing) para ser iniciada via Java Web Start</para>
 	    		</listitem>
     		</itemizedlist>
         </para>
@@ -40,10 +40,10 @@
     				<para>Assinatura com carimbo de tempo</para>
 	    		</listitem>
     			<listitem>
-    				<para>Assinatura em XML (XADES)</para>
+    				<para>Assinatura no padrão XADES (assinatura em XML)</para>
 	    		</listitem>
     			<listitem>
-    				<para>Assinatura em PDF</para>
+    				<para>Assinatura no padrão PADES (assinatura em PDF)</para>
 	    		</listitem>
     		</itemizedlist>
         </para>

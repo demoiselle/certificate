@@ -3,9 +3,9 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="desktop-modelo">
 
-    <title>Modelo de aplicação Java Web Start</title>
+    <title>Modelo para aplicação Java Web Start</title>
     <para>
-		Segue abaixo um modelo para aplicação Java Web Start utilizando serviços REST para comunicação com o servidor de aplicação.
+		Segue abaixo um modelo para aplicação Java Web Start utilizando serviços para comunicação com o servidor de aplicação.
     </para>
     
     <para>
