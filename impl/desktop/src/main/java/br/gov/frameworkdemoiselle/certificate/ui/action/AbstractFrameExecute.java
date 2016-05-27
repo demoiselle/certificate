@@ -37,7 +37,7 @@
 
 package br.gov.frameworkdemoiselle.certificate.ui.action;
 
-import br.gov.frameworkdemoiselle.certificate.ui.view.Principal;
+import br.gov.frameworkdemoiselle.certificate.ui.view.MainFrame;
 
 import java.security.KeyStore;
 
@@ -47,12 +47,12 @@ import java.security.KeyStore;
 public abstract class AbstractFrameExecute implements FrameExecute {
 
     @Override
-    public abstract void execute(KeyStore ks, String alias, Principal principal);
+    public abstract void execute(KeyStore ks, String alias, MainFrame principal);
 
     @Override
-    public abstract void cancel(KeyStore ks, String alias, Principal principal);
+    public abstract void cancel(KeyStore ks, String alias, MainFrame principal);
     
     @Override
-    public abstract void close(Principal principal);
+    public abstract void close(MainFrame principal);
 
 }

@@ -37,7 +37,7 @@
 
 package br.gov.frameworkdemoiselle.certificate.ui.action;
 
-import br.gov.frameworkdemoiselle.certificate.ui.view.Principal;
+import br.gov.frameworkdemoiselle.certificate.ui.view.MainFrame;
 
 import java.security.KeyStore;
 
@@ -46,10 +46,10 @@ import java.security.KeyStore;
 */
 public interface FrameExecute {
 
-    public void execute(KeyStore ks, String alias, Principal principal);
+    public void execute(KeyStore ks, String alias, MainFrame principal);
 
-    public void cancel(KeyStore ks, String alias, Principal principal);
+    public void cancel(KeyStore ks, String alias, MainFrame principal);
     
-    public void close(Principal principal);
+    public void close(MainFrame principal);
 
 }
