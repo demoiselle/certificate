@@ -10,11 +10,6 @@
 	</para>
 
 	<section>
-		<title>KeyStore</title>
-		<para>PENDENTE</para>
-	</section>
-
-	<section>
 		<title>Métodos para comunicação com servidor</title>
 		<para>
 			O compomente <command>demoiselle-certificate-desktop</command> oferece métodos para facilitar a comunicação com os serviços que serão implementados pela aplicação.
