@@ -140,6 +140,8 @@ public final class Utils {
 	}	
 
 	/**
+	 *  @param UrlToDownload
+	 *            A url para onde o conteudo sera enviado via HTTPS
 	 *
 	 * @param token
 	 *            Token que identifica o conteudo a ser enviado	 
@@ -181,6 +183,18 @@ public final class Utils {
 			throw new ConectionException(e.getMessage(), e.getCause());
 		}
 		return outputStream.toByteArray();
+	}
+	
+	/**
+	 * @param UrlToDownload
+	 *            A url para onde o conteudo sera enviado via HTTP
+	 *
+	 * @param token
+	 *            Token que identifica o conteudo a ser enviado	 
+	 */
+	public static byte[] downloadFromUrl(String UrlToDownload, String token) {
+		InputStream certificate = null;
+		return downloadFromUrl(UrlToDownload, token,certificate);
 	}
 	
 	/**
