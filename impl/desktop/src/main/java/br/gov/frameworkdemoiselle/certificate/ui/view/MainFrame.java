@@ -109,7 +109,6 @@ public class MainFrame extends javax.swing.JFrame {
 		if (className == null || className.isEmpty()) {
 			className = "br.gov.serpro.certificate.ui.user.App";
 		}
-		System.out.println("Utilizando implementacao da classe [" + className+ "]");
 		FrameExecute frameExecute = FrameExecuteFactory.factory(className);
 
 		while (keystore == null){
