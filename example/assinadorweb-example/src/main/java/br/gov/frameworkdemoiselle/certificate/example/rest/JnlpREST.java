@@ -46,12 +46,12 @@ public class JnlpREST {
 		sb.append("<all-permissions/>\n");
 		sb.append("</security>\n");
 		sb.append("<resources>\n");
-		sb.append("<jar href=\"assinadorweb-desktop-1.0.0-Beta1-SNAPSHOT.jar\" main=\"true\"/>\n");
-		sb.append("<jar href=\"demoiselle-certificate-core-1.1.0-SNAPSHOT.jar\"/>\n");
-		sb.append("<jar href=\"demoiselle-certificate-signer-1.1.0-SNAPSHOT.jar\"/>\n");
-		sb.append("<jar href=\"demoiselle-certificate-criptography-1.1.0-SNAPSHOT.jar\"/>\n");
-		sb.append("<jar href=\"demoiselle-certificate-ca-icpbrasil-1.1.0-SNAPSHOT.jar\"/>\n");
-		sb.append("<jar href=\"demoiselle-certificate-desktop-1.1.0-SNAPSHOT.jar\"/>\n");
+		sb.append("<jar href=\"assinadorweb-desktop-1.1.0.jar\" main=\"true\"/>\n");
+		sb.append("<jar href=\"demoiselle-certificate-core-1.1.0.jar\"/>\n");
+		sb.append("<jar href=\"demoiselle-certificate-signer-1.1.0.jar\"/>\n");
+		sb.append("<jar href=\"demoiselle-certificate-criptography-1.1.0.jar\"/>\n");
+		sb.append("<jar href=\"demoiselle-certificate-ca-icpbrasil-1.1.0.jar\"/>\n");
+		sb.append("<jar href=\"demoiselle-certificate-desktop-1.1.0.jar\"/>\n");
 		sb.append("<jar href=\"bcprov-jdk15-1.45.jar\"/>\n");
 		sb.append("<jar href=\"bcmail-jdk15-1.45.jar\"/>\n");
 		sb.append("<property name=\"jnlp.identifier\" value=\"").append(identificador).append("\"/>\n");

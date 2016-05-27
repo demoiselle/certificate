@@ -3,15 +3,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
+	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>assinadorweb-example</artifactId>
 	<packaging>war</packaging>
-
-	<parent>
-		<groupId>br.gov.frameworkdemoiselle.component</groupId>
-		<artifactId>demoiselle-certificate-parent</artifactId>
-		<version>1.1.0-SNAPSHOT</version>
-		<relativePath>../../parent/certificate</relativePath>
-	</parent>
+	<version>1.1.0</version>
 
 	<name>Demoiselle Certificate Desktop Example</name>
 	<description>Demoiselle Desktop Component</description>
@@ -66,37 +61,34 @@
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-ca-icpbrasil</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-signer</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
-
-
 	</dependencies>
 
-
-<!-- 	<build> -->
-<!-- 		<plugins> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
-<!-- 				<version>2.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<target>1.7</target> -->
-<!-- 					<source>1.7</source> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-<!-- 		</plugins> -->
-<!-- 	</build> -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<target>1.7</target>
+					<source>1.7</source>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<repositories>
 		<repository>
 			<id>demoiselle</id>
 			<name>Demoiselle Maven Repository</name>
-			<url>http://demoiselle.sourceforge.net/repository/snapshot</url>
+			<url>http://demoiselle.sourceforge.net/repository/release</url>
 		</repository>
 	</repositories>
 
