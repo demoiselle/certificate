@@ -166,7 +166,7 @@ public class App extends AbstractFrameExecute {
     }
     
     private void sendCancelToken(MainFrame principal){
-        certificateForHTTPS = new ByteArrayInputStream(Utils.getSSLCertificate(jnlpService));
+        //certificateForHTTPS = new ByteArrayInputStream(Utils.getSSLCertificate(jnlpService));
         //Avisa ao serviço que a assinatura foi cancelada via HTTPS
         //Utils.cancel("Usuário cancelou a aplicação", jnlpService.concat("/cancelar/"), jnlpIdentifier, certificateForHTTPS);
         
