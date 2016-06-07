@@ -178,7 +178,6 @@ public final class Utils {
 					outputStream.write(chunk, 0, bytesRead);
 				}
 			}
-
 		} catch (IOException e) {
 			throw new ConectionException(e.getMessage(), e.getCause());
 		}
@@ -268,8 +267,7 @@ public final class Utils {
 			con =  (HttpsURLConnection) url.openConnection();
 			SSLContext sslContext = getSSLContextCustomTrustCertificate(certificate);
 			((HttpsURLConnection) con).setSSLSocketFactory(sslContext.getSocketFactory());
-	        System.setProperty ("https.protocols", "TLSv1.2");
-			
+	        System.setProperty ("https.protocols", FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
 		} catch (MalformedURLException e) {
 			throw new ConectionException(e.getMessage(), e.getCause());
 		} catch (IOException e) {
@@ -452,6 +450,7 @@ public final class Utils {
 			sc.init(null, new TrustManager[] { trm }, null);
 			SSLSocketFactory factory = sc.getSocketFactory();
 			socket = (SSLSocket) factory.createSocket(host, port);
+			socket.setEnabledProtocols(new String [] {FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue()});
 			socket.startHandshake();
 			SSLSession session = socket.getSession();
 			java.security.cert.Certificate[] servercerts = session.getPeerCertificates();
