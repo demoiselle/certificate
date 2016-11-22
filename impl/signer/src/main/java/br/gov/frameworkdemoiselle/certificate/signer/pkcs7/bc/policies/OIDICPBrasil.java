@@ -61,6 +61,11 @@ public interface OIDICPBrasil {
 	// versao 2.1 e o seu Object Identifier (OID) é 2.16.76.1.7.1.1.2.1.
 	public static final String POLICY_ID_AD_RB_CMS_V_2_1 = OIDICPBrasil.PREFIX_POLICE_ID + "1.2.1";
 
+	// O nome desta Política de Assinatura para a versão 2.2 é POLITICA
+	// ICP-BRASIL PARA ASSINATURA DIGITAL COM REFERENCIA BASICA NO FORMATO CMS,
+	// versao 2.2 e o seu Object Identifier (OID) é 2.16.76.1.7.1.1.2.2.
+	public static final String POLICY_ID_AD_RB_CMS_V_2_2 = OIDICPBrasil.PREFIX_POLICE_ID + "1.2.2";
+
 	// O nome desta Política de Assinatura para a versão 1.0 é POLITICA
 	// ICP-BRASIL PARA ASSINATURA DIGITAL COM REFERENCIA DO TEMPO NO FORMATO
 	// CMS,

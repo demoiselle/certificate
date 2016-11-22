@@ -36,20 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies;
 
-import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
-import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
-import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -65,6 +51,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -81,6 +68,19 @@ import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
+import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
+
 /**
  * Implementa a Política ICP-Brasil
  *
@@ -93,7 +93,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * @author SUPST/STDCS
  *
  */
-public class ADRBCMS_2_1 implements SignaturePolicy {
+public class ADRBCMS_2_2 implements SignaturePolicy {
 
     private final int keySize = 2048;
 
@@ -102,7 +102,7 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
         signaturePolicyId.setHash(new byte[]{-17, -65, -67, 87, -55, -118, 67, 19, -17, -65, -67, 19, -17, -65, -67, -17, -65, -67, 101, 67, -45, -128, 36, 88, -17, -65, -67, 124, -17, -65, -67, 22, -17, -65, -67, 50, -17, -65, -67, -17, -65, -67, 77, -17, -65, -67, 38, 37, 18, -17, -65, -67, -17, -65, -67});
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA256withRSA.getOIDAlgorithmHash());
-        signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_1);
+        signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_2);
         signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/images/twiki/URL/pub/Certificacao/DocIcp/docs13082012/DOC-ICP-15.03_-_Versao_6.1.pdf"));
         return signaturePolicyId;
     }
@@ -190,11 +190,11 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
         byte[] hashContentSigned = octeto.getOctets();
 
         String algorithm = SignerAlgorithmEnum.getSignerOIDAlgorithmHashEnum(signerInformation.getDigestAlgorithmID().getObjectId().toString()).getAlgorithmHash();
-        if (!algorithm.equals(DigestAlgorithmEnum.SHA_256.getAlgorithm())) {
+        if (!(DigestAlgorithmEnum.SHA_256.getAlgorithm().equalsIgnoreCase(algorithm) || DigestAlgorithmEnum.SHA_512.getAlgorithm().equalsIgnoreCase(algorithm))) {
             throw new SignerException("Algoritmo de resumo inválido para esta política");
         }
         Digest digest = DigestFactory.getInstance().factoryDefault();
-        digest.setAlgorithm(DigestAlgorithmEnum.SHA_256.getAlgorithm());
+        digest.setAlgorithm(algorithm);
         byte[] hashContent = digest.digest(content);
         if (!MessageDigest.isEqual(hashContentSigned, hashContent)) {
             throw new SignerException("Hash not equal");
@@ -224,12 +224,12 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
 
         }
 
-        //Para a versão 2.1, o período para assinatura desta PA é de 06/03/2012 a 21/06/2023.
+        //Para a versão 2.2, o período para assinatura desta PA é de 06/03/2012 a 21/06/2023.
         Calendar calendar = GregorianCalendar.getInstance();
-        calendar.set(2012, Calendar.MARCH, 06, 0, 0, 0);
+        calendar.set(2012, Calendar.APRIL, 27, 0, 0, 0);
         Date firstDate = calendar.getTime();
 
-        calendar.set(2023, Calendar.JUNE, 02, 23, 59, 59);
+        calendar.set(2029, Calendar.MARCH, 02, 23, 59, 59);
         Date lastDate = calendar.getTime();
 
         if (dataSigner != null) {
@@ -237,7 +237,7 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
                 throw new SignerException("Invalid signing time. Not valid before 03/06/2012");
             }
             if (dataSigner.after(lastDate)) {
-                throw new SignerException("Invalid signing time. Not valid after 06/02/2023");
+                throw new SignerException("Invalid signing time. Not valid after 06/21/2023");
             }
         } else {
             throw new SignerException("There is SigningTime attribute on Package PKCS7, but it is null");
@@ -264,11 +264,10 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
     @Override
     public void validate(X509Certificate certificate, PrivateKey privateKey) {
         /*
-         * O tamanho mínimo de chaves para criação de assinaturas segundo esta
-         * PA é de :
-         *
-         * a) para a versão 1.0: 1024 bits; b) para a versão 1.1: 1024 bits; c)
-         * para a versão 2.0: 2048 bits.
+         * O tamanho mínimo de chaves para criação de assinaturas segundo esta PA é de :
+		 *   a) para a versão 1.0: 1024 bits;
+		 *   b) para a versão 1.1: 1024 bits;
+		 *   c) para as versões 2.0, 2.1 e 2.2: 2048 bits.
          */
 
         if (((RSAPublicKey) certificate.getPublicKey()).getModulus().bitLength() < keySize) {
@@ -276,13 +275,13 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
         }
 
         /*
-         * Assinaturas digitais geradas segundo esta Política de Assinatura
-         * deverão ser criadas com chave privada associada ao certificado
-         * ICP-Brasil * tipo A1 (do OID 2.16.76.1.2.1.1 ao OID
-         * 2.16.76.1.2.1.100), tipo A2 (do OID 2.16.76.1.2.2.1 ao OID
-         * 2.16.76.1.2.2.100), do tipo A3 (do OID 2.16.76.1.2.3.1 ao OID
-         * 2.16.76.1.2.3.100) e do tipo A4 (do OID 2.16.76.1.2.4.1 ao OID
-         * 2.16.76.1.2.4.100), conforme definido em DOC-ICP-04.
+         * Assinaturas digitais geradas segundo esta Política de Assinatura 
+         * deverão ser criadas com chave privada associada ao certificado 
+         * ICP-Brasil tipo A1 (do OID 2.16.76.1.2.1.1 ao OID 2.16.76.1.2.1.100),
+         * tipo A2 (do OID 2.16.76.1.2.2.1 ao OID 2.16.76.1.2.2.100), do tipo A3 (do
+         * OID 2.16.76.1.2.3.1 ao OID 2.16.76.1.2.3.100) e do tipo A4 
+         * (do OID 2.16.76.1.2.4.1 ao OID 2.16.76.1.2.4.100), 
+         * conforme definido em DOC-ICP-04.
          */
         ValidadorUtil.validate(certificate);
 
