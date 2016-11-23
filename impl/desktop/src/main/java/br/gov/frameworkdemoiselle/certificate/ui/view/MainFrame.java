@@ -179,7 +179,7 @@ public class MainFrame extends javax.swing.JFrame {
 		panelbottom = new JPanel();
 		btnExecutar = new JButton();
 		btnCancelar = new JButton();
-		listFiles = new JList();
+		listFiles = new JList<String>();
 				
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocation(new Point(0, 0));

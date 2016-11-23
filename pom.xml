@@ -47,7 +47,6 @@
         <groupId>br.gov.frameworkdemoiselle</groupId>
         <artifactId>demoiselle-component-build-parent</artifactId>
         <version>9</version>
-        <relativePath>../internal/parent/build/component</relativePath>
     </parent>
 
     <name>Demoiselle Certificate</name>
@@ -104,7 +103,7 @@
         <connection>scm:git:git@github.com:demoiselle/${project.alias}.git</connection>
         <developerConnection>scm:git:git@github.com:demoiselle/${project.alias}.git</developerConnection>
         <url>http://github.com/demoiselle/${project.alias}</url>
-        <tag>1.0.9</tag>
+        <tag>1.1.1</tag>
     </scm>
 
     <repositories>
