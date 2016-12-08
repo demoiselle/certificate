@@ -114,6 +114,10 @@ byte[] sign = signer.signer(this.content);]]></programlisting>
                 <literal>ADRBCMS_2_1</literal>
                 , Refere-se à Assinatura Digital de Referência Básica versão 2.1;
             </listitem>
+            <listitem>
+                <literal>ADRBCMS_2_2</literal>
+                , Refere-se à Assinatura Digital de Referência Básica versão 2.2;
+            </listitem>
         </itemizedlist>
 
         <programlisting role="JAVA"><![CDATA[
@@ -121,7 +125,7 @@ byte[] content = readContent("texto.txt"); /* implementar metodo de leitura de a
 PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
 signer.setCertificate(certificate);
 signer.setPrivateKey(privateKey);
-signer.setSignaturePolicy(new ADRBCMS_2_1());
+signer.setSignaturePolicy(new ADRBCMS_2_2());
 byte[] sign = signer.signer(this.content);]]></programlisting>
 
 
@@ -164,7 +168,7 @@ PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
 signer.setCertificate(certificate);
 signer.setPrivateKey(privateKey);
 signer.addAttribute(new MessageDigest(hash));
-signer.setSignaturePolicy(new ADRBCMS_2_1());
+signer.setSignaturePolicy(new ADRBCMS_2_2());
 byte[] sign = signer.signer(null);]]></programlisting>
 
         <important>

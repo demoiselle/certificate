@@ -109,7 +109,7 @@ Utils.uploadToURL(uploadZip, jnlpService.concat("/upload/"), jnlpIdentifier);]]>
 	
 	<para>assinadorweb-desktop.jar</para>
 	
-	<programlisting role="JAVA"><![CDATA[assinadorweb-desktop-1.1.0.jar
+	<programlisting role="JAVA"><![CDATA[assinadorweb-desktop-1.1.1.jar
 |---br
 |	|---gov
 |	|----frameworkdemoiselle
