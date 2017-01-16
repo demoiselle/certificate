@@ -50,21 +50,20 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyStore;
+import java.net.URLConnection;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import br.gov.frameworkdemoiselle.certificate.ui.config.FrameConfig;
@@ -82,21 +81,19 @@ public final class Utils {
 	 *
 	 * @param content
 	 *            O conteudo a ser enviado
-	 * @param UrlToUpload
+	 * @param urlToUpload
 	 *            A url para onde o conteudo sera enviado via HTTPS
 	 * @param token
 	 *            Token que identifica o conteudo a ser enviado	 
-	 * @param certificate
-	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
 	 */
-	public static void uploadToURL(byte[] content, String UrlToUpload, String token, InputStream certificate) {
+	public static void uploadToURL(byte[] content, String urlToUpload, String token) {
 		try {
 			ByteArrayInputStream in = new ByteArrayInputStream(content);
 			HttpURLConnection con = null;
-			if (certificate != null){
-				con = getHttpsURLConnection(UrlToUpload, certificate);
+			if (urlToUpload.startsWith("https")){
+				con = getHttpsURLConnection(urlToUpload);
 			}else{
-				URL url = new URL(UrlToUpload);
+				URL url = new URL(urlToUpload);
 				con = (HttpURLConnection) url.openConnection();
 			}
 			con.setDoOutput(true);
@@ -111,7 +108,7 @@ public final class Utils {
 
 			int responseCode = con.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				throw new AuthorizationException("Erro de autorização ao acesso o serviço: " + UrlToUpload + " com o token " + token);
+				throw new AuthorizationException("Erro de autorização ao acesso o serviço: " + urlToUpload + " com o token " + token);
 			}
 
 			if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
@@ -126,21 +123,13 @@ public final class Utils {
 		}
 	}
 	
+	@Deprecated
+	public static void uploadToURL(byte[] content, String urlToUpload, String token, InputStream certificate) {
+		Utils.uploadToURL(content, urlToUpload, token);
+	}
+	
 	/**
-	 *
-	 * @param content
-	 *            O conteudo a ser enviado
-	 * @param UrlToUpload
-	 *            A url para onde o conteudo sera enviado via HTTP
-	 * @param token
-	 *            Token que identifica o conteudo a ser enviado	 
-	 */
-	public static void uploadToURL(byte[] content, String UrlToUpload, String token) {
-		uploadToURL(content, UrlToUpload, token, null);
-	}	
-
-	/**
-	 *  @param UrlToDownload
+	 *  @param urlToDownload
 	 *            A url para onde o conteudo sera enviado via HTTPS
 	 *
 	 * @param token
@@ -148,17 +137,17 @@ public final class Utils {
 	 * @param certificate
 	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	 * @return
 	 */
-	public static byte[] downloadFromUrl(String UrlToDownload, String token, InputStream certificate) {
+	public static byte[] downloadFromUrl(String urlToDownload, String token) {
 		ByteArrayOutputStream outputStream = null;
 		try {
 			outputStream = new ByteArrayOutputStream();
 			byte[] chunk = new byte[BUFFER_SIZE];
 			int bytesRead;
 			HttpURLConnection con = null;
-			if (certificate != null){
-				con = getHttpsURLConnection(UrlToDownload, certificate);
+			if (urlToDownload.startsWith("https")){
+				con = getHttpsURLConnection(urlToDownload);
 			}else{
-				URL url = new URL(UrlToDownload);
+				URL url = new URL(urlToDownload);
 				con = (HttpURLConnection) url.openConnection();
 			}
 			con.setRequestProperty("Authorization", "Token " + token);
@@ -166,7 +155,7 @@ public final class Utils {
 			con.setRequestMethod("GET");
 			int responseCode = con.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				throw new AuthorizationException("Erro de autorização ao acesso o serviço: " + UrlToDownload + " com o token " + token);
+				throw new AuthorizationException("Erro de autorização ao acesso o serviço: " + urlToDownload + " com o token " + token);
 			}
 			if (responseCode != HttpURLConnection.HTTP_OK) {
 				Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Server returned non-OK code: {0}", responseCode);
@@ -184,16 +173,9 @@ public final class Utils {
 		return outputStream.toByteArray();
 	}
 	
-	/**
-	 * @param UrlToDownload
-	 *            A url para onde o conteudo sera enviado via HTTP
-	 *
-	 * @param token
-	 *            Token que identifica o conteudo a ser enviado	 
-	 */
-	public static byte[] downloadFromUrl(String UrlToDownload, String token) {
-		InputStream certificate = null;
-		return downloadFromUrl(UrlToDownload, token,certificate);
+	@Deprecated
+	public static byte[] downloadFromUrl(String urlToDownload, String token, InputStream certificate) {
+		return Utils.downloadFromUrl(urlToDownload, token);
 	}
 	
 	/**
@@ -207,13 +189,13 @@ public final class Utils {
 	 * @param certificate
 	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
 	 */
-	public static void cancel(String message, String urlToCancel, String token, InputStream certificate) {
+	public static void cancel(String message, String urlToCancel, String token) {
 		try {
 			InputStream in = new ByteArrayInputStream(message.getBytes());
 			
 			HttpURLConnection con = null;
-			if (certificate != null){
-				con = getHttpsURLConnection(urlToCancel, certificate);
+			if (urlToCancel.startsWith("https")){
+				con = getHttpsURLConnection(urlToCancel);
 			}else{
 				URL url = new URL(urlToCancel);
 				con = (HttpURLConnection) url.openConnection();
@@ -244,30 +226,33 @@ public final class Utils {
 		}
 	}
 	
-	/**
-	 *
-	 * @param message
-	 *            Mensagem customizada para o serviço
-	 * @param urlToCancel
-	 *            A url para onde a mensagem sera enviada via HTTP
-	 * @param token
-	 *            Token que identifica a mensagem a ser enviada	 
-	 * @param certificate
-	 *            Certificado para conexão HTTPS, para conexão HTTP setar valor null	                         
-	 */
-	public static void cancel(String message, String urlToCancel, String token) {
-		cancel(message, urlToCancel, token, null);
-	}	
+	@Deprecated
+	public static void cancel(String message, String urlToCancel, String token, InputStream certificate) {
+		Utils.cancel(message, urlToCancel, token);
+	}
 	
-
-	private static HttpURLConnection getHttpsURLConnection(String urlConnection, InputStream certificate){
+	private static HttpURLConnection getHttpsURLConnection(String urlConnection){
 		HttpURLConnection con = null;
 		try {
-			URL url = new URL(urlConnection);
-			con =  (HttpsURLConnection) url.openConnection();
-			SSLContext sslContext = getSSLContextCustomTrustCertificate(certificate);
-			((HttpsURLConnection) con).setSSLSocketFactory(sslContext.getSocketFactory());
-	        System.setProperty ("https.protocols", FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
+			System.setProperty ("https.protocols", FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
+	        TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() { return null; }
+				public void checkClientTrusted(X509Certificate[] c, String a) throws CertificateException {}
+				public void checkServerTrusted(X509Certificate[] c, String a) throws CertificateException {}
+            }};
+	        try {
+		        SSLContext sc = SSLContext.getInstance(FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
+		        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+		        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+	        } catch (Throwable error) {}
+	        HostnameVerifier valid = new HostnameVerifier() {
+	            public boolean verify(String h, SSLSession s) { return true; }
+	        };
+	        HttpsURLConnection.setDefaultHostnameVerifier(valid);		
+			URL aURL = new URL(urlConnection);
+			URLConnection connection = aURL.openConnection();
+			connection.connect();
+			con = (HttpsURLConnection)connection;
 		} catch (MalformedURLException e) {
 			throw new ConectionException(e.getMessage(), e.getCause());
 		} catch (IOException e) {
@@ -350,119 +335,48 @@ public final class Utils {
 		return count;
 	}
 	
-	 /**
-     * Define um certificado personalizado para confiar durante conexões. Conexões HTTPS
-     * feitas após definir essa cadeia o usarão para confiar em servidores
-     * remotos seguros.
-     */
-	private static SSLContext getSSLContextCustomTrustCertificate(InputStream certificateInputStream) {
-		SSLContext context = null;
-		
-		// Carrega o arquivo informado como um certificado
-	    Certificate ca;
-	    try {
-	        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-	        ca = cf.generateCertificate(certificateInputStream);
-	    } catch (CertificateException e) {
-	        e.printStackTrace();
-	        ca = null;
-		} finally {
-	        try {
-	            certificateInputStream.close();
-	        } catch (IOException e) {
-	        }
-	    }
-
-	    
-	    // Cria uma keystore contendo nosso certificado
-	    KeyStore keyStore = null;
-	    if (ca != null) {
-	        try {
-	            String keyStoreType = KeyStore.getDefaultType();
-	            keyStore = KeyStore.getInstance(keyStoreType);
-	            keyStore.load(null, null);
-	            keyStore.setCertificateEntry("ca", ca);
-	        } catch (Exception e) {
-	            keyStore = null;
-	        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Erro criando keystore a partir do certificado informado");
-	            throw new ConectionException(e.getMessage(), e.getCause());	            
-	        }
-	    }
-
-	    // Cria um gestor de confiança que confia em nossa keystore
-	    TrustManagerFactory tmf = null;
-	    if (keyStore != null) {
-	        try {
-	            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-	            tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-	            tmf.init(keyStore);
-	        } catch (Exception e) {
-	        	tmf = null;
-	        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Erro criando gestor de confiança a partir do certificado informado");
-	            throw new ConectionException(e.getMessage(), e.getCause());
-	        }
-	    }
-
-	    // Cria um contexto SSL. A partir daqui podemos fabricar sockets seguros
-	    // que confiam no certificado carregado.
-	    if (tmf != null) {
-	        try {
-	            context = SSLContext.getInstance(FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
-	            context.init(null, tmf.getTrustManagers(), null);
-	        } catch (Exception e) {
-	        	context = null;
-	        	Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Erro criando contexto SSL a partir do certificado informado");
-	            throw new ConectionException(e.getMessage(), e.getCause());
-	        }
-	    }
-		return context;
-	}	
-	
-	/**
-	 *
-	 * @param url
-	 *            url da qual deseja obter o certificado
-	 */
-	public static byte[] getSSLCertificate(String url) {
-		
-		byte[] certificate = null;
-		SSLSocket socket = null;
-		// create custom trust manager to ignore trust paths
-		TrustManager trm = new X509TrustManager() {
-			public X509Certificate[] getAcceptedIssuers() {
-				return null;
-			}
-
-			public void checkClientTrusted(X509Certificate[] certs,
-					String authType) {
-			}
-
-			public void checkServerTrusted(X509Certificate[] certs,
-					String authType) {
-			}
-		};
-
+	public static byte[] getSSLCertificate(String stringURL) {
+		URL url;
 		try {
-			URL aURL = new URL(url);
-			String host = aURL.getHost();
-			int port = (aURL.getPort() < 0) ? 443 : aURL.getPort();
-			SSLContext sc = SSLContext.getInstance(FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
-			sc.init(null, new TrustManager[] { trm }, null);
-			SSLSocketFactory factory = sc.getSocketFactory();
-			socket = (SSLSocket) factory.createSocket(host, port);
-			socket.setEnabledProtocols(new String [] {FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue()});
-			socket.startHandshake();
-			SSLSession session = socket.getSession();
-			java.security.cert.Certificate[] servercerts = session.getPeerCertificates();
-			for (int i = 0; i < servercerts.length; i++) {
-				certificate = servercerts[i].getEncoded();
-			}
-			socket.close();
-		} catch (Exception e) {
-			throw new ConectionException(e.getMessage(), e.getCause());
+			url = new URL(stringURL);
+		} catch (MalformedURLException e) {
+			throw new ConectionException(e.getMessage(), e);
 		}
-		
-		return certificate;
+        TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() { return null; }
+			public void checkClientTrusted(X509Certificate[] c, String a) throws CertificateException {}
+			public void checkServerTrusted(X509Certificate[] c, String a) throws CertificateException {}
+        }};
+        try {
+	        SSLContext sc = SSLContext.getInstance(FrameConfig.CONFIG_HTTPS_PROTOCOL.getValue());
+	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+	        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Throwable error) {}
+        HostnameVerifier valid = new HostnameVerifier() {
+            public boolean verify(String h, SSLSession s) { return true; }
+        };
+        HttpsURLConnection.setDefaultHostnameVerifier(valid);		
+		URLConnection connection;
+		try {
+			connection = url.openConnection();
+			connection.connect();
+		} catch (IOException e) {
+			throw new ConectionException(e.getMessage(), e);
+		}
+		HttpsURLConnection https = (HttpsURLConnection)connection;
+		Certificate[] certificates;
+		try {
+			certificates = https.getServerCertificates();
+		} catch (SSLPeerUnverifiedException e) {
+			throw new ConectionException(e.getMessage(), e);
+		}
+		byte[] result = null;
+		try {
+			result = certificates[0].getEncoded();
+		} catch (CertificateEncodingException e) {
+			throw new ConectionException(e.getMessage(), e);
+		}
+		return result;
 	}
 	
 }

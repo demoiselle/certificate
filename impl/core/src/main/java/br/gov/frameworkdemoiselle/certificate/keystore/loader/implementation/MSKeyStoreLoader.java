@@ -42,6 +42,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreSpi;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.security.auth.callback.CallbackHandler;
 
@@ -94,6 +95,14 @@ public class MSKeyStoreLoader implements KeyStoreLoader {
 			field.setAccessible(true);
 			keyStoreVeritable = (KeyStoreSpi) field.get(keyStore);
 
+			/**
+			 * Atualização 26/07/2016: o bug 6672015 foi agrupado no bug 6483657 e 
+			 * resolvido na build 101 do Java 1.8. (http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6483657)
+			 */
+			field = keyStoreVeritable.getClass().getEnclosingClass().getDeclaredField("entries");
+			field.setAccessible(true);
+			if(field.get(keyStoreVeritable) instanceof Map) return;
+			
 			if ("sun.security.mscapi.KeyStore$MY".equals(keyStoreVeritable.getClass().getName())) {
 				Collection entries;
 				String alias, hashCode;
