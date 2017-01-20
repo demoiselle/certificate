@@ -44,12 +44,13 @@
     <version>1.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <parent>
+<parent>
         <groupId>br.gov.frameworkdemoiselle</groupId>
-        <artifactId>demoiselle-parent</artifactId>
+        <artifactId>demoiselle-build-parent</artifactId>
         <version>9</version>
-        <relativePath>../../../../internal/parent/demoiselle</relativePath>
+        <relativePath>../internal/parent/build/demoiselle</relativePath>
     </parent>
+
 
     <name>Demoiselle Certificate Parent</name>
     <description />
@@ -141,18 +142,18 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>demoiselle.sourceforge.net</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/snapshot</url>
-        </snapshotRepository>
-        <repository>
-            <id>demoiselle.sourceforge.net</id>
-            <name>Nexus Release Repository</name>
-            <url>sftp://web.sourceforge.net/home/groups/d/de/demoiselle/htdocs/repository/release</url>
-        </repository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
     <repositories>
         <repository>
