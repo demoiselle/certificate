@@ -182,6 +182,7 @@
 
     <properties>
         <demoiselle.framework.version>2.3.0</demoiselle.framework.version>
+        <release.goals>deploy</release.goals>
     </properties>
 
     <!--     <scm> -->

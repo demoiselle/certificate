@@ -155,5 +155,6 @@
 	<properties>
 		<project.alias>certificate</project.alias>
 		<category>security</category>
+		<release.goals>deploy</release.goals>
 	</properties>
 </project>
