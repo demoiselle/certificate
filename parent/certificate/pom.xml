@@ -185,7 +185,4 @@
         <release.goals>deploy</release.goals>
     </properties>
 
-    <!--     <scm> -->
-    <!--         <tag>1.0.10</tag> -->
-    <!--     </scm> -->
 </project>
