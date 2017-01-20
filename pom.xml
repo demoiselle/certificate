@@ -23,7 +23,7 @@
 
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-build</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -124,7 +124,7 @@
 		<connection>scm:git:git@github.com:demoiselle/${project.alias}.git</connection>
 		<developerConnection>scm:git:git@github.com:demoiselle/${project.alias}.git</developerConnection>
 		<url>http://github.com/demoiselle/${project.alias}</url>
-		<tag>demoiselle-certificate-build-1.1.2</tag>
+		<tag>1.1.1</tag>
 	</scm>
 
 	<repositories>

@@ -41,7 +41,7 @@
 
     <groupId>br.gov.frameworkdemoiselle.component</groupId>
     <artifactId>demoiselle-certificate-parent</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
 <parent>
@@ -187,8 +187,4 @@
     <!--     <scm> -->
     <!--         <tag>1.0.10</tag> -->
     <!--     </scm> -->
-
-  <scm>
-    <tag>demoiselle-certificate-build-1.1.2</tag>
-  </scm>
 </project>
