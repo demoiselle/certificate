@@ -91,13 +91,6 @@
 		</repository>
 	</repositories>
 
-	<distributionManagement>
-		<site>
-			<id>demoiselle.sourceforge.net</id>
-			<url>${site.url}</url>
-		</site>
-	</distributionManagement>
-
 	<properties>
 		<project.context>components/certificate/reference</project.context>
 	</properties>
