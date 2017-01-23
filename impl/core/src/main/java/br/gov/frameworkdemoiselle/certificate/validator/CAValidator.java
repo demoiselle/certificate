@@ -36,7 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.validator;
 
-import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
@@ -45,22 +44,15 @@ import br.gov.frameworkdemoiselle.certificate.IValidator;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManagerException;
 
+// TODO: Revisar esta validacao
 public class CAValidator implements IValidator {
 
     @Override
     public void validate(X509Certificate x509) throws CertificateValidatorException {
-        Collection<X509Certificate> cas = CAManager.getInstance().getCAs();
-        if (cas == null || cas.size() <= 0) {
-            throw new CertificateValidatorException("Não há informações das autoridades certificadoras para validar o certificado informado.");
-        }
-        Certificate ca = null;
         try {
-            ca = CAManager.getInstance().getCAFromCertificate(x509);
+            Collection<X509Certificate> cas = CAManager.getInstance().getCertificateChain(x509);
         } catch (CAManagerException error) {
             throw new CertificateValidatorException("Não foi possível localizar o certificado da autoridade do certificado informado [" + x509.getIssuerDN().getName() + "]", error);
-        }
-        if (ca == null) {
-            throw new CertificateValidatorException("Autoridade Certificadora do certificado em questao não é confiável.");
         }
     }
 }

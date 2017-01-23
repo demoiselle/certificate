@@ -38,6 +38,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.provider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class ProviderCAFactory {
     }
 
     public Collection<ProviderCA> factory() {
-        Collection<ProviderCA> result = new HashSet<ProviderCA>();
+        Collection<ProviderCA> result = new ArrayList<ProviderCA>();
         ServiceLoader<ProviderCA> loader = ServiceLoader.load(ProviderCA.class);
         if (loader != null) {
             for (Iterator<ProviderCA> iterator = loader.iterator(); iterator.hasNext();) {

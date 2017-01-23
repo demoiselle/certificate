@@ -36,8 +36,8 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.provider;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
@@ -53,7 +53,7 @@ public class ProviderSignaturePolicyRootCAFactory {
     }
 
     public Collection<ProviderSignaturePolicyRootCA> factory(String signaturePolicyOID) {
-        Collection<ProviderSignaturePolicyRootCA> result = new HashSet<ProviderSignaturePolicyRootCA>();
+        Collection<ProviderSignaturePolicyRootCA> result = new ArrayList<ProviderSignaturePolicyRootCA>();
         ServiceLoader<ProviderSignaturePolicyRootCA> loader = ServiceLoader.load(ProviderSignaturePolicyRootCA.class);
         if (loader != null) {
             for (Iterator<ProviderSignaturePolicyRootCA> iterator = loader.iterator(); iterator.hasNext();) {
