@@ -55,8 +55,7 @@ public class ICPBrasilProviderCA implements ProviderCA {
             for (Enumeration<String> e = keyStore.aliases(); e.hasMoreElements();) {
                 String alias = e.nextElement();
                 X509Certificate root = (X509Certificate) keyStore.getCertificate(alias);
-                // if (!root.getSubjectDN().getName().contains("SERPRO"))
-                	result.add(root);
+                result.add(root);
 
             }
         } catch (Throwable error) {
@@ -79,9 +78,4 @@ public class ICPBrasilProviderCA implements ProviderCA {
         }
         return keyStore;
     }
-
-	@Override
-	public String getName() {
-		return "ICP Brasil Provider";
-	}
 }
