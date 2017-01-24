@@ -251,7 +251,6 @@ public final class Utils {
 	        HttpsURLConnection.setDefaultHostnameVerifier(valid);		
 			URL aURL = new URL(urlConnection);
 			URLConnection connection = aURL.openConnection();
-			connection.connect();
 			con = (HttpsURLConnection)connection;
 		} catch (MalformedURLException e) {
 			throw new ConectionException(e.getMessage(), e.getCause());
