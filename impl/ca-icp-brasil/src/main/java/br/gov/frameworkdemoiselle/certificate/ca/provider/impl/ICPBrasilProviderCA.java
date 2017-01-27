@@ -47,41 +47,39 @@ import java.util.List;
 
 public class ICPBrasilProviderCA implements ProviderCA {
 
-    @Override
-    public Collection<X509Certificate> getCAs() {
-        KeyStore keyStore = this.getKeyStore();
-        List<X509Certificate> result = new ArrayList<X509Certificate>();
-        try {
-            for (Enumeration<String> e = keyStore.aliases(); e.hasMoreElements();) {
-                String alias = e.nextElement();
-                X509Certificate root = (X509Certificate) keyStore.getCertificate(alias);
-                // if (!root.getSubjectDN().getName().contains("SERPRO"))
-                	result.add(root);
+	@Override
+	public Collection<X509Certificate> getCAs() {
+		KeyStore keyStore = this.getKeyStore();
+		List<X509Certificate> result = new ArrayList<X509Certificate>();
+		try {
+			for (Enumeration<String> e = keyStore.aliases(); e.hasMoreElements();) {
+				String alias = e.nextElement();
+				X509Certificate root = (X509Certificate) keyStore.getCertificate(alias);
+				result.add(root);
+			}
+		} catch (Throwable error) {
+			throw new ICPBrasilProviderCAException("Error on load certificates from default keystore", error);
+		}
+		return result;
+	}
 
-            }
-        } catch (Throwable error) {
-            throw new ICPBrasilProviderCAException("Error on load certificates from default keystore", error);
-        }
-        return result;
-    }
-
-    /**
-     * Pega o keystore interno do componente Tipo: JKS
-     */
-    private KeyStore getKeyStore() {
-        KeyStore keyStore = null;
-        try {
-            InputStream is = ICPBrasilProviderCA.class.getClassLoader().getResourceAsStream("icpbrasil.jks");
-            keyStore = KeyStore.getInstance("JKS");
-            keyStore.load(is, "changeit".toCharArray());
-        } catch (Throwable error) {
-            throw new ICPBrasilProviderCAException("KeyStore default not loaded.", error);
-        }
-        return keyStore;
-    }
+	/**
+	 * Pega o keystore interno do componente Tipo: JKS
+	 */
+	private KeyStore getKeyStore() {
+		KeyStore keyStore = null;
+		try {
+			InputStream is = ICPBrasilProviderCA.class.getClassLoader().getResourceAsStream("icpbrasil.jks");
+			keyStore = KeyStore.getInstance("JKS");
+			keyStore.load(is, "changeit".toCharArray());
+		} catch (Throwable error) {
+			throw new ICPBrasilProviderCAException("KeyStore default not loaded.", error);
+		}
+		return keyStore;
+	}
 
 	@Override
 	public String getName() {
-		return "ICP Brasil Provider";
+		return "ICP Brasil Provider (Componente)";
 	}
 }

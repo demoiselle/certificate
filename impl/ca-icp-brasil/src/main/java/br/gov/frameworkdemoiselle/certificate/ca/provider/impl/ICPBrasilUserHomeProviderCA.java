@@ -39,53 +39,96 @@ package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.UnknownServiceException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 
-public class ICPBrasilOnLineProviderCA implements ProviderCA {
+public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 
-	private static final String STRING_URL = "http://acraiz.icpbrasil.gov.br/credenciadas/CertificadosAC-ICP-Brasil/ACcompactado.zip";
-	private static final int TIMEOUT = 5000;
+	public static final String PATH_HOME_USER = System.getProperty("user.home");
+	public static final String FOLDER_ASSINADOR = ".java/assinador";
+	public static final String FILENAME_ZIP = "ACcompactado.zip";
+	public static final String FILENAME_HASH = "hashsha512.txt";
 
-	public String getURL() {
-		return ICPBrasilOnLineProviderCA.STRING_URL;
-	}
+	public static final Path FULL_PATH_FOLDER_ASSINADOR = Paths.get(PATH_HOME_USER, FOLDER_ASSINADOR);
+	public static final Path FULL_PATH_ZIP = Paths.get(PATH_HOME_USER, FOLDER_ASSINADOR, FILENAME_ZIP);
+	public static final Path FULL_PATH_HASH = Paths.get(PATH_HOME_USER, FOLDER_ASSINADOR, FILENAME_HASH);
+
+	private static final Logger LOGGER = Logger.getLogger(ICPBrasilUserHomeProviderCA.class.getName());
 
 	@Override
 	public Collection<X509Certificate> getCAs() {
-		
-		// TODO: Cache
-		
-		System.out.println("Recuperando remotamente as cadeias da ICP-Brasil através do link [" + getURL() + "].");
-		System.out.print("Iniciando a recuperação ... ");
+
+		// Verifica se a pasta do assinador existe
+		try {
+			verifyZIPPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return getFromLocalZip(FULL_PATH_ZIP);
+	}
+
+	public Collection<X509Certificate> getFromLocalZip(Path fileZip) {
+
+		LOGGER.log(Level.INFO, "Recuperando localmente as cadeias da ICP-Brasil [" + fileZip.toString() + "].");
+
 		Collection<X509Certificate> result = new HashSet<X509Certificate>();
 		long timeBefore = 0;
 		long timeAfter = 0;
 		try {
 			timeBefore = System.currentTimeMillis();
-			result = this.getFromZip(this.getInputStreamFromURL(STRING_URL));
+
+			if (Files.exists(fileZip)) {
+
+				// Pega o ZIP do filesystem
+				InputStream inputStream = new FileInputStream(fileZip.toString());
+
+				// Pega os certificados do ZIP
+				result = this.getFromZip(inputStream);
+
+			} else {
+				throw new Exception("Arquivo ZIP não encontrado no home do usuário");
+			}
+
 			timeAfter = System.currentTimeMillis();
-			System.out.print("OK. ");
 		} catch (Throwable error) {
 			timeAfter = System.currentTimeMillis();
-			System.out.print(" ERRO. [" + error.getMessage() + "]. ");
+			LOGGER.log(Level.WARNING, "ERRO. [" + error.getMessage() + "].");
 		} finally {
-			System.out.println("Levamos " + (timeAfter - timeBefore) + "ms para recuperar as cadeias.");
+			LOGGER.log(Level.INFO,
+					"Levamos " + (timeAfter - timeBefore) + "ms para tentar recuperar as cadeias do ZIP local.");
 		}
 		return result;
+	}
+
+	public Path verifyZIPPath() throws IOException {
+
+		Path finalFolder = ICPBrasilUserHomeProviderCA.FULL_PATH_FOLDER_ASSINADOR;
+
+		// Verifica se existe o folder, se não cria
+		if (!Files.isDirectory(finalFolder)) {
+			Files.createDirectories(finalFolder);
+		}
+
+		return finalFolder;
+
 	}
 
 	public Collection<X509Certificate> getFromZip(InputStream zip) throws RuntimeException {
@@ -117,25 +160,8 @@ public class ICPBrasilOnLineProviderCA implements ProviderCA {
 		return result;
 	}
 
-	public InputStream getInputStreamFromURL(String stringURL) throws RuntimeException {
-		try {
-			URL url = new URL(stringURL);
-			URLConnection connection = url.openConnection();
-			connection.setConnectTimeout(TIMEOUT);
-			connection.setReadTimeout(TIMEOUT);
-			return connection.getInputStream();
-		} catch (MalformedURLException error) {
-			throw new RuntimeException("URL mal formada", error);
-		} catch (UnknownServiceException error) {
-			throw new RuntimeException("Serviço da URL desconhecido", error);
-		} catch (IOException error) {
-			throw new RuntimeException("Algum erro de I/O ocorreu", error);
-		}
-	}
-
 	@Override
 	public String getName() {
-		return "ICP Brasil ONLINE Provider (" + getURL() + ")";
+		return "Home User Provider";
 	}
-
 }

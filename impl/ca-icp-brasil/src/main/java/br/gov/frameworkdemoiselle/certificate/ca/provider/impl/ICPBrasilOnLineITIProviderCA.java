@@ -36,18 +36,23 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 
-public class ICPBrasilOnLineITIProviderCA extends ICPBrasilOnLineProviderCA {
+public class ICPBrasilOnLineITIProviderCA extends ICPBrasilOnLineSerproProviderCA {
 
-	private static String STRING_URL = "http://AAAAAAAA.icpbrasil.gov.br/credenciadas/CertificadosAC-ICP-Brasil/ACcompactado.zip";
+	private static String STRING_URL_ZIP = "http://acraiz.icpbrasil.gov.br/credenciadas/CertificadosAC-ICP-Brasil/ACcompactado.zip";
+	private static String STRING_URL_HASH = "http://acraiz.icpbrasil.gov.br/credenciadas/CertificadosAC-ICP-Brasil/hashsha512.txt";
 
 	@Override
-	public String getURL() {
-		return ICPBrasilOnLineITIProviderCA.STRING_URL;
+	public String getURLZIP() {
+		return ICPBrasilOnLineITIProviderCA.STRING_URL_ZIP;
+	}
+
+	public String getURLHash() {
+		return ICPBrasilOnLineITIProviderCA.STRING_URL_HASH;
 	}
 
 	@Override
 	public String getName() {
-		return "ICP Brasil ONLINE ITI Provider (" + STRING_URL + ")";
+		return "ICP Brasil ONLINE ITI Provider (" + STRING_URL_ZIP + ")";
 	}
 
 }

@@ -1,3 +1,4 @@
 br.gov.frameworkdemoiselle.certificate.ca.provider.impl.ICPBrasilProviderCA
+br.gov.frameworkdemoiselle.certificate.ca.provider.impl.ICPBrasilUserHomeProviderCA
+br.gov.frameworkdemoiselle.certificate.ca.provider.impl.ICPBrasilOnLineSerproProviderCA
 br.gov.frameworkdemoiselle.certificate.ca.provider.impl.ICPBrasilOnLineITIProviderCA
-br.gov.frameworkdemoiselle.certificate.ca.provider.impl.ICPBrasilOnLineProviderCA

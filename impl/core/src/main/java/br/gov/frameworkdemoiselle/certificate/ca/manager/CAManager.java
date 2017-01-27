@@ -36,11 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.manager;
 
-import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
-import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCAFactory;
-import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
-import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCAFactory;
-
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -54,12 +49,18 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.bouncycastle.asn1.x509.X509CertificateStructure;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCAFactory;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCAFactory;
 
 public class CAManager {
 
 	private static final CAManager instance = new CAManager();
+	private static final Logger LOGGER = Logger.getLogger(CAManager.class.getName());
 
 	private CAManager() {
 	}
@@ -97,7 +98,8 @@ public class CAManager {
 	// try {
 	// result.addAll(provider.getCAs());
 	// } catch (Throwable error) {
-	// // TODO: Nao foi possivel resgatar as CAs de um determinado provedor
+	// // TODO: Nao foi possivel resgatar as CAs de um determinado
+	// // provedor
 	// }
 	// }
 	// return result;
@@ -206,9 +208,8 @@ public class CAManager {
 
 		for (ProviderCA provider : providers) {
 			try {
-				
-				System.out.println("====> Procurando certificado no Provider: " + provider.getName());
-				
+
+				LOGGER.info(">>> Procurando certificado no Provider: " + provider.getName());
 
 				// Get ALL CAs of ONE provider
 				Collection<X509Certificate> acs = provider.getCAs();
@@ -228,7 +229,6 @@ public class CAManager {
 
 							// If Certificate is ROOT end while
 							if (this.isRootCA(acFromAc)) {
-								System.out.println("ACABOU 1");
 								ok = true;
 								break;
 							} else {
@@ -239,15 +239,18 @@ public class CAManager {
 					}
 
 					if (ok == true) {
-						System.out.println("ACABOU 2");
 						break;
 					}
 				}
 
+				LOGGER.log(Level.INFO, ">>> Foram encontrados [" + result.size() + "] níveis na cadeia do provider ["
+						+ provider.getName() + "].");
+
 				// If chain is created BREAK! Doesn't go to next Provider
 				if (ok) {
-					System.out.println("ACABOU 3");
 					break;
+				} else {
+					LOGGER.info("Não foi possivel montar a cadeia com o provider: " + provider.getName());
 				}
 
 			} catch (Throwable error) {
