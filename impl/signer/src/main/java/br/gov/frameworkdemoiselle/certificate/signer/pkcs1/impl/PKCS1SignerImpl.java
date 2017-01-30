@@ -36,9 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs1.impl;
 
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -46,6 +43,10 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
+
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
 
 public class PKCS1SignerImpl implements PKCS1Signer {
 

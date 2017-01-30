@@ -36,11 +36,9 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute;
 
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERNull;
@@ -51,6 +49,10 @@ import org.bouncycastle.asn1.esf.OtherHashAlgAndValue;
 import org.bouncycastle.asn1.esf.SigPolicyQualifierInfo;
 import org.bouncycastle.asn1.esf.SigPolicyQualifiers;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
 
 public class BCSignaturePolicyIdentifier extends BCSignedAttribute {
 

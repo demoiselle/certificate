@@ -49,11 +49,11 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import netscape.javascript.JSObject;
 import br.gov.frameworkdemoiselle.certificate.applet.action.AppletExecute;
 import br.gov.frameworkdemoiselle.certificate.applet.config.AppletConfig;
 import br.gov.frameworkdemoiselle.certificate.applet.factory.AppletExecuteFactory;
 import br.gov.frameworkdemoiselle.certificate.applet.factory.FactoryException;
+import netscape.javascript.JSObject;
 
 @Deprecated
 public class JPanelApplet extends JApplet {

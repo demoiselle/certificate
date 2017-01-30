@@ -36,13 +36,9 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERInteger;
@@ -55,6 +51,12 @@ import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.IssuerSerial;
 import org.bouncycastle.asn1.x509.X509Name;
+
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
 
 public class BCSigningCertificateV2 extends BCSignedAttribute {
 

@@ -36,12 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.extension;
 
-import br.gov.frameworkdemoiselle.certificate.OIDExtension;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import br.gov.frameworkdemoiselle.certificate.OIDExtension;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

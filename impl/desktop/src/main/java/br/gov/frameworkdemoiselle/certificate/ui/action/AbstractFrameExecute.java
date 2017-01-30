@@ -37,9 +37,9 @@
 
 package br.gov.frameworkdemoiselle.certificate.ui.action;
 
-import br.gov.frameworkdemoiselle.certificate.ui.view.MainFrame;
-
 import java.security.KeyStore;
+
+import br.gov.frameworkdemoiselle.certificate.ui.view.MainFrame;
 
 /**
   * @author SUPST/STDCS

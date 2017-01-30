@@ -123,14 +123,6 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 				}
 			}
 
-			// else {
-			//
-			// Collection<X509Certificate> certs = getOnline();
-			//
-			// result = getOnline();
-			//
-			// }
-
 			// Se não é para pegar do cache os certificados ele baixa o novo e
 			// salva localmente
 			if (!useCache) {

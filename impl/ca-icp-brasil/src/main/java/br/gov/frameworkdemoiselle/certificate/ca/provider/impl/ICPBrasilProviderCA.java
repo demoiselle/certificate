@@ -36,7 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 
-import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
@@ -44,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 
 public class ICPBrasilProviderCA implements ProviderCA {
 

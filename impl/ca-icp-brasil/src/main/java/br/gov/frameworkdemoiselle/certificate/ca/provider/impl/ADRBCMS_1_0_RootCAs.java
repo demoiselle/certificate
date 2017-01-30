@@ -40,7 +40,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 
-import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -48,6 +47,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
 
 public class ADRBCMS_1_0_RootCAs implements ProviderSignaturePolicyRootCA {
 

@@ -36,7 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.util;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 
 public class RepositoryUtil {
 

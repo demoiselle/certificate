@@ -36,10 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.repository;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
-import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
-import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,6 +51,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
+import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
 
 /**
  * Implementação de um repositorio Offline. Neste caso apenas o file system será

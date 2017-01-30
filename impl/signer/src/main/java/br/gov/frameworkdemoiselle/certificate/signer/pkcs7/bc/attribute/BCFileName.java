@@ -36,11 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute;
 
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.FileName;
 import java.nio.charset.Charset;
+
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSet;
+
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.FileName;
 
 public class BCFileName extends BCSignedAttribute {
 

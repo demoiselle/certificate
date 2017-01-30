@@ -57,7 +57,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;

@@ -36,9 +36,10 @@
  */
 package br.gov.frameworkdemoiselle.certificate.validator;
 
+import java.security.cert.X509Certificate;
+
 import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 import br.gov.frameworkdemoiselle.certificate.IValidator;
-import java.security.cert.X509Certificate;
 
 /**
  *

@@ -40,7 +40,6 @@ package br.gov.frameworkdemoiselle.certificate.ca.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 

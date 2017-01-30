@@ -36,6 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.extension;
 
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import br.gov.frameworkdemoiselle.certificate.oid.OIDGeneric;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_1;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_2;
@@ -46,12 +53,6 @@ import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_6;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_7;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_8;
 import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_9;
-import java.security.cert.CertificateParsingException;
-import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Class Certificate Extra <br>
