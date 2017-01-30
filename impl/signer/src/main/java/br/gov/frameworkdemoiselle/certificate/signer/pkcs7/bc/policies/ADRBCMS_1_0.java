@@ -95,10 +95,10 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
     @Override
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
-        signaturePolicyId.setHash(new byte[]{32, -17, -65, -67, 120, -17, -65, -67, 37, 81, 59, -17, -65, -67, -17, -65, -67, 41, 98, 78, 31, 64, -17, -65, -67, 24, 19, -17, -65, -67, 92, -17, -65, -67});
+        signaturePolicyId.setHash(new byte[]{ 32, -42, 120, -109, 37, 81, 59, -68, -116, 41, 98, 78, 31, 64, -74, 24, 19, -20, 92, -25 });
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA1withDSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0);
-        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/images/twiki/URL/pub/Certificacao/DocIcp/docs13082012/DOC-ICP-15.03_-_Versao_6.1.pdf"));
+        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://politicas.icpbrasil.gov.br/PA_AD_RB.der"));
         return signaturePolicyId;
     }
 
