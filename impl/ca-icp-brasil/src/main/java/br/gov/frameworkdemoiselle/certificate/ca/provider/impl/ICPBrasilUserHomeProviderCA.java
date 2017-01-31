@@ -39,6 +39,7 @@ package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,7 +61,7 @@ import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 
 	public static final String PATH_HOME_USER = System.getProperty("user.home");
-	public static final String FOLDER_ASSINADOR = ".java/assinador";
+	public static final String FOLDER_ASSINADOR = ".java" + File.separator + "assinador";
 	public static final String FILENAME_ZIP = "ACcompactado.zip";
 	public static final String FILENAME_HASH = "hashsha512.txt";
 

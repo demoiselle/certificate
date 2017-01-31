@@ -71,7 +71,7 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 	private static final String STRING_URL_ZIP = "http://repositorio.serpro.gov.br/icp-brasil/ACcompactado.zip";
 	private static final String STRING_URL_HASH = "http://repositorio.serpro.gov.br/icp-brasil/hashsha512.txt";
 	private static final int TIMEOUT_CONNECTION = 3000;
-	private static final int TIMEOUT_READ = 10000;
+	private static final int TIMEOUT_READ = 5000;
 
 	private static final Logger LOGGER = Logger.getLogger(ICPBrasilOnLineSerproProviderCA.class.getName());
 
@@ -108,7 +108,10 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 
 				if (!onlineHash.equals("")) {
 
+					// Gera o hash do arquivo local
 					String localZipHash = DatatypeConverter.printHexBinary(checksum(new File(pathZip.toString())));
+					
+					// Pega SOMENTE o hash sem o nome do arquivo
 					String onlineHashWithouFilename = onlineHash.replace(ICPBrasilUserHomeProviderCA.FILENAME_ZIP, "")
 							.replaceAll(" ", "").replaceAll("\n", "");
 
@@ -132,25 +135,20 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 				Files.copy(inputStreamZip, pathZip, StandardCopyOption.REPLACE_EXISTING);
 				inputStreamZip.close();
 
-				LOGGER.log(Level.INFO, "Cadeias da ICP-Brasil recupedadas com sucesso.");
-
-				// Pega os certificados locais
-				InputStream inputStreamZipReturn = new FileInputStream(pathZip.toString());
-				result = getFromZip(inputStreamZipReturn);
-				inputStreamZipReturn.close();
-
-				LOGGER.log(Level.INFO, "Recuperou [" + result.size() + "] certificados do arquivo que foi baixado.");
-			} else {
-				LOGGER.log(Level.INFO, "Usando cache do arquivo ZIP");
-
-				// Usa o arquivo local
-				InputStream inputStreamZip = new FileInputStream(pathZip.toString());
-				result = getFromZip(inputStreamZip);
+				LOGGER.log(Level.INFO, "Cadeias da ICP-Brasil recupedadas com sucesso.");	
 			}
+			
+			// Pega os certificados locais
+			InputStream inputStreamZipReturn = new FileInputStream(pathZip.toString());
+			result = getFromZip(inputStreamZipReturn);
+			inputStreamZipReturn.close();
 
-		} catch (IOException e) {
+			LOGGER.log(Level.INFO, "Recuperou [" + result.size() + "] certificados do arquivo que foi baixado.");
 
-			e.printStackTrace();
+		} catch (IOException e) {			
+			LOGGER.log(Level.WARNING, "Erro ao tentar recuperar a cadeia.", e);			
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Erro inesperado ao tentar recuperar a cadeia.", e);
 		}
 
 		if (result != null) {
