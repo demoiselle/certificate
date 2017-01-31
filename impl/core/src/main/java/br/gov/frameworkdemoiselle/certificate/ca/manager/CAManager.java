@@ -84,27 +84,6 @@ public class CAManager {
 		return result;
 	}
 
-	/**
-	 * Get ALL CAs
-	 * 
-	 * @return X509Certificate certificates
-	 * 
-	 */
-	// public Collection<X509Certificate> getCAs() {
-	// Collection<ProviderCA> providers =
-	// ProviderCAFactory.getInstance().factory();
-	// Collection<X509Certificate> result = new HashSet<X509Certificate>();
-	// for (ProviderCA provider : providers) {
-	// try {
-	// result.addAll(provider.getCAs());
-	// } catch (Throwable error) {
-	// // TODO: Nao foi possivel resgatar as CAs de um determinado
-	// // provedor
-	// }
-	// }
-	// return result;
-	// }
-
 	public boolean validateRootCAs(Collection<X509Certificate> cas, X509Certificate certificate) {
 		boolean valid = false;
 		for (X509Certificate ca : cas) {
@@ -277,12 +256,6 @@ public class CAManager {
 		}
 		return null;
 	}
-
-	// TODO: ????
-	// public X509Certificate getCAFromCertificate(X509Certificate certificate)
-	// {
-	// return this.getCAFromCertificate(this.getCAs(), certificate);
-	// }
 
 	public Certificate[] getCertificateChainArray(KeyStore keyStore, String privateKeyPass, String certificateAlias) {
 		Certificate[] certificateChain = null;
