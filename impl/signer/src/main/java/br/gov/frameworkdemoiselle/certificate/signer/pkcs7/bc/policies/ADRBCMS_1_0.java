@@ -36,19 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies;
 
-import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
-import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -61,10 +48,9 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERSet;
@@ -79,6 +65,18 @@ import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
 
 /**
  * Implementa a Política ICP-Brasil
@@ -97,10 +95,10 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
     @Override
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
-        signaturePolicyId.setHash(new byte[]{32, -17, -65, -67, 120, -17, -65, -67, 37, 81, 59, -17, -65, -67, -17, -65, -67, 41, 98, 78, 31, 64, -17, -65, -67, 24, 19, -17, -65, -67, 92, -17, -65, -67});
+        signaturePolicyId.setHash(new byte[]{ 32, -42, 120, -109, 37, 81, 59, -68, -116, 41, 98, 78, 31, 64, -74, 24, 19, -20, 92, -25 });
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA1withDSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0);
-        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/images/twiki/URL/pub/Certificacao/DocIcp/docs13082012/DOC-ICP-15.03_-_Versao_6.1.pdf"));
+        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://politicas.icpbrasil.gov.br/PA_AD_RB.der"));
         return signaturePolicyId;
     }
 

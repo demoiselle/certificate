@@ -99,11 +99,11 @@ public class ADRBCMS_2_2 implements SignaturePolicy {
 
     @Override
     public SignaturePolicyId getSignaturePolicyId() {
-        SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
-        signaturePolicyId.setHash(new byte[]{-17, -65, -67, 87, -55, -118, 67, 19, -17, -65, -67, 19, -17, -65, -67, -17, -65, -67, 101, 67, -45, -128, 36, 88, -17, -65, -67, 124, -17, -65, -67, 22, -17, -65, -67, 50, -17, -65, -67, -17, -65, -67, 77, -17, -65, -67, 38, 37, 18, -17, -65, -67, -17, -65, -67});
+        SignaturePolicyId signaturePolicyId = new SignaturePolicyId();        
+        signaturePolicyId.setHash(new byte[]{ 15, 111, -94, -58, 40, 25, -127, 113, 108, -107, -57, -104, -103, 3, -104, 68, 82, 59, 28, 97, -62, -55, 98, 40, -100, -38, -57, -127, 31, -18, -30, -98 });
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA256withRSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_2);
-        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/images/twiki/URL/pub/Certificacao/DocIcp/docs13082012/DOC-ICP-15.03_-_Versao_6.1.pdf"));
+        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://politicas.icpbrasil.gov.br/PA_AD_RB_v2_2.der"));
         return signaturePolicyId;
     }
 

@@ -36,20 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies;
 
-import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
-import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
-import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
-import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil.CertPathEncoding;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -65,6 +51,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -80,6 +67,19 @@ import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
+import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicy;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.SignaturePolicyException;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificateV2;
+import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
 
 /**
  * Implementa a Política ICP-Brasil
@@ -100,10 +100,10 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
     @Override
     public SignaturePolicyId getSignaturePolicyId() {
         SignaturePolicyId signaturePolicyId = new SignaturePolicyId();
-        signaturePolicyId.setHash(new byte[]{-17, -65, -67, 87, -55, -118, 67, 19, -17, -65, -67, 19, -17, -65, -67, -17, -65, -67, 101, 67, -45, -128, 36, 88, -17, -65, -67, 124, -17, -65, -67, 22, -17, -65, -67, 50, -17, -65, -67, -17, -65, -67, 77, -17, -65, -67, 38, 37, 18, -17, -65, -67, -17, -65, -67});
+        signaturePolicyId.setHash(new byte[]{ -35, 87, -55, -118, 67, 19, -68, 19, -104, -50, 101, 67, -45, -128, 36, 88, -107, 124, -9, 22, -82, 50, -108, -20, 77, -116, 38, 37, 18, -111, -26, -63 });        
         signaturePolicyId.setHashAlgorithm(SignerAlgorithmEnum.SHA256withRSA.getOIDAlgorithmHash());
         signaturePolicyId.setSigPolicyId(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_1);
-        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://www.iti.gov.br/images/twiki/URL/pub/Certificacao/DocIcp/docs13082012/DOC-ICP-15.03_-_Versao_6.1.pdf"));
+        signaturePolicyId.addSigPolicyQualifiers(new SigPolicyQualifierInfoURL("http://politicas.icpbrasil.gov.br/PA_AD_RB_v2_1.der"));
         return signaturePolicyId;
     }
 

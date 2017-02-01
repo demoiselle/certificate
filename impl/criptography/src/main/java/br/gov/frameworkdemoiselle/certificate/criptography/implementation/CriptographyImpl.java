@@ -45,12 +45,12 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import com.sun.crypto.provider.SunJCE;
+
 import br.gov.frameworkdemoiselle.certificate.criptography.AsymmetricAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.Criptography;
 import br.gov.frameworkdemoiselle.certificate.criptography.CriptographyException;
 import br.gov.frameworkdemoiselle.certificate.criptography.SymmetricAlgorithmEnum;
-
-import com.sun.crypto.provider.SunJCE;
 
 /**
  * Implementação padrão da interface {@link Criptography}

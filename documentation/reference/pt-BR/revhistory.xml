@@ -2,6 +2,20 @@
 <!DOCTYPE revhistory PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <revhistory>
+	<revision>
+        <revnumber>1.2.0-RC1</revnumber>
+        <date>01/02/2017</date>
+        <authorinitials>jcs</authorinitials>
+        <revremark>
+            <itemizedlist>
+                <listitem>
+                    <para>Novo Mecanismo de Descoberta da Cadeia de Autoridades do Certificado</para>
+                    <para>Atualização para Java 7</para>
+                    <para>Correção da validação da identificação da política (Hash e Links da Política)</para>
+                </listitem>
+            </itemizedlist>
+        </revremark>
+    </revision>
     <revision>
         <revnumber>1.1.1</revnumber>
         <date>23/11/2016</date>

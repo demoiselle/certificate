@@ -36,8 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.repository;
 
-import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
-import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -51,6 +49,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
+import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
 
 /**
  * Representa um repositório online. Neste caso não ha necessidade de um serviço

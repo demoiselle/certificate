@@ -67,4 +67,8 @@ public class HomologacaoProviderCA implements ProviderCA {
             return result;
         }
     }
+
+    public String getName() {
+         return "Homologacao SERPRO Provider";
+    }
 }

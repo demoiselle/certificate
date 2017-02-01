@@ -49,9 +49,9 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.implementation.CriptographyImpl;
-
 import com.sun.crypto.provider.SunJCE;
+
+import br.gov.frameworkdemoiselle.certificate.criptography.implementation.CriptographyImpl;
 
 /**
  * Define o comportamento padrão para utilização de criptografia. Seja simétrico

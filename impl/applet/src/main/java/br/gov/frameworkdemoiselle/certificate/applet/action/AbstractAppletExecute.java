@@ -42,22 +42,21 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.X509Certificate;
 
-import netscape.javascript.JSObject;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLDocument;
 import org.w3c.dom.html.HTMLFormElement;
 import org.w3c.dom.html.HTMLInputElement;
 
-import br.gov.frameworkdemoiselle.certificate.CertificateManager;
-import br.gov.frameworkdemoiselle.certificate.applet.certificate.ICPBrasilCertificate;
-
 import com.sun.java.browser.dom.DOMAccessException;
 import com.sun.java.browser.dom.DOMAccessor;
 import com.sun.java.browser.dom.DOMAction;
 import com.sun.java.browser.dom.DOMService;
 import com.sun.java.browser.dom.DOMUnsupportedException;
+
+import br.gov.frameworkdemoiselle.certificate.CertificateManager;
+import br.gov.frameworkdemoiselle.certificate.applet.certificate.ICPBrasilCertificate;
+import netscape.javascript.JSObject;
 
 /**
  * Implementação padrao do AppletExecute que fornece alguns recursos para

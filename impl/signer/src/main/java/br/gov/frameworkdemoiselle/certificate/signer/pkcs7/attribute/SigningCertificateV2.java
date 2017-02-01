@@ -36,8 +36,9 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import java.security.cert.X509Certificate;
+
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 
 public class SigningCertificateV2 extends SigningCertificate {
 

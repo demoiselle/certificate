@@ -53,11 +53,11 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
-import netscape.javascript.JSObject;
 import br.gov.frameworkdemoiselle.certificate.applet.action.AppletExecute;
 import br.gov.frameworkdemoiselle.certificate.applet.config.AppletConfig;
 import br.gov.frameworkdemoiselle.certificate.applet.factory.AppletExecuteFactory;
 import br.gov.frameworkdemoiselle.certificate.applet.factory.FactoryException;
+import netscape.javascript.JSObject;
 
 @Deprecated
 public class JDialogApplet extends JApplet {

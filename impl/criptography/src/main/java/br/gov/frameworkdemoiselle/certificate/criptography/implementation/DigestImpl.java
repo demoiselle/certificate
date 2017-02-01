@@ -36,9 +36,6 @@
  */
 package br.gov.frameworkdemoiselle.certificate.criptography.implementation;
 
-import br.gov.frameworkdemoiselle.certificate.criptography.CriptographyException;
-import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
-import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -48,6 +45,10 @@ import java.io.IOException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import br.gov.frameworkdemoiselle.certificate.criptography.CriptographyException;
+import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
+import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 
 public class DigestImpl implements Digest {
 

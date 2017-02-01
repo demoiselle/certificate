@@ -36,11 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7;
 
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
 
 public interface SignaturePolicy {
 

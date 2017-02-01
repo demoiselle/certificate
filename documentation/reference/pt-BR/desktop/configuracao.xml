@@ -20,7 +20,7 @@
 <dependency>
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-desktop</artifactId>
-	<version>1.1.1</version>
+	<version>1.2.0-RC1</version>
 </dependency>]]></programlisting>
     </section>
 

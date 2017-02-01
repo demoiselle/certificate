@@ -36,12 +36,13 @@
  */
 package br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration;
 
-import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 
 /**
  * Classe responsável por recuperar informações do sistema tais como versão do

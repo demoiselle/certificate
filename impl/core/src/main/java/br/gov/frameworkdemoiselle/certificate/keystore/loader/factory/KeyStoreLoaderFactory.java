@@ -36,15 +36,16 @@
  */
 package br.gov.frameworkdemoiselle.certificate.keystore.loader.factory;
 
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderException;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration.Configuration;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.DriverKeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.FileSystemKeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.MSKeyStoreLoader;
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class KeyStoreLoaderFactory {
 
