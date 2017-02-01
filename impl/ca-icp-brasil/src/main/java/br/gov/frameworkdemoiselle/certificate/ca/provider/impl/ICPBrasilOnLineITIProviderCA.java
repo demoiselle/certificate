@@ -52,7 +52,7 @@ public class ICPBrasilOnLineITIProviderCA extends ICPBrasilOnLineSerproProviderC
 
 	@Override
 	public String getName() {
-		return "ICP Brasil ONLINE ITI Provider (" + STRING_URL_ZIP + ")";
+		return "ICP Brasil ONLINE ITI Provider (" + getURLZIP() + ")";
 	}
 
 }
