@@ -290,22 +290,7 @@ logger.log(Level.INFO, "Nome....................[{0}]", ce.getOID_2_16_76_1_3_2(
                 Verifica a data de validade do certificado.
             </para>
 
-        </section>
-        <section>
-            <title>CAValidator</title>
-
-            <para>
-                Verifica se o certificado foi emitido por uma Autoridade Certificadora confiável. O componente consegue executar essa validação pois existe internamente um
-                arquivo com os certificados digitais das autoridades válidas.
-            </para>
-
-            <important>
-                <para>
-                    Este validador foi substituído pelo contido no componente <emphasis>demoiselle-certificate-signer</emphasis>
-                    para realização de assinaturas digitais, pois este já efetua as validações baseado nas novas políticas da ICP-Brasil.
-                </para>
-            </important>
-        </section>
+        </section>        
     </section>
 
     <section>
