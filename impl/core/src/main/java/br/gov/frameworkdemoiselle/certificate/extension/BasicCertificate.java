@@ -52,14 +52,19 @@ import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
+import org.bouncycastle.asn1.x509.AccessDescription;
+import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.PolicyInformation;
 import org.bouncycastle.asn1.x509.X509Extensions;
+import org.bouncycastle.x509.extension.X509ExtensionUtil;
 
 /**
  * Basic Information for ICP-BRASIL (DOC-ICP-04) Certificates. Abstracts the
@@ -492,6 +497,26 @@ public class BasicCertificate {
 
         return toString(oct.getOctets());
     }
+    
+    /**
+     * Returns the AuthorityInfoAccess extension value on list format.<br>
+     * Otherwise, returns <b>list empty</b>.<br>
+     * @return List
+     */
+	public List<String> getAuthorityInfoAccess() {
+		List<String> address = new ArrayList<String>();
+		try {
+			AuthorityInformationAccess infoAccess = AuthorityInformationAccess.getInstance(X509ExtensionUtil
+					.fromExtensionValue(certificate.getExtensionValue(X509Extensions.AuthorityInfoAccess.getId())));
+			for (AccessDescription desc : infoAccess.getAccessDescriptions())
+				if (desc.getAccessLocation().getTagNo() == GeneralName.uniformResourceIdentifier)
+					address.add(((DERIA5String) desc.getAccessLocation().getName()).getString());
+			return address;
+		} catch (IOException error) {
+			LOGGER.info(error.getMessage());
+			return address;
+		}
+	}
 
     /**
      * Returns the SubjectKeyIdentifier extension value on String format.<br>
@@ -568,7 +593,6 @@ public class BasicCertificate {
         StringBuilder builder = new StringBuilder();
         try {
             SimpleDateFormat dtValidade = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
             builder.append("\n");
             builder.append("-----------------------------------------\n");
             builder.append("Certificado de..........[").append(this.getCertificateIssuerDN()).append("]\n");
@@ -623,6 +647,7 @@ public class BasicCertificate {
 
             builder.append("-----------------------------------------\n");
             builder.append("Authority KeyID.........[").append(this.getAuthorityKeyIdentifier()).append("]\n");
+           	builder.append("Authority Info Access...[").append(this.getAuthorityInfoAccess()).append("]\n");
             builder.append("Subject KeyID...........[").append(this.getSubjectKeyIdentifier()).append("]\n");
             builder.append("CRL DistPoint...........[").append(this.getCRLDistributionPoint()).append("]\n");
         } catch (IOException ex) {
