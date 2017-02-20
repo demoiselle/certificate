@@ -43,9 +43,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -65,9 +62,9 @@ public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 	public static final String FILENAME_ZIP = "ACcompactado.zip";
 	public static final String FILENAME_HASH = "hashsha512.txt";
 
-	public static final Path FULL_PATH_FOLDER_ASSINADOR = Paths.get(PATH_HOME_USER, FOLDER_ASSINADOR);
-	public static final Path FULL_PATH_ZIP = Paths.get(PATH_HOME_USER, FOLDER_ASSINADOR, FILENAME_ZIP);
-	public static final Path FULL_PATH_HASH = Paths.get(PATH_HOME_USER, FOLDER_ASSINADOR, FILENAME_HASH);
+	public static final String FULL_PATH_FOLDER_ASSINADOR = PATH_HOME_USER + File.separator + FOLDER_ASSINADOR;
+	public static final String FULL_PATH_ZIP = PATH_HOME_USER+ File.separator +FOLDER_ASSINADOR+ File.separator +FILENAME_ZIP;
+	public static final String FULL_PATH_HASH = PATH_HOME_USER+ File.separator +FOLDER_ASSINADOR+ File.separator +FILENAME_HASH;
 
 	private static final Logger LOGGER = Logger.getLogger(ICPBrasilUserHomeProviderCA.class.getName());
 
@@ -84,7 +81,7 @@ public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 		return getFromLocalZip(FULL_PATH_ZIP);
 	}
 
-	public Collection<X509Certificate> getFromLocalZip(Path fileZip) {
+	public Collection<X509Certificate> getFromLocalZip(String fileZip) {
 
 		LOGGER.log(Level.INFO, "Recuperando localmente as cadeias da ICP-Brasil [" + fileZip.toString() + "].");
 
@@ -94,7 +91,8 @@ public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 		try {
 			timeBefore = System.currentTimeMillis();
 
-			if (Files.exists(fileZip)) {
+			File fileFileZip = new File(fileZip);
+			if (fileFileZip.exists()) {
 
 				// Pega o ZIP do filesystem
 				InputStream inputStream = new FileInputStream(fileZip.toString());
@@ -117,13 +115,14 @@ public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 		return result;
 	}
 
-	public Path verifyZIPPath() throws IOException {
+	public String verifyZIPPath() throws IOException {
 
-		Path finalFolder = ICPBrasilUserHomeProviderCA.FULL_PATH_FOLDER_ASSINADOR;
+		String finalFolder = ICPBrasilUserHomeProviderCA.FULL_PATH_FOLDER_ASSINADOR;
 
 		// Verifica se existe o folder, se não cria
-		if (!Files.isDirectory(finalFolder)) {
-			Files.createDirectories(finalFolder);
+		File fileFinalFolder = new File(finalFolder);
+		if (!fileFinalFolder.isDirectory()) {
+			fileFinalFolder.mkdirs();
 		}
 
 		return finalFolder;
@@ -163,4 +162,5 @@ public class ICPBrasilUserHomeProviderCA implements ProviderCA {
 	public String getName() {
 		return "Home User Provider";
 	}
+	
 }

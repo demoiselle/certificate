@@ -41,15 +41,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownServiceException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -94,8 +92,9 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 			// Faz o hash do checksum do arquivo e não usa o local de propósito,
 			// pois o arquivo pode ter sido corrompido e neste caso o check vai
 			// dar errado e baixar novamente
-			Path pathZip = ICPBrasilUserHomeProviderCA.FULL_PATH_ZIP;
-			if (Files.exists(pathZip)) {
+			String pathZip = ICPBrasilUserHomeProviderCA.FULL_PATH_ZIP;
+			File filePathZip = new File(pathZip);
+			if (filePathZip.exists()) {
 
 				// Baixa o hash do endereço online
 				InputStream inputStreamHash = getInputStreamFromURL(getURLHash());
@@ -109,7 +108,7 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 				if (!onlineHash.equals("")) {
 
 					// Gera o hash do arquivo local
-					String localZipHash = DatatypeConverter.printHexBinary(checksum(new File(pathZip.toString())));
+					String localZipHash = DatatypeConverter.printHexBinary(checksum(filePathZip));
 					
 					// Pega SOMENTE o hash sem o nome do arquivo
 					String onlineHashWithouFilename = onlineHash.replace(ICPBrasilUserHomeProviderCA.FILENAME_ZIP, "")
@@ -132,7 +131,19 @@ public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 				// Baixa um novo arquivo
 				LOGGER.log(Level.INFO, "Recuperando REMOTAMENTE as cadeias da ICP-Brasil [" + getURLZIP() + "].");
 				InputStream inputStreamZip = getInputStreamFromURL(getURLZIP());
-				Files.copy(inputStreamZip, pathZip, StandardCopyOption.REPLACE_EXISTING);
+				
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				int nRead;
+				byte[] data = new byte[16384];
+				while ((nRead = inputStreamZip.read(data, 0, data.length)) != -1)
+					buffer.write(data, 0, nRead);
+				buffer.flush();
+				byte[] content = buffer.toByteArray();
+				
+				FileOutputStream out = new FileOutputStream(filePathZip);
+				out.write(content);
+				out.close();
+				
 				inputStreamZip.close();
 
 				LOGGER.log(Level.INFO, "Cadeias da ICP-Brasil recupedadas com sucesso.");	

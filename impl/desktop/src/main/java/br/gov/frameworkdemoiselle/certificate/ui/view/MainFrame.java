@@ -89,7 +89,7 @@ public class MainFrame extends javax.swing.JFrame {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPaneFiles;
 	private JTable tableCertificates;
-	private static JList<String> listFiles;
+	private static JList listFiles;
 	
 	
 	KeyStore keystore = null;
@@ -178,7 +178,7 @@ public class MainFrame extends javax.swing.JFrame {
 		panelbottom = new JPanel();
 		btnExecutar = new JButton();
 		btnCancelar = new JButton();
-		listFiles = new JList<String>();
+		listFiles = new JList();
 				
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocation(new Point(0, 0));
@@ -400,7 +400,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 	
     public static void setListFileName(List<String> list){
-    	DefaultListModel<String> files= new DefaultListModel<String>();
+    	DefaultListModel files= new DefaultListModel();
 		listFiles.setModel(files);
 		for (String string : list) {
 			files.addElement(string);

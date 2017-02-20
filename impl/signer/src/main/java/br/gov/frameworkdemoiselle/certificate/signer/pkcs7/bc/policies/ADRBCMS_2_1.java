@@ -251,7 +251,15 @@ public class ADRBCMS_2_1 implements SignaturePolicy {
             // Uso futuro, para processamento dos valores
             ASN1Set set = signedSigningCertificate.getAttrValues();
         } else {
-            throw new SignerException("O Atributo signingCertificate não pode ser nulo.");
+        	// Quando é uma implementação antes da V2 tem que verificar em outo OOID        
+        	signedSigningCertificate = signedAttributesTable.get(new DERObjectIdentifier("1.2.840.113549.1.9.16.2.12"));
+        	if (signedSigningCertificate != null) {
+                // Uso futuro, para processamento dos valores
+                ASN1Set set = signedSigningCertificate.getAttrValues();
+        	} else {
+        		throw new SignerException("O Atributo signingCertificate não pode ser nulo.");
+        	}
+        		
         }        
         
     }
