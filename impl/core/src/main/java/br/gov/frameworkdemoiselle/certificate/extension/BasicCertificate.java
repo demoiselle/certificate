@@ -506,11 +506,14 @@ public class BasicCertificate {
 	public List<String> getAuthorityInfoAccess() {
 		List<String> address = new ArrayList<String>();
 		try {
-			AuthorityInformationAccess infoAccess = AuthorityInformationAccess.getInstance(X509ExtensionUtil
-					.fromExtensionValue(certificate.getExtensionValue(X509Extensions.AuthorityInfoAccess.getId())));
-			for (AccessDescription desc : infoAccess.getAccessDescriptions())
-				if (desc.getAccessLocation().getTagNo() == GeneralName.uniformResourceIdentifier)
-					address.add(((DERIA5String) desc.getAccessLocation().getName()).getString());
+			byte[] extensionValue = certificate.getExtensionValue(X509Extensions.AuthorityInfoAccess.getId());
+			if (extensionValue != null && extensionValue.length > 0) {
+				AuthorityInformationAccess infoAccess = AuthorityInformationAccess.getInstance(X509ExtensionUtil
+						.fromExtensionValue(extensionValue));
+				for (AccessDescription desc : infoAccess.getAccessDescriptions())
+					if (desc.getAccessLocation().getTagNo() == GeneralName.uniformResourceIdentifier)
+						address.add(((DERIA5String) desc.getAccessLocation().getName()).getString());
+			} 
 			return address;
 		} catch (IOException error) {
 			LOGGER.info(error.getMessage());
