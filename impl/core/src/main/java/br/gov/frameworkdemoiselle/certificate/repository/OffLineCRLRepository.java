@@ -94,7 +94,7 @@ public class OffLineCRLRepository implements CRLRepository {
             }
 
         } catch (IOException e) {
-            throw new CRLRepositoryException("Could not get the CRL List from Certificate " + e);
+            throw new CRLRepositoryException("Could not get the CRL List from Certificate " + e, e);
         }
         return list;
     }

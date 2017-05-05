@@ -86,7 +86,7 @@ public class OnLineCRLRepository implements CRLRepository {
             }
 
         } catch (IOException e) {
-            throw new CRLRepositoryException("Could not get the CRL List from Certificate " + e);
+            throw new CRLRepositoryException("Could not get the CRL List from Certificate " + e, e);
         }
         return list;
     }
@@ -103,13 +103,13 @@ public class OnLineCRLRepository implements CRLRepository {
             return icpbr_crl;
 
         } catch (MalformedURLException e) {
-            throw new CRLRepositoryException(e.getMessage());
+            throw new CRLRepositoryException(e.getMessage(), e);
         } catch (IOException e) {
             LOGGER.log(Level.INFO, "Nao foi possivel conectar a {0}", e.getMessage());
         } catch (CRLException e) {
-            throw new CRLRepositoryException(e.getMessage());
+            throw new CRLRepositoryException(e.getMessage(), e);
         } catch (CertificateException e) {
-            throw new CRLRepositoryException(e.getMessage());
+            throw new CRLRepositoryException(e.getMessage(), e);
         }
         return null;
     }
