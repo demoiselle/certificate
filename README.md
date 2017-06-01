@@ -1,3 +1,5 @@
+**Caso esteja iniciando um projeto novo utilize o componente Demoiselle Signer (https://github.com/demoiselle/signer)**
+
 # Demoiselle Certificate
 ================================
 
