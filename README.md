@@ -8,7 +8,7 @@ O componente implementa o padrão de assinatura básica ADRB em CADES do ICPBras
 
 O componente é dividido de acordo com suas funcionalidades:
 
-* **demoiselle-certificate-core: ** fornece acesso ao token, carregamento de certificado e API para dados de um certificado ICPBrasil
+* **demoiselle-certificate-core:** fornece acesso ao token, carregamento de certificado e API para dados de um certificado ICPBrasil
 
 * **demoiselle-certificate-ca-icpbrasil:** possui as cadeias de autoridades certificadores ICPBrasil válidas
 
