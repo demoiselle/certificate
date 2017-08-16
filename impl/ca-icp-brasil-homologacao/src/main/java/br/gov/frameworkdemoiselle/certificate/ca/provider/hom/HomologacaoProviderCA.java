@@ -60,6 +60,13 @@ public class HomologacaoProviderCA implements ProviderCA {
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPRORFBv3Homologacao));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(intermediariaHOMv2));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPROACFv4Homologacao));
+            
+            InputStream raizDeHomologacaoSERPROV5 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/RaizdeHomologacaoSERPROV5.cer");
+            InputStream intermediariaHOMv6 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/IntermediariaHOMv6.cer");
+            InputStream ACSERPROACFv5Homologacao = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/serproACFv5Homolog.cer");
+            result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(raizDeHomologacaoSERPROV5));
+            result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(intermediariaHOMv6));
+            result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPROACFv5Homologacao));
         } catch (Throwable error) {
             error.printStackTrace();
             return null;
