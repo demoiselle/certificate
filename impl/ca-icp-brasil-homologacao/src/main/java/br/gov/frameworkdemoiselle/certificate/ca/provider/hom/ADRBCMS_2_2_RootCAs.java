@@ -53,9 +53,13 @@ public class ADRBCMS_2_2_RootCAs implements ProviderSignaturePolicyRootCA {
     	 List<X509Certificate> result = new ArrayList<X509Certificate>();
          InputStream raizdeHomologacaoSERPRO = ADRBCMS_1_0_RootCAs.class.getClassLoader().getResourceAsStream("trustedca/RaizdeHomologacaoSERPRO.cer");
          InputStream raizdeHomologacaoSERPROV5 = ADRBCMS_1_0_RootCAs.class.getClassLoader().getResourceAsStream("trustedca/RaizdeHomologacaoSERPROV5.cer");
+         InputStream AutoridadeCertificadoraRaizBrasileirav2 = ADRBCMS_1_0_RootCAs.class.getClassLoader().getResourceAsStream("trustedca/AutoridadeCertificadoraRaizBrasileirav2.crt");
+         
+         
          try {
              result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(raizdeHomologacaoSERPRO));
              result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(raizdeHomologacaoSERPROV5));
+             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraRaizBrasileirav2));
          } catch (CertificateException e) {
              return null;
          }
