@@ -220,7 +220,7 @@ public class CAdESSignerTest {
 		assertTrue(signer.check(fileToVerify, signatureFile));	
 		
 	}
-	@Test
+	//@Test
 	public void certFromDetachedSignature(){
 		
 		
