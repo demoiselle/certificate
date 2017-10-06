@@ -200,7 +200,7 @@ public class CAdESSignerTest {
 			os.close();
 			
 
-		} catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | IOException ex) {
+		} catch (Exception  ex) {
 			ex.printStackTrace();
 			assertTrue(false);
 		}
