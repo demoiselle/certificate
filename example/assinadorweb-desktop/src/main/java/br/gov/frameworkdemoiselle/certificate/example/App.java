@@ -13,13 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
-
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS7Factory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
-import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_2_1;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_2_2;
 import br.gov.frameworkdemoiselle.certificate.ui.action.AbstractFrameExecute;
 import br.gov.frameworkdemoiselle.certificate.ui.util.AuthorizationException;
 import br.gov.frameworkdemoiselle.certificate.ui.util.ConectionException;
@@ -97,7 +95,7 @@ public class App extends AbstractFrameExecute {
             PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
             signer.setCertificates(ks.getCertificateChain(alias));
             signer.setPrivateKey((PrivateKey) ks.getKey(alias, null));
-            signer.setSignaturePolicy(new ADRBCMS_2_1());
+            signer.setSignaturePolicy(new ADRBCMS_2_2());
             signer.setAttached(false);
             
             //Varrendo todos os arquivos, gera uma assinatura para cada arquivo
