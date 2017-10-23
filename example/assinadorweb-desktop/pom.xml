@@ -43,7 +43,7 @@
 							<Application-Library-Allowable-Codebase>*</Application-Library-Allowable-Codebase>
 							<Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
 							<Trusted-Only>true</Trusted-Only>
-							<Trusted-Library>false</Trusted-Library><!-- True em Producao, dependencias 
+							<Trusted-Library>true</Trusted-Library><!-- True em Producao, dependencias 
 								tambem precisam deste manifesto -->
 						</manifestEntries>
 					</archive>
@@ -78,15 +78,6 @@
 					</jnlp>
 
 					<!--<pack200> <enabled>true</enabled> </pack200> -->
-
-					<sign>
-						<keystore>${project.basedir}/src/main/jnlp/newcert.p12</keystore>
-						<keypass>secret</keypass>
-						<storepass>secret</storepass>
-						<alias>Spock</alias>
-						<storetype>pkcs12</storetype>
-						<verify>false</verify> <!-- verifica a assinatura depois de assinado -->
-					</sign>
 					<unsign>true</unsign> <!-- remove a assinatura de pacotes e assinados e reassina com a minha chave -->
 					<verbose>true</verbose>
 				</configuration>

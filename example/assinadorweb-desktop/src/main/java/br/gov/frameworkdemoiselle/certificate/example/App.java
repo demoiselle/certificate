@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS7Factory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
@@ -95,6 +98,7 @@ public class App extends AbstractFrameExecute {
             PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
             signer.setCertificates(ks.getCertificateChain(alias));
             signer.setPrivateKey((PrivateKey) ks.getKey(alias, null));
+            signer.setAlgorithm(SignerAlgorithmEnum.SHA512withRSA);
             signer.setSignaturePolicy(new ADRBCMS_2_2());
             signer.setAttached(false);
             
