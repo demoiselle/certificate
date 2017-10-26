@@ -26,12 +26,17 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
+
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import br.gov.frameworkdemoiselle.certificate.example.token.TokenManager;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS7Factory;
@@ -206,6 +211,32 @@ public class FileManagerREST {
 		return response.build();
 	}
 	
+    @GET
+    @Path("generateHashes/{info}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response generateHashes(@PathParam("info") String fileNames) {
+    	
+    	ResponseBuilder response = null;
+    	String downloadLocation = context.getRealPath("").concat(File.separator).concat(SERVER_DOWNLOAD_LOCATION_FOLDER);
+    	
+		JSONObject json = new JSONObject();
+    	
+    	for (String fileName : fileNames.split(",")) {
+        	java.nio.file.Path pathFile = Paths.get(downloadLocation.concat(fileName));
+        	try {
+        		String hash = TokenManager.hash(pathFile);
+        		json.put(fileName, hash);
+            	LOGGER.log(Level.INFO, fileName + " hashed!: " + hash);
+        	} catch (IOException e) {
+    			e.printStackTrace();
+    		} catch (JSONException e) {
+    			e.printStackTrace();
+    		}
+		}
+
+    	return Response.status(Status.OK).entity(json.toString()).build();
+    }
+    
 	//Método para checar no servidor as assinatura e arquivos
 	private boolean check(String token) {
 		String downloadLocation = context.getRealPath("").concat(File.separator).concat(SERVER_DOWNLOAD_LOCATION_FOLDER);

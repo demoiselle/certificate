@@ -9,3 +9,6 @@
 /.metadata/
 /.externalToolBuilders
 nb-configuration.xml
+/example/.project
+/impl/ca-icp-brasil/bin/
+
