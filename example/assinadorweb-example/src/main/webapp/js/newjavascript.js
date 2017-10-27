@@ -1,3 +1,6 @@
+//////////
+// JNLP //
+//////////
 
 $("#enviarJNLP").click(function () {
     var id = [];
@@ -41,7 +44,9 @@ function verificarToken(token){
  	}, 60000);
 }
 
-// Assinador SERPRO
+//////////////////////
+// Assinador SERPRO //
+//////////////////////
 
 $("#enviarAS").click(function () {
     var id = [];
@@ -59,6 +64,7 @@ $("#enviarAS").click(function () {
     	hashes = hashes.substring(0, hashes.length-2);
     	$("#hashes").val(hashes);
     	signQueue(id, data);
+    	resetDetails();
     });
 
 });
@@ -67,8 +73,8 @@ function signQueue(ids, idHashes) {
 	console.log('idHashes');
 	console.log(idHashes);
 	if (ids.length > 0) {
-		var hash = idHashes[ids[0]];
-		ids.shift();
+		var id = ids.shift();
+		var hash = idHashes[id];
 		sign({
 			type: 'hash',
 			data: hash,
@@ -81,8 +87,11 @@ function signQueue(ids, idHashes) {
 				console.log("ERRO");
 				console.log(msg);
 				alert(msg.error);
-	        } // optional
-			// onCancel: onCancelHandler, // optional
+	        },
+	        afterSign: showResult,
+	        fileName: id, 
+	        // optional
+			onCancel: resetDetails
 			// beforeSign: beforeSignHandler, // optional
 			// afterSign: afterSignHandler // optional
 		});
@@ -120,7 +129,7 @@ function sign(params) {
 					}
 				});
 			}
-			params.afterSign && params.afterSign(response);
+			params.afterSign && params.afterSign(params.fileName, response);
 		})
 		.error(function (error) {
 			console.debug('Error:', error);
@@ -129,4 +138,32 @@ function sign(params) {
 		});
 }
 
+function showResult(fileName, data) {
+	var signature = data.signature;
+	if (signature) {
+		var result = [
+			'Arquivo: ' + fileName,
+			'Base64: ' + signature
+		].join('\n');
+		appendToDetails(result);
+	}
+}
 
+function appendToDetails(text) {
+	var $asDetails = $('#assinador details');
+	var $content = $asDetails.find('textarea');
+	if ($content.val().length == 0) {
+		$content.text($content.val() + text);
+	} else {
+		$content.text($content.val() + '\n\n' + text);
+	}
+	$asDetails.show();
+}
+
+function resetDetails() {
+	//$("#hashes").val('');
+	var $asDetails = $('#assinador details');
+	var $content = $asDetails.find('textarea');
+	$content.text('');
+	$asDetails.hide();
+}

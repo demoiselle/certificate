@@ -11,6 +11,9 @@
 	/* estado inicial */
 	display: none;
 }
+section details {
+	display: none;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -18,6 +21,8 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
   var $serverStatus = $('.js-server-status');
+  var $asDetails = $('#assinador details');
+  //$asDetails.hide();
   $serverStatus.hide();
 
   $( function() {
@@ -44,7 +49,7 @@
 				<input type="checkbox" name="arqjnlp" value="supermario.gif">supermario.gif<br>
 			</div>
 			<div class="form-group">
-				<label for="digest">Identificador</label> <input type="text"
+				<label for="hash">Identificador</label> <input type="text"
 					class="form-control input-sm" id="hash" name="hash" readonly
 					placeholder="Hash">
 			</div>
@@ -66,7 +71,8 @@
 			<div class="badge badge-success js-server-status js-server-status-on">ONLINE</div>
 			<div class="badge badge-error js-server-status js-server-status-off">OFFLINE</div>
 		</div>
-		<form role="form" action="api/jnlp/generate" method="post" id="jnlpForm">
+		<section id="assinador">
+		<form role="form" action="api/jnlp/generate" method="post" id="asForm">
 			<div class="form-group ">
 				<span class="help-block">Escolha abaixo o arquivo que será assinado. O hash gerado é um exemplo de chave que pode ser usado para se criar um identificador único.</span> 
 				<input type="checkbox" name="arquivo" value="livro.pdf" checked>livro.pdf<br>
@@ -74,14 +80,19 @@
 				<input type="checkbox" name="arquivo" value="supermario.gif">supermario.gif<br>
 			</div>
 			<div class="form-group">
-				<label for="digest">Identificador</label> <input type="text"
+				<label for="digest">Hash</label> <input type="text"
 					class="form-control input-sm" id="hashes" name="hash" readonly
 					placeholder="Hash">
 			</div>
+			<details>
+				<label for="result">Resultado:</label>
+				<textarea name="result" class="form-control" rows="3"></textarea>
+			</details>
 
 			<button type="button" class="btn btn-default btn-sm btn-success"
 				id="enviarAS">Gerar identificador e enviar</button>
 		</form>
+		</section>
 	</div>
 	</div>
 	
@@ -91,6 +102,6 @@
 	<script src="js/is.min.js" type="text/javascript"></script>
 	<script src="js/serpro-signer-promise.js" type="text/javascript"></script>
 	<script src="js/serpro-signer-client.js" type="text/javascript"></script>
-	<script src="js/example.js" type="text/javascript"></script>
+	<script src="js/serpro-client-connector.js" type="text/javascript"></script>
 </body>
 </html>
