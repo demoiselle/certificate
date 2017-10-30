@@ -103,20 +103,31 @@ public class Configuration {
         map.put("TokenOuSmartCard_23", "/usr/lib/libeTPkcs11.so");
         map.put("TokenOuSmartCard_24", "/usr/lib/libeToken.so");
         map.put("TokenOuSmartCard_25", "/usr/lib/libeToken.so.4");
-        map.put("TokenOuSmartCard_26", "/usr/lib/libcmP11.so");
-        map.put("TokenOuSmartCard_27", "/usr/lib/libwdpkcs.so");
-        map.put("TokenOuSmartCard_28", "/usr/local/lib64/libwdpkcs.so");
-        map.put("TokenOuSmartCard_29", "/usr/local/lib/libwdpkcs.so");
-        map.put("TokenOuSmartCard_30", "/usr/lib/watchdata/ICP/lib/libwdpkcs_icp.so");
-        map.put("TokenOuSmartCard_31", "/usr/lib/watchdata/lib/libwdpkcs.so");
-        map.put("TokenOuSmartCard_32", "/opt/watchdata/lib64/libwdpkcs.so");
-        map.put("TokenOuSmartCard_33", "/usr/lib/opensc-pkcs11.so");
-        map.put("TokenOuSmartCard_34", "/usr/lib/pkcs11/opensc-pkcs11.so");
-        map.put("TokenOuSmartCard_35", "/usr/lib/libwdpkcs.dylib");
-        map.put("TokenOuSmartCard_36", "/usr/local/lib/libwdpkcs.dylib");
-        map.put("TokenOuSmartCard_37", "/usr/local/ngsrv/libepsng_p11.so.1.2.2");
-        map.put("TokenOuSmartCard_38", "/usr/local/lib/libetpkcs11.dylib");
-        map.put("TokenOuSmartCard_39", "/usr/local/lib/libaetpkss.dylib");
+        
+     // Token GD do Serpro
+        map.put("TokenOuSmartCard_26", "/usr/lib/libaetpkss.so.3");
+                
+        map.put("TokenOuSmartCard_27", "/usr/lib/libcmP11.so");
+        map.put("TokenOuSmartCard_28", "/usr/lib/libwdpkcs.so");
+        map.put("TokenOuSmartCard_29", "/usr/local/lib64/libwdpkcs.so");
+        map.put("TokenOuSmartCard_30", "/usr/local/lib/libwdpkcs.so");
+        map.put("TokenOuSmartCard_31", "/usr/lib/watchdata/ICP/lib/libwdpkcs_icp.so");
+        map.put("TokenOuSmartCard_32", "/usr/lib/watchdata/lib/libwdpkcs.so");
+        map.put("TokenOuSmartCard_33", "/opt/watchdata/lib64/libwdpkcs.so");
+        map.put("TokenOuSmartCard_34", "/usr/lib/opensc-pkcs11.so");
+        map.put("TokenOuSmartCard_35", "/usr/lib/pkcs11/opensc-pkcs11.so");
+        map.put("TokenOuSmartCard_36", "/usr/lib/libwdpkcs.dylib");
+        map.put("TokenOuSmartCard_37", "/usr/local/lib/libwdpkcs.dylib");
+        map.put("TokenOuSmartCard_38", "/usr/local/ngsrv/libepsng_p11.so.1.2.2");
+        map.put("TokenOuSmartCard_39", "/usr/local/lib/libetpkcs11.dylib");
+        map.put("TokenOuSmartCard_40", "/usr/local/lib/libaetpkss.dylib");
+        
+        
+        // Certificado em Nuvem  SERPRO - Windows
+		map.put("TokenOuSmartCard_41", winRoot.concat("/system32/SerproPkcs11.dll"));
+		// Certificado em Nuvem SERPRO - Linux		
+		map.put("TokenOuSmartCard_42", "/usr/lib/libneoidp11.so");
+
 
         for (String driver : map.keySet()) {
             try {

@@ -75,7 +75,11 @@ public class CAManager {
 		Collection<X509Certificate> result = new HashSet<X509Certificate>();
 		for (ProviderSignaturePolicyRootCA provider : providers) {
 			try {
-				result.addAll(provider.getCAs());
+				for (X509Certificate caCertificate : provider.getCAs()){
+					LOGGER.info("Adicionando AC"+ caCertificate.getSubjectDN().getName());
+					result.add(caCertificate);
+				}
+				//result.addAll(provider.getCAs());
 			} catch (Throwable error) {
 				// TODO: Nao foi possivel resgatar as raizes confiaveis
 				// de uma determinada politica
@@ -92,6 +96,7 @@ public class CAManager {
 				valid = true;
 				break;
 			} catch (CAManagerException error) {
+				LOGGER.info("Erro do ValidateRooCAs: "+error.getMessage());
 				continue;
 			}
 		}
@@ -103,6 +108,7 @@ public class CAManager {
 	}
 
 	public boolean validateRootCA(X509Certificate ca, X509Certificate certificate) {
+		boolean retorno =false;
 		if (ca == null) {
 			throw new CAManagerException("Certificado da autoridade raiz não informado");
 		}
@@ -117,6 +123,7 @@ public class CAManager {
 		for (X509Certificate x509 : acs) {
 			if (this.isRootCA(x509)) {
 				rootCA = x509;
+				retorno =true;
 				break;
 			}
 		}
@@ -126,10 +133,11 @@ public class CAManager {
 		}
 
 		if (!this.isCAofCertificate(rootCA, ca)) {
+			retorno = false;
 			throw new CAManagerException(
 					"A autoridade raiz não faz parte da cadeia de certificados do certificado informado");
 		}
-		return true;
+		return retorno;
 	}
 
 	public boolean isRootCA(X509Certificate ca) {
@@ -188,8 +196,6 @@ public class CAManager {
 		for (ProviderCA provider : providers) {
 			try {
 
-				LOGGER.info(">>> Procurando certificado no Provider: " + provider.getName());
-
 				// Get ALL CAs of ONE provider
 				Collection<X509Certificate> acs = provider.getCAs();
 
@@ -202,10 +208,8 @@ public class CAManager {
 						result.add(ac);
 						X509Certificate acFromAc = this.getCAFromCertificate(acs, ac);
 						while (acFromAc != null) {
-
 							// If the chain was created SET OK
 							result.add(acFromAc);
-
 							// If Certificate is ROOT end while
 							if (this.isRootCA(acFromAc)) {
 								ok = true;
@@ -213,10 +217,8 @@ public class CAManager {
 							} else {
 								acFromAc = this.getCAFromCertificate(acs, acFromAc);
 							}
-
 						}
 					}
-
 					if (ok == true) {
 						break;
 					}

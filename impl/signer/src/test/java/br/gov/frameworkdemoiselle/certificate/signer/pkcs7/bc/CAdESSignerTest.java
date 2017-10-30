@@ -23,7 +23,9 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Enumeration;
+
 import javax.net.ssl.KeyManagerFactory;
+
 import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
@@ -31,11 +33,13 @@ import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
+
 import br.gov.frameworkdemoiselle.certificate.extension.BasicCertificate;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.implementation.MSKeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.factory.PKCS7Factory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.PKCS7Signer;
+import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_2_1;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_2_2;
 
 @SuppressWarnings("unused")
@@ -84,11 +88,11 @@ public class CAdESSignerTest {
 			KeyStore ks = KeyStore.getInstance("pkcs12");
 
 			// Alterar a senha
-			char[] senha = "serpro".toCharArray();
+			char[] senha = "senha".toCharArray();
 
 			
 			// informar onde esta o arquivo
-			InputStream ksIs = new FileInputStream("/home/<usuario>/xxxx.p12");
+			InputStream ksIs = new FileInputStream("/home/{usuario}/arquivo.p12");
 		
 			ks.load(ksIs, senha);
 
@@ -142,15 +146,15 @@ public class CAdESSignerTest {
 			//
 			// String fileDirName = "C:\\Users\\{usuario}\\arquivo_assinar.txt";
 						
-			// String fileDirName = "/home/{usuario}/arquivo_assinar.txt";
+			 String fileDirName = "/home/{usuario}/arquivo_assinar.txt";
 			
-			String fileDirName = "/home/80621732915/AAssinar/domingos/teste_assinatura_hom.txt";
+			
 			
 
 			byte[] fileToSign = readContent(fileDirName);
 
 			// quando certificado em arquivo, precisa informar a senha
-			char[] senha = "serpro".toCharArray();
+			char[] senha = "senha".toCharArray();
 
 			// Para certificado em Token
 			//KeyStore ks = getKeyStoreToken();
