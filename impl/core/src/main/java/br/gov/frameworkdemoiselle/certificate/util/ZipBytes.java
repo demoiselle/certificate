@@ -27,7 +27,6 @@ public final class ZipBytes {
                 LOGGER.log(Level.INFO, "Adding file {0} to ZIP", fileName);
                 zipOut.putNextEntry(new ZipEntry(fileName));
                 zipOut.write(files.get(fileName));
-                zipOut.setLevel(0);
                 zipOut.closeEntry();
             }
             zipOut.close();
