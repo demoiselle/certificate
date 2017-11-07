@@ -114,6 +114,12 @@
             <name>Demoiselle Maven Repository</name>
             <url>http://demoiselle.sourceforge.net/repository/release</url>
         </repository>
+        
+        <repository>
+			<id>snapshot</id>
+			<name>snapshot</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
     </repositories>
 
 </project>
