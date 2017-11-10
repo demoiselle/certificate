@@ -30,7 +30,8 @@
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
 		<artifactId>demoiselle-certificate-parent</artifactId>
-		<version>1.2.1</version>
+		<version>1.2.2-SNAPSHOT</version>
+		<relativePath>../../parent/certificate</relativePath>
 	</parent>
 
 	<name>Demoiselle Certificate CA ICP-Brasil Homologacao</name>
