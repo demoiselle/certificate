@@ -23,7 +23,7 @@
 
 	<groupId>br.gov.frameworkdemoiselle.component</groupId>
 	<artifactId>demoiselle-certificate-build</artifactId>
-	<version>1.2.3-SNAPSHOT</version>
+	<version>1.2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -51,42 +51,62 @@
 		<module>impl/ca-icp-brasil-homologacao</module>
 	</modules>
 
-	<distributionManagement>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>wagon-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
 				<configuration>
-					<serverId>demoiselle.sourceforge.net</serverId>
-					<url>${upload.url}</url>
-					<fromDir>${project.build.directory}/assembly</fromDir>
-					<toDir>${project.context}/${project.version}</toDir>
-					<skip>true</skip>
+					<showDeprecation>true</showDeprecation>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- Versão 2.4.2 do maven-release-plugin necessária para gerar a release 
-				da ferramenta -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.4.2</version><!--$NO-MVN-MAN-VER$ -->
+				<version>2.4.2</version>
+				<goals>
+					${release.goals}
+				</goals>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<preparationGoals>clean install</preparationGoals>
 					<goals>${release.goals}</goals>
+					<goal>${release.goals}</goal>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -94,29 +114,72 @@
 						<artifactId>maven-scm-provider-gitexe</artifactId>
 						<version>1.8.1</version>
 					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-git-commons</artifactId>
+						<version>1.8.1</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.4</version>
 			</plugin>
 
 		</plugins>
 	</build>
 
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<reportSets>
+					<reportSet><!-- by default, id = "default" -->
+						<reports><!-- select non-aggregate reports -->
+							<report>javadoc</report>
+							<report>test-javadoc</report>
+						</reports>
+					</reportSet>
+					<reportSet><!-- aggregate reportSet, to define in poms having modules -->
+						<id>aggregate</id>
+						<inherited>false</inherited><!-- don't run aggregate in child modules -->
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+		</plugins>
+	</reporting>
+
+
 	<scm>
-		<connection>scm:git:https://github.com/demoiselle//${project.alias}.git</connection>
+		<connection>scm:git:https://github.com/demoiselle/${project.alias}.git</connection>
 		<developerConnection>scm:git:https://github.com/demoiselle/${project.alias}.git</developerConnection>
-		<url>http://github.com/demoiselle/${project.alias}</url>
+		<url>https://github.com/demoiselle/${project.alias}</url>
 		<tag>HEAD</tag>
 	</scm>
+
+	<distributionManagement>
+		<site>
+			<id>demoiselle.sourceforge.net</id>
+			<url>${site.url}</url>
+		</site>
+
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
@@ -141,6 +204,40 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+
+		<!-- Legacy -->
+		<repository>
+			<id>demoiselle.sourceforge.net-release</id>
+			<url>http://demoiselle.sourceforge.net/repository/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>snapshot.sourceforge.net-release</id>
+			<url>http://demoiselle.sourceforge.net/repository/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>nexus.jboss.org</id>
+			<name>JBoss Maven Repository</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+
 	</repositories>
 
 	<properties>
