@@ -27,10 +27,11 @@
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>br.gov.frameworkdemoiselle</groupId>
-		<artifactId>demoiselle-component-build-parent</artifactId>
-		<version>9</version>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>8</version>
 	</parent>
+	
 
 	<name>Demoiselle Certificate</name>
 	<description>
