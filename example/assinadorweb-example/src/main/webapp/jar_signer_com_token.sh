@@ -32,7 +32,11 @@ for jarfile in $(ls $JARPATH/*.jar); do
     ALIAS="SERVICO FEDERAL DE PROCESSAMENTO DE DADOS SERPRO:CETEC's Autoridade Certificadora do SERPRO Final v3 ID"
 	    
     #assina o jar
-    jarsigner -verbose -J-Djava.security.debug=sunpkcs11 -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg drivers.config -storepass $PASSWORD -sigfile $DSANAME -signedjar $jarfile_signed -verbose $jarfile "$ALIAS"
+#    jarsigner -sigalg SHA512withRSA -verbose -J-Djava.security.debug=sunpkcs11 -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg drivers.config -storepass $PASSWORD -sigfile $DSANAME -signedjar $jarfile_signed -verbose $jarfile "$ALIAS"
+
+   jarsigner -tsa http://sha256timestamp.ws.symantec.com/sha256/timestamp -sigalg SHA512withRSA -verbose -J-Djava.security.debug=sunpkcs11 -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg drivers.config -storepass $PASSWORD -sigfile $DSANAME -signedjar $jarfile_signed -verbose $jarfile "$ALIAS"
+# -tsa https://timestamp.geotrust.com/tsa
+
 done
 
 exit 0

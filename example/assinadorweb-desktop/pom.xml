@@ -89,22 +89,22 @@
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-desktop</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-signer</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-ca-icpbrasil</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-criptography</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
+			<version>1.2.2</version>
 		</dependency>
 	</dependencies>
 

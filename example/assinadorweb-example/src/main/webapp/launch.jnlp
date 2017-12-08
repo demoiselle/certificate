@@ -17,11 +17,15 @@
     <jar href="assinadorweb-desktop-1.2.2.jar"/>
     <jar href="bcprov-jdk15-1.45.jar"/>
     <jar href="bcmail-jdk15-1.45.jar"/>
-    <jar href="demoiselle-certificate-desktop-1.2.2-SNAPSHOT.jar" main="true"/>
-    <jar href="demoiselle-certificate-core-1.2.2-SNAPSHOT.jar"/>
-    <jar href="demoiselle-certificate-signer-1.2.2-SNAPSHOT.jar"/>
-    <jar href="demoiselle-certificate-criptography-1.2.2-SNAPSHOT.jar"/>
-    <jar href="demoiselle-certificate-ca-icpbrasil-1.2.2-SNAPSHOT.jar"/>
+    <jar href="demoiselle-certificate-desktop-1.2.2.jar" main="true"/>
+    <jar href="demoiselle-certificate-core-1.2.2.jar"/>
+    <jar href="demoiselle-certificate-signer-1.2.2.jar"/>
+    <jar href="demoiselle-certificate-criptography-1.2.2.jar"/>
+    <jar href="demoiselle-certificate-ca-icpbrasil-homologacao-1.2.2.jar"/>
+    <jar href="demoiselle-certificate-ca-icpbrasil-1.2.2.jar"/>
+    <jar href="slf4j-log4j12-1.6.1.jar"/>
+    <jar href="slf4j-api-1.6.1.jar"/>
+    <jar href="log4j-1.2.16.jar"/>
 	<property name="jnlp.service" value="http://localhost:8080/assinadorweb-example/api/filemanager"/>
 	<!-- O parametro abaixo define a classe customizada de implementacao. Se ausente, sera usada a implementacao pre-definida no componente -->
 	<property name="jnlp.myClassName" value="br.gov.frameworkdemoiselle.certificate.example.App"/>          
