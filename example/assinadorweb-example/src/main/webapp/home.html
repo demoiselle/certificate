@@ -26,7 +26,7 @@ section details {
   $serverStatus.hide();
 
   $( function() {
-    $( "#tabs" ).tabs();
+    $( "#tabs" ).tabs({active: 1});
   } );
 </script>
 
@@ -68,8 +68,8 @@ section details {
 		<h2>Exemplo de Assinatura Digital usando o <a href="http://assinador.cta.serpro/">Assinador SERPRO</a></a></h2>
 		<div class="d-flex">
 			<div class="px-2 font-weight-bold">WebSocket Server está:</div>
-			<div class="badge badge-success js-server-status js-server-status-on">ONLINE</div>
-			<div class="badge badge-error js-server-status js-server-status-off">OFFLINE</div>
+			<div class="label label-success js-server-status js-server-status-on">ONLINE</div>
+			<div class="label label-error js-server-status js-server-status-off">OFFLINE</div>
 		</div>
 		<section id="assinador">
 		<form role="form" action="api/jnlp/generate" method="post" id="asForm">

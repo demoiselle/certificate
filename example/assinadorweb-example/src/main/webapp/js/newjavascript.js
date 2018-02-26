@@ -59,43 +59,38 @@ $("#enviarAS").click(function () {
     	var hashes = '';
     	$.each(data, function(key, value) {
     		hashes += value;
-    		hashes += ', ';
+    		hashes += ' ';
     	});
-    	hashes = hashes.substring(0, hashes.length-2);
     	$("#hashes").val(hashes);
-    	signQueue(id, data);
+    	bulkSign(id, hashes);
     	resetDetails();
     });
 
 });
 
-function signQueue(ids, idHashes) {
-	console.log('idHashes');
-	console.log(idHashes);
-	if (ids.length > 0) {
-		var id = ids.shift();
-		var hash = idHashes[id];
-		sign({
-			type: 'hash',
-			data: hash,
-			onSuccess: function(result) {
-				console.log("TUDO CERTO");
-				console.log(result);
-				signQueue(ids, idHashes);
-			},
-			onError: function (msg) {
-				console.log("ERRO");
-				console.log(msg);
-				alert(msg.error);
-	        },
-	        afterSign: showResult,
-	        fileName: id, 
-	        // optional
-			onCancel: resetDetails
-			// beforeSign: beforeSignHandler, // optional
-			// afterSign: afterSignHandler // optional
-		});
-	}
+function bulkSign(ids, hashes) {
+	console.log("BULK SIGN");
+	console.log(ids);
+	console.log(hashes);
+	sign({
+		type: 'hash',
+		data: hashes,
+		onSuccess: function(result) {
+			console.log("TUDO BULK CERTO");
+			console.log(result);
+		},
+		onError: function (msg) {
+			console.log("ERRO");
+			console.log(msg);
+			alert(msg.error);
+        },
+        afterSign: showResult,
+        fileName: ids, 
+        // optional
+		onCancel: resetDetails
+		// beforeSign: beforeSignHandler, // optional
+		// afterSign: afterSignHandler // optional
+	});
 }
 
 function sign(params) {
@@ -138,15 +133,17 @@ function sign(params) {
 		});
 }
 
-function showResult(fileName, data) {
-	var signature = data.signature;
-	if (signature) {
-		var result = [
-			'Arquivo: ' + fileName,
-			'Base64: ' + signature
-		].join('\n');
-		appendToDetails(result);
+function showResult(fileNames, data) {
+	var names = fileNames;
+	var signatures = data.signature.split(' ');
+	var result = '';
+	for(var i=0; i<names.length; i++) {
+		result += 'Arquivo: ';
+		result += names[i]+'\n';
+		result += '\nAssinatura (Base64): ';
+		result += signatures[i]+'\n\n';
 	}
+	appendToDetails(result);
 }
 
 function appendToDetails(text) {
