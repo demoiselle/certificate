@@ -75,14 +75,18 @@ public class OnLineCRLRepository implements CRLRepository {
                 throw new CRLRepositoryException("Could not get a valid CRL from Certificate");
             }
 
+            ICPBR_CRL crl = null;
             for (String URLCRL : ListaURLCRL) {
                 // Achou uma CRL válida
-                ICPBR_CRL crl = getICPBR_CRL(URLCRL);
+                crl = getICPBR_CRL(URLCRL);
                 if (crl != null) {
                     list.add(crl);
                     LOGGER.log(Level.INFO, "A valid Crl was found. It''s not necessary to continue. CRL=[{0}]", URLCRL);
                     break;
                 }
+            }
+            if (crl == null){
+            	throw new CRLRepositoryException("Não foi possível verficar se o certificado está revogado, verifique se há conexão de internet" );
             }
 
         } catch (IOException e) {
@@ -103,13 +107,13 @@ public class OnLineCRLRepository implements CRLRepository {
             return icpbr_crl;
 
         } catch (MalformedURLException e) {
-            throw new CRLRepositoryException(e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "URL da LCR malformatada", e.getMessage());
         } catch (IOException e) {
             LOGGER.log(Level.INFO, "Nao foi possivel conectar a {0}", e.getMessage());
         } catch (CRLException e) {
-            throw new CRLRepositoryException(e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "LCR inválida", e.getMessage());
         } catch (CertificateException e) {
-            throw new CRLRepositoryException(e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Certificado da LCR inválido", e.getMessage());
         }
         return null;
     }
