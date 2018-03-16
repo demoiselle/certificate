@@ -146,9 +146,8 @@ public class CAdESSignerTest {
 			//
 			// String fileDirName = "C:\\Users\\{usuario}\\arquivo_assinar.txt";
 						
-			 String fileDirName = "/home/{usuario}/arquivo_assinar.txt";
-			
-			
+			String fileDirName = "/home/{usuario}/arquivo_assinar.txt";
+		
 			
 
 			byte[] fileToSign = readContent(fileDirName);
@@ -157,10 +156,10 @@ public class CAdESSignerTest {
 			char[] senha = "senha".toCharArray();
 
 			// Para certificado em Token
-			//KeyStore ks = getKeyStoreToken();
+			KeyStore ks = getKeyStoreToken();
 
 			// Para certificado em arquivo A1
-			KeyStore ks = getKeyStoreFile();
+			//KeyStore ks = getKeyStoreFile();
 
 			// Para certificados no so windows (mascapi)
 			// KeyStore ks = getKeyStoreOnWindows();
@@ -171,10 +170,10 @@ public class CAdESSignerTest {
 			signer.setCertificates(ks.getCertificateChain(alias));
 
 			// para token
-			//signer.setPrivateKey((PrivateKey) ks.getKey(alias, null));
+			signer.setPrivateKey((PrivateKey) ks.getKey(alias, null));
 
 			// para arquivo
-			 signer.setPrivateKey((PrivateKey) ks.getKey(alias, senha));
+			// signer.setPrivateKey((PrivateKey) ks.getKey(alias, senha));
 
 			signer.setSignaturePolicy(new ADRBCMS_2_2());
 
@@ -187,22 +186,24 @@ public class CAdESSignerTest {
 			byte[] signature = signer.signer(fileToSign);
 
 			/* Valida o conteudo antes de gravar em arquivo */
-			System.out.println("Efetuando a validacao da assinatura.");
-			Boolean valid = signer.check(fileToSign, signature);
+			if (signature != null){
+				System.out.println("Efetuando a validacao da assinatura.");
+				Boolean valid = signer.check(fileToSign, signature);
 
-			if (valid) {
-				System.out.println("A assinatura foi validada.");
-				assertTrue(true);
-			} else {
-				System.out.println("A assinatura foi invalidada!");
-				assertTrue(false);
+				if (valid) {
+					System.out.println("A assinatura foi validada.");
+					assertTrue(true);
+				} else {
+					System.out.println("A assinatura foi invalidada!");
+					assertTrue(false);
+				}
+				File file = new File(fileDirName + ".p7s");
+				FileOutputStream os = new FileOutputStream(file);
+				os.write(signature);
+				os.flush();
+				os.close();
 			}
-			File file = new File(fileDirName + ".p7s");
-			FileOutputStream os = new FileOutputStream(file);
-			os.write(signature);
-			os.flush();
-			os.close();
-			
+						
 
 		} catch (Exception  ex) {
 			ex.printStackTrace();
