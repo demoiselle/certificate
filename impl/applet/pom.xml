@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
 		<artifactId>demoiselle-certificate-parent</artifactId>
-		<version>1.2.4-SNAPSHOT</version>
+		<version>1.2.4</version>
 		<relativePath>../../parent/certificate</relativePath>
 	</parent>
 
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-core</artifactId>
-			<version>1.2.4-SNAPSHOT</version>
+			<version>1.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jdk.applet</groupId>
