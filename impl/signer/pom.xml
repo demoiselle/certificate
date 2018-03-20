@@ -89,6 +89,12 @@
         </dependency>
         <dependency>
             <groupId>br.gov.frameworkdemoiselle.component</groupId>
+            <artifactId>demoiselle-certificate-ca-icpbrasil-homologacao</artifactId>
+            <version>1.2.5-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>br.gov.frameworkdemoiselle.component</groupId>
             <artifactId>demoiselle-certificate-criptography</artifactId>
             <version>1.2.5-SNAPSHOT</version>
         </dependency>

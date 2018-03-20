@@ -64,25 +64,27 @@ public class HomologacaoProviderCA implements ProviderCA {
             InputStream intermediariaHOMv2 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/IntermediariaHOMv2.cer");
             InputStream ACSERPROACFv4Homologacao = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/serproACFv4Homolog.cer");
             InputStream raizDeHomologacaoSERPROV5 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/RaizdeHomologacaoSERPROV5.cer");
-            InputStream intermediariaHOMv6 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/IntermediariaHOMv6.cer");
             InputStream ACSERPROACFv5Homologacao = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/serproACFv5Homolog.cer");
-            InputStream AutoridadeCertificadoraRaizBrasileirav2 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("AutoridadeCertificadoraRaizBrasileirav2.crt");
+            InputStream AutoridadeCertificadoraRaizBrasileirav2 = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/AutoridadeCertificadoraRaizBrasileirav2.crt");
             InputStream ACSERPROHOMOLOGACAO = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/ACSERPROHOMOLOGACAO.crt");
             InputStream AutoridadeCertificadoraSERPRORFBSSL_Hom = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/AutoridadeCertificadoraSERPRORFBSSL_Hom.crt");
             InputStream AutoridadeCertificadoraSERPROFinalv5Hom = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/AutoridadeCertificadoradoSERPROFinalv5-Hom.crt");
-
+            InputStream AutoridadeCertificadoraRaizHomdoSERPRO = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/AutoridadeCertificadoraRaizHomdoSERPRO.crt");
+            InputStream AutoridadeCertificadoraSERPROv6HOM = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/AutoridadeCertificadoraSERPROv6HOM.crt");
+            
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(raizDeHomologacaoSERPRO));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPROACFv3Homologacao));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPRORFBv3Homologacao));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(intermediariaHOMv2));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPROACFv4Homologacao));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(raizDeHomologacaoSERPROV5));
-            result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(intermediariaHOMv6));
+            result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraSERPROv6HOM));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPROACFv5Homologacao));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraRaizBrasileirav2));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(ACSERPROHOMOLOGACAO));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraSERPRORFBSSL_Hom));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraSERPROFinalv5Hom));
+            result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraRaizHomdoSERPRO));
             logger.info("-- HomologacaoProviderCA  loaded -- ");
             
         } catch (Throwable error) {
