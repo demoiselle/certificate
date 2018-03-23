@@ -42,21 +42,19 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.logging.Logger;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
+
 
 public class HomologacaoProviderCA implements ProviderCA {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomologacaoProviderCA.class);
+	private static final Logger LOGGER = Logger.getLogger(HomologacaoProviderCA.class.getName());
 	
     @SuppressWarnings("finally")
 	public Collection<X509Certificate> getCAs() {
         List<X509Certificate> result = new ArrayList<X509Certificate>();
         
-        logger.info("--- HomologacaoProviderCA.getCAs --- ");
+        LOGGER.info("--- HomologacaoProviderCA.getCAs --- ");
         try {
             InputStream raizDeHomologacaoSERPRO = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/RaizdeHomologacaoSERPRO.cer");
             InputStream ACSERPROACFv3Homologacao = HomologacaoProviderCA.class.getClassLoader().getResourceAsStream("trustedca/ACSERPROACFv3Homologacao.cer");
@@ -85,14 +83,13 @@ public class HomologacaoProviderCA implements ProviderCA {
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraSERPRORFBSSL_Hom));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraSERPROFinalv5Hom));
             result.add((X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(AutoridadeCertificadoraRaizHomdoSERPRO));
-            logger.info("-- HomologacaoProviderCA  loaded -- ");
             
         } catch (Throwable error) {
-        	logger.info("-- HomologacaoProviderCA  error -- ");
+        	LOGGER.info("-- HomologacaoProviderCA  error -- ");
             error.printStackTrace();
             return null;
         } finally {
-        	logger.info("-- HomologacaoProviderCA  finally -- ");
+        	LOGGER.info("-- HomologacaoProviderCA  finally -- ");
             return result;
         }
     }

@@ -75,19 +75,13 @@
 		<dependency>
 			<groupId>br.gov.frameworkdemoiselle.component</groupId>
 			<artifactId>demoiselle-certificate-core</artifactId>
-			<version>1.2.1</version>
+			<version>1.2.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<scope>compile</scope>
+			<groupId>br.gov.frameworkdemoiselle.component</groupId>
+			<artifactId>demoiselle-certificate-ca-icpbrasil</artifactId>
+			<version>1.2.6-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<scope>compile</scope>
-		</dependency>
-
 	</dependencies>
 
 	<repositories>
@@ -114,5 +108,4 @@
 			</releases>
 		</repository>
 	</repositories>
-	<version>1.2.6-SNAPSHOT</version>
 </project>
