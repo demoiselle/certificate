@@ -19,7 +19,7 @@ JARPATH="/home/80621732915/git/certificate/example/assinadorweb-example/src/main
 keytool -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg drivers.config -storepass $PASSWORD -list
 
 
-for jarfile in $(ls $JARPATH/*.jar); do
+for jarfile in $(ls $JARPATH/ass*.jar); do
     jarfile_signed="${jarfile%.jar}-assinado.jar"
     echo "Gerando jar assinado para $jarfile em $jarfile_signed"
     #Nome do arquivo a ser assinado
