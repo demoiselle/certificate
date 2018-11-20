@@ -40,7 +40,7 @@ package br.gov.frameworkdemoiselle.certificate.ui.util;
 /**
  * @author SUPST/STDCS
 */
-
+@Deprecated
 public class ConectionException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;

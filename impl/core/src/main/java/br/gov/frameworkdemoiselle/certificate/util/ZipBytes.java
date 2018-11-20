@@ -13,6 +13,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public final class ZipBytes {
 
     private static final Logger LOGGER = Logger.getLogger(ZipBytes.class.getName());

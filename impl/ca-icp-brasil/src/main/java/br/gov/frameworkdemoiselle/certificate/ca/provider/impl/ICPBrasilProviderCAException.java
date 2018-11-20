@@ -37,6 +37,12 @@
 
 package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ICPBrasilProviderCAException extends RuntimeException {
 
 	private static final long serialVersionUID = -6402129068352716143L;

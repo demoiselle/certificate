@@ -49,7 +49,11 @@ import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
  * Representa o aplicativo de gerenciamneot dos arquivos de CRL. Recomenda-ser
  * criar um serviço que periodimente chame este aplicação para atulização das
  * CRL cadastrada no arquivo de índice.
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class RepositoryService {
 
     private static final String UPDATE = "update-crl-list";

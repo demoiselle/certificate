@@ -41,6 +41,7 @@ import br.gov.frameworkdemoiselle.certificate.ui.action.FrameExecute;
 /**
  * @author SUPST/STDCS
 */
+@Deprecated
 public class FrameExecuteFactory {
 
     public static FrameExecute factory(String className) {

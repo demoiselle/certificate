@@ -64,6 +64,12 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ValidadorUtil {
 
     public enum CertPathEncoding {

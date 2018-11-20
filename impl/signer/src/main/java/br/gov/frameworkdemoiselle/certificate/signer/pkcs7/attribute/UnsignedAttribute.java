@@ -39,7 +39,12 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
 /**
  * Padroniza os atributos não assinados.
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface UnsignedAttribute extends Attribute {
 
 }

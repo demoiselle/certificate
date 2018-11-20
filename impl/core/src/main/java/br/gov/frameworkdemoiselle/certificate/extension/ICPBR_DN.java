@@ -45,7 +45,11 @@ import java.util.Properties;
  * DN properties for ICP-BRASIL Patterns
  * 
  * @author CETEC/CTCTA
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class ICPBR_DN extends Properties {
 
 	/**

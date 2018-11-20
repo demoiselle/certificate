@@ -44,6 +44,12 @@ import java.lang.annotation.Target;
 
 import br.gov.frameworkdemoiselle.certificate.OIDExtension;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.FIELD)

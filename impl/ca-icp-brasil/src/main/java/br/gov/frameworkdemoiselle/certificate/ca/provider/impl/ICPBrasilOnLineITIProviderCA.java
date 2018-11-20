@@ -36,6 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.provider.impl;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ICPBrasilOnLineITIProviderCA extends ICPBrasilOnLineSerproProviderCA {
 
 	private static String STRING_URL_ZIP = "http://acraiz.icpbrasil.gov.br/credenciadas/CertificadosAC-ICP-Brasil/ACcompactado.zip";

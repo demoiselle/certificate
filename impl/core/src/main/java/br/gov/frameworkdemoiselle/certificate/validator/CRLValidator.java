@@ -45,6 +45,12 @@ import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
 import br.gov.frameworkdemoiselle.certificate.repository.CRLRepository;
 import br.gov.frameworkdemoiselle.certificate.repository.CRLRepositoryFactory;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class CRLValidator implements IValidator {
 
     private final CRLRepository crlRepository;

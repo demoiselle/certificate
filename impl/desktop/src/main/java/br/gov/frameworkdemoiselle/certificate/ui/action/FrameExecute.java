@@ -43,7 +43,8 @@ import br.gov.frameworkdemoiselle.certificate.ui.view.MainFrame;
 
 /**
  * @author SUPST/STDCS
-*/
+ */
+@Deprecated
 public interface FrameExecute {
 
     public void execute(KeyStore ks, String alias, MainFrame principal);

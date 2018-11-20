@@ -48,6 +48,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.PKCS1Signer;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class PKCS1SignerImpl implements PKCS1Signer {
 
     private Provider provider = null;

@@ -55,6 +55,12 @@ import java.util.logging.Logger;
 
 import br.gov.frameworkdemoiselle.certificate.CertificateValidatorException;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class RepositoryUtil {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryUtil.class.getName());

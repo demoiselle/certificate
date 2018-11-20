@@ -55,7 +55,12 @@ import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class BCSigningCertificate extends BCSignedAttribute {
 
     public BCSigningCertificate(SigningCertificate signingCertificate) {

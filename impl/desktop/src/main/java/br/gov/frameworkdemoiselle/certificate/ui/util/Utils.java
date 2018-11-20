@@ -71,6 +71,7 @@ import br.gov.frameworkdemoiselle.certificate.ui.config.FrameConfig;
 /**
  * @author SUPST/STDCS
  */
+@Deprecated
 public final class Utils {
 
 	private static final int BUFFER_SIZE = 4096;

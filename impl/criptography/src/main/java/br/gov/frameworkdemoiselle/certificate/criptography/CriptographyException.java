@@ -39,7 +39,11 @@ package br.gov.frameworkdemoiselle.certificate.criptography;
 
 /**
  * Default Exception package
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CriptographyException extends RuntimeException {
 
 	private static final long serialVersionUID = 2063536693414468728L;

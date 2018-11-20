@@ -78,6 +78,7 @@ import br.gov.frameworkdemoiselle.certificate.ui.tiny.Item;
 /**
  * @author SUPST/STDCS
 */
+@Deprecated
 public class MainFrame extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;

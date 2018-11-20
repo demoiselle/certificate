@@ -64,6 +64,13 @@ import javax.xml.bind.DatatypeConverter;
 
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
+
 public class ICPBrasilOnLineSerproProviderCA implements ProviderCA {
 
 	private static final String STRING_URL_ZIP = "http://repositorio.serpro.gov.br/icp-brasil/ACcompactado.zip";

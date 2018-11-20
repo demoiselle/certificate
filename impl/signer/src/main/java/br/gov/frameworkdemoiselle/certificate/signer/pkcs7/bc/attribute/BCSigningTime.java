@@ -44,7 +44,12 @@ import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.DERUTCTime;
 
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningTime;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class BCSigningTime extends BCSignedAttribute {
 
 	public BCSigningTime(SigningTime signingTime) {

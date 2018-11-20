@@ -68,7 +68,11 @@ import java.util.logging.Logger;
  * OID = 2.16.76.1.3.2 e conteúdo = nome do responsável pelo certificado;
  *
  * @author 07721825741
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class OID_2_16_76_1_3_2 extends OIDGeneric {
 
     private static final Logger LOGGER = Logger.getLogger(OID_2_16_76_1_3_2.class.getName());

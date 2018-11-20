@@ -33,9 +33,8 @@
 	</parent>
 
 	<name>Demoiselle Certificate Applet</name>
-	<description>
-        Demoiselle Applet Component
-    </description>
+	<description>Demoiselle Applet Component
+ ** PROJETO DESCONTINUADO  veja https://github.com/demoiselle/signer </description>
 	<url>http://www.frameworkdemoiselle.gov.br</url>
 
 	<licenses>

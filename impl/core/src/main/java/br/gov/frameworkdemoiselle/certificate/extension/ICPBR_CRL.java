@@ -51,7 +51,11 @@ import br.gov.frameworkdemoiselle.certificate.util.Base64Utils;
  * Provide utilities for Certificate Revocation List, by ICP-BRASIL Patterns
  * 
  * @author CETEC/CTCTA
+  * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class ICPBR_CRL {
 
 	private X509CRL crl = null;

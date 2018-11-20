@@ -43,7 +43,12 @@ import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.DERUTF8String;
 
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignerLocation;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class BCSignerLocation extends BCSignedAttribute {
 
 	public BCSignerLocation(SignerLocation signerLocation) {

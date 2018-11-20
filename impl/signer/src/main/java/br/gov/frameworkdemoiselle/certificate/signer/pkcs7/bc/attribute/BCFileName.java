@@ -43,7 +43,12 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSet;
 
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.FileName;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class BCFileName extends BCSignedAttribute {
 
     public BCFileName(FileName fileName) {

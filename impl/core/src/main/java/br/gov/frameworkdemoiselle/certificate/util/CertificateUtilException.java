@@ -37,6 +37,12 @@
 
 package br.gov.frameworkdemoiselle.certificate.util;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class CertificateUtilException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

@@ -39,7 +39,11 @@ package br.gov.frameworkdemoiselle.certificate.repository;
 
 /**
  * Reprente um erro de processamento do Repositorio
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CRLRepositoryException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

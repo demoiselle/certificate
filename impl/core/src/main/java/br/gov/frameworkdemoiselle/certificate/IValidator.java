@@ -39,6 +39,12 @@ package br.gov.frameworkdemoiselle.certificate;
 
 import java.security.cert.X509Certificate;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public interface IValidator {
 
 	public void validate(X509Certificate x509) throws CertificateValidatorException;

@@ -36,6 +36,12 @@
  */
 package br.gov.frameworkdemoiselle.certificate.ca.manager;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class CAManagerException extends RuntimeException {
 
     private static final long serialVersionUID = 6416422024286509896L;

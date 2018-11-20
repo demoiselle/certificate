@@ -40,7 +40,11 @@ package br.gov.frameworkdemoiselle.certificate.repository;
 /**
  * Entidade responsavel por guardar as configuracoes necessarias ao uso do
  * repositorio
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class Configuration {
 
 	/** Chave do System para definir modo online ou offline */

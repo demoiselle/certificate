@@ -50,7 +50,11 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderExce
 /**
  * Implementação do carregamento de KeyStore baseado no padrão PKCS12 ou JKS
  * 
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class FileSystemKeyStoreLoader implements KeyStoreLoader {
 
 	private static final String FILE_TYPE_PKCS12 = "PKCS12";

@@ -52,7 +52,12 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
  * 
  * @author 09275643784
  * 
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class SignerLocation implements SignedAttribute {
 
 	private final String localityName;

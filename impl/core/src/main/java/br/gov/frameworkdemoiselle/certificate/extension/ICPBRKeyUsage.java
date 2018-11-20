@@ -39,6 +39,12 @@ package br.gov.frameworkdemoiselle.certificate.extension;
 
 import java.security.cert.X509Certificate;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ICPBRKeyUsage {
 
 	private static final String[] KEY_USAGE = { "digitalSignature", "nonRepudiation", "keyEncipherment", "dataEncipherment", "keyAgreement", "keyCertSign", "cRLSign", "encipherOnly", "decipherOnly" };

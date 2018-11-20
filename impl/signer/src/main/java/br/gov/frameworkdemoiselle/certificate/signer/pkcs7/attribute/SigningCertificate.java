@@ -38,7 +38,12 @@
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
 
 import java.security.cert.X509Certificate;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class SigningCertificate implements SignedAttribute {
 
 	private final X509Certificate certificate;

@@ -54,7 +54,12 @@ import br.gov.frameworkdemoiselle.certificate.criptography.SymmetricAlgorithmEnu
 
 /**
  * Implementação padrão da interface {@link Criptography}
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CriptographyImpl implements Criptography {
 
 	private String algorithm;

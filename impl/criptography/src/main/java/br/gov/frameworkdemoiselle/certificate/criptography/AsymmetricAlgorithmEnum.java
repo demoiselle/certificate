@@ -54,7 +54,12 @@ package br.gov.frameworkdemoiselle.certificate.criptography;
  * Tamanho da chave A1, A2, A3, S1, S2, S3, T3 = RSA 1024, RSA 2048, ECDSA 256<br/>
  * Tamanho da chave A4, S4, T4 = RSA 2048, RSA 4096, ECDSA 512<br/>
  * 
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
+
 public enum AsymmetricAlgorithmEnum {
 
 	/**

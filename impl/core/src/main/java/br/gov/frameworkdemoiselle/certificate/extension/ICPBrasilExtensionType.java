@@ -37,6 +37,12 @@
 
 package br.gov.frameworkdemoiselle.certificate.extension;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public enum ICPBrasilExtensionType {
 
 	CPF, CNPJ, CEI, CEI_PESSOA_FISICA, CEI_PESSOA_JURIDICA, PIS_PASEP, NIS, NOME, NOME_RESPONSAVEL_PESSOA_JURIDICA, EMAIL, DATA_NASCIMENTO, NUMERO_IDENTIDADE, ORGAO_EXPEDIDOR_IDENTIDADE, UF_ORGAO_EXPEDIDOR_IDENTIDADE, NUMERO_TITULO_ELEITOR, ZONA_TITULO_ELEITOR, SECAO_TITULO_ELEITOR, MUNICIPIO_TITULO_ELEITOR, UF_TITULO_ELEITOR, NOME_EMPRESARIAL, TIPO_CERTIFICADO, NIVEL_CERTIFICADO;

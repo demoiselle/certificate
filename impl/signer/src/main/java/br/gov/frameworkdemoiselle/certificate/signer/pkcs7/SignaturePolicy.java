@@ -42,7 +42,12 @@ import java.security.cert.X509Certificate;
 import br.gov.frameworkdemoiselle.certificate.signer.SignerAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningCertificate;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public interface SignaturePolicy {
 
     abstract public SignaturePolicyId getSignaturePolicyId();

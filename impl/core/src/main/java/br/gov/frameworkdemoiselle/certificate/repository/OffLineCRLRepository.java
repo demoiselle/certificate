@@ -61,7 +61,11 @@ import br.gov.frameworkdemoiselle.certificate.util.RepositoryUtil;
  * Implementação de um repositorio Offline. Neste caso apenas o file system será
  * utilizado para recuperar as arquivos CRL. Recomenda-se neste caso de haja
  * algum serviço atualizando constantemente estas CRLs
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class OffLineCRLRepository implements CRLRepository {
 
     private static final Logger logger = Logger.getLogger(OffLineCRLRepository.class.getName());

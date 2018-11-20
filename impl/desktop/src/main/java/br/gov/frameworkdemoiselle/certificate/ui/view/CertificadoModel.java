@@ -49,6 +49,7 @@ import br.gov.frameworkdemoiselle.certificate.ui.tiny.Item;
 /**
  * @author SUPST/STDCS
 */
+@Deprecated
 public class CertificadoModel extends AbstractTableModel {
 
     private Object[][] dados;

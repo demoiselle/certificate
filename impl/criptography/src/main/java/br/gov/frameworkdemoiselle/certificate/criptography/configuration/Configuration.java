@@ -39,7 +39,12 @@ package br.gov.frameworkdemoiselle.certificate.criptography.configuration;
 
 /**
  * Classe responsável por concentrar as configurações deste componente
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class Configuration {
 
 	private static final Configuration instance = new Configuration();

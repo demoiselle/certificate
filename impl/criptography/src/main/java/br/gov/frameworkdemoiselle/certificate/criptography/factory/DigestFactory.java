@@ -42,7 +42,12 @@ import br.gov.frameworkdemoiselle.certificate.criptography.implementation.Digest
 
 /**
  * Fábrica especializada em fabricar objetos da interface {@link Digest}
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class DigestFactory extends GenericFactory<Digest> {
 
 	public static final DigestFactory instance = new DigestFactory();

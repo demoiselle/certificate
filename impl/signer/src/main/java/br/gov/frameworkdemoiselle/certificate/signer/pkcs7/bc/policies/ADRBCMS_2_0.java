@@ -92,7 +92,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
  *
  * @author SUPST/STDCS
  *
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class ADRBCMS_2_0 implements SignaturePolicy {
 
     private final int keySize = 2048;

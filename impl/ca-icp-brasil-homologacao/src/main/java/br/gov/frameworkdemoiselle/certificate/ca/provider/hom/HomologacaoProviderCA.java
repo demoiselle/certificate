@@ -43,9 +43,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
+
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCA;
 
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class HomologacaoProviderCA implements ProviderCA {
 
 	private static final Logger LOGGER = Logger.getLogger(HomologacaoProviderCA.class.getName());

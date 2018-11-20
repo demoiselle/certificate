@@ -46,6 +46,12 @@ import java.util.List;
 
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ADRBCMS_1_1_RootCAs implements ProviderSignaturePolicyRootCA {
 
     @Override

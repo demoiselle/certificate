@@ -37,6 +37,12 @@
 
 package br.gov.frameworkdemoiselle.certificate.keystore.loader;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class DriverNotAvailableException extends KeyStoreLoaderException {
 
 	private static final long serialVersionUID = 1L;

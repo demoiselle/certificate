@@ -41,6 +41,12 @@ import java.lang.reflect.Constructor;
 
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public enum BCAdapter {
 
 	MessageDigest(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.MessageDigest.class, BCMessageDigest.class), SigningTime(br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigningTime.class, BCSigningTime.class), SignaturePolicyIdentifier(

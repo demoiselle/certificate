@@ -41,7 +41,12 @@ import br.gov.frameworkdemoiselle.certificate.criptography.implementation.Cripto
 
 /**
  * Fábrica especializada em fabricar objetos da interface {@link Criptography}
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CriptographyFactory extends GenericFactory<Criptography> {
 
 	public static final CriptographyFactory instance = new CriptographyFactory();

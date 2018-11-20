@@ -42,7 +42,12 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
  * rsadsi(113549) pkcs(1) pkcs9(9) smime(16) id-spq(5) 1 }
  * 
  * SPuri ::= IA5String
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class SigPolicyQualifierInfoURL extends SigPolicyQualifierInfo {
 
 	private String url;

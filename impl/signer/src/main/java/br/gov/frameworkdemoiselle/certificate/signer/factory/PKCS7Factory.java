@@ -42,7 +42,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.CAdESSigner;
 
 /**
  * Fábrica especializada em fabricar objetos da interface {@link PKCS7Signer}
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class PKCS7Factory extends GenericFactory<PKCS7Signer> {
 
 	public static final PKCS7Factory instance = new PKCS7Factory();

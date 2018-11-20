@@ -40,6 +40,12 @@ package br.gov.frameworkdemoiselle.certificate.ca.provider;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public interface ProviderSignaturePolicyRootCA {
 
     public Collection<X509Certificate> getCAs();

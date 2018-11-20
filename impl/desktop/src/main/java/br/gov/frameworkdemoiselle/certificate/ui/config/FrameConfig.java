@@ -41,7 +41,9 @@ import java.util.ResourceBundle;
 
 /**
  * @author SUPST/STDCS
+ *
  */
+@Deprecated
 public enum FrameConfig {
 
 	MESSAGE_ERROR_DRIVER_NOT_AVAILABLE("message.error.driver.not.available"), 

@@ -43,7 +43,12 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class Base64Utils {
 
 	private static final String X509_CERTIFICATE_TYPE = "X.509";

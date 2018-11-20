@@ -1,5 +1,5 @@
 package br.gov.frameworkdemoiselle.certificate.ui.util;
-
+@Deprecated
 public class AuthorizationException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
 

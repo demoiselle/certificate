@@ -58,7 +58,11 @@ import br.gov.frameworkdemoiselle.certificate.criptography.implementation.Cripto
  * ou assimétrico, depende apenas de sua implementação.
  * 
  * @see {@link CriptographyImpl}
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface Criptography {
 
 	/**

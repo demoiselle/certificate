@@ -38,7 +38,11 @@ package br.gov.frameworkdemoiselle.certificate.criptography;
 
 /**
  * Define os algoritmos de resumo padrão ICP-Brasil
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public enum DigestAlgorithmEnum {
 
     SHA_1("SHA-1"), SHA_256("SHA-256"), SHA_512("SHA-512"), MD5("MD5");

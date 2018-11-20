@@ -72,7 +72,12 @@ import org.bouncycastle.x509.extension.X509ExtensionUtil;
  *
  *
  * @author CETEC/CTCTA
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
+ 
 public class BasicCertificate {
 
     private static final Logger LOGGER = Logger.getLogger(BasicCertificate.class.getName());

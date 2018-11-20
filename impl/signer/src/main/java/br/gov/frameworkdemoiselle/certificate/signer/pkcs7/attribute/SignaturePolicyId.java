@@ -45,7 +45,12 @@ import java.util.HashSet;
  * SigPolicyHash, sigPolicyQualifiers SEQUENCE SIZE (1..MAX) OF
  * SigPolicyQualifierInfo OPTIONAL}
  * 
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class SignaturePolicyId {
 
 	private String sigPolicyId;

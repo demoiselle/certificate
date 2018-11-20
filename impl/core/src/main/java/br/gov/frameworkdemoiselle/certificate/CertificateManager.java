@@ -46,7 +46,12 @@ import java.util.Collection;
 
 import br.gov.frameworkdemoiselle.certificate.validator.CRLValidator;
 import br.gov.frameworkdemoiselle.certificate.validator.PeriodValidator;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class CertificateManager {
 
 	private X509Certificate x509;

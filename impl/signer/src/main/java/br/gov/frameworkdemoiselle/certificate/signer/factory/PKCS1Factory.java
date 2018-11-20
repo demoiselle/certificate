@@ -42,7 +42,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs1.impl.PKCS1SignerImpl;
 
 /**
  * Fábrica especializada em fabricar objetos da interface {@link PKCS1Signer}
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class PKCS1Factory extends GenericFactory<PKCS1Signer> {
 
 	public static final PKCS1Factory instance = new PKCS1Factory();

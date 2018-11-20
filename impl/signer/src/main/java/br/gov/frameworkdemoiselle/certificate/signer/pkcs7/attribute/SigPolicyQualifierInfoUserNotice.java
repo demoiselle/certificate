@@ -54,7 +54,12 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
  * 
  * TODO: Implementar sequencias de NoticeReference
  * 
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class SigPolicyQualifierInfoUserNotice extends SigPolicyQualifierInfo {
 
 	private String organization = null;

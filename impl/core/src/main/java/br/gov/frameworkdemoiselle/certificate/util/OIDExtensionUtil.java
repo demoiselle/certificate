@@ -41,7 +41,12 @@ import java.io.UnsupportedEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class OIDExtensionUtil {
 
 	private final X509Certificate x509;

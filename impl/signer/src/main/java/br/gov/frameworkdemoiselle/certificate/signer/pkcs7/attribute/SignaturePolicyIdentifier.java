@@ -46,7 +46,12 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
  * 
  * SignaturePolicyIdentifier ::= CHOICE { signaturePolicyId SignaturePolicyId,
  * signaturePolicyImplied SignaturePolicyImplied -- not used in this version }
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class SignaturePolicyIdentifier implements SignedAttribute {
 
 	private SignaturePolicyId signaturePolicyId = null;

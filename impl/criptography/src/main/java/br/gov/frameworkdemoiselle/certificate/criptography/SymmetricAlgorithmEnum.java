@@ -47,7 +47,11 @@ package br.gov.frameworkdemoiselle.certificate.criptography;
  * 
  * Para mais informações, ler documento PADRÕES E ALGORITMOS CRIPTOGRÁFICOS DA
  * ICP-BRASIL (DOC ICP-01.01)
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public enum SymmetricAlgorithmEnum {
 
 	TRI_DES("DESede", "DESede/ECB/PKCS5Padding", 112), AES("AES", "AES/ECB/PKCS5Padding", 128);

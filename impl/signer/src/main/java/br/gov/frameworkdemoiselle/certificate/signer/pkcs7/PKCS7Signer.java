@@ -47,7 +47,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
 /**
  * Especificação básica para implementação de assinaturas digitais Formato
  * PKCS7.
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface PKCS7Signer extends Signer {
 
 	abstract public void setCertificate(X509Certificate certificate);

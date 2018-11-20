@@ -42,7 +42,12 @@ import java.security.cert.X509Certificate;
 
 import br.gov.frameworkdemoiselle.certificate.CertificateException;
 import br.gov.frameworkdemoiselle.certificate.IOIDExtensionLoader;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ICPBrasilExtensionLoader implements IOIDExtensionLoader {
 
 	@Override

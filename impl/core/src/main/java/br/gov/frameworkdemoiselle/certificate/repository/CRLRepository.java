@@ -45,7 +45,11 @@ import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
 
 /**
  * Representa um repositorio de CRL
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface CRLRepository {
 
 	/**

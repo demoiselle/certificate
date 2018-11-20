@@ -46,7 +46,11 @@ import br.gov.frameworkdemoiselle.certificate.criptography.implementation.Digest
  * Define o comportamento padrão para utilização de algoritmos de resumo.
  * 
  * @see {@link DigestImpl}
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface Digest {
 
 	/**

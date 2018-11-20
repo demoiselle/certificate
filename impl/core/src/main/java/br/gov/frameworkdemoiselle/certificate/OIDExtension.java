@@ -44,6 +44,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.ANNOTATION_TYPE)

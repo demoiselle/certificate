@@ -43,7 +43,11 @@ import java.security.cert.X509Certificate;
 
 /**
  * Carregamento de Certificados Digitais.
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface CertificateLoader {
 
 	/**

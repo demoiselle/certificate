@@ -56,7 +56,11 @@ import org.bouncycastle.asn1.DERUTF8String;
  * padroes definidos no DOC­ICP­04 pela ICP­BRASIL
  *
  * @author Humberto Pacheco - SERVICO FEDERAL DE PROCESSAMENTO DE DADOS
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class OIDGeneric {
 
     private static final Logger LOGGER = Logger.getLogger(OIDGeneric.class.getName());

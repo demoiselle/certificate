@@ -58,7 +58,11 @@ import br.gov.frameworkdemoiselle.certificate.extension.ICPBR_CRL;
  * para atualização das CRL. O Repositório deve primeiramente buscar a arquivo
  * no file system, caso o mesmo não se encontre ou ja esteja expirado ele obterá
  * a CRL a partir de sua URL.
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class OnLineCRLRepository implements CRLRepository {
 
     private static final Logger LOGGER = Logger.getLogger(OnLineCRLRepository.class.getName());

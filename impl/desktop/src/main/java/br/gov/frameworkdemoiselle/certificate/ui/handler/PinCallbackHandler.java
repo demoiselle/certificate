@@ -57,6 +57,7 @@ import javax.swing.JTextField;
 /**
  * @author SUPST/STDCS
 */
+@Deprecated
 public class PinCallbackHandler implements CallbackHandler {
 
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {

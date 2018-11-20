@@ -45,7 +45,11 @@ import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_9;
  * Implemented Class for ICP-BRASIL (DOC-ICP-04) "PESSOA FISICA" Certificates.
  *
  * @see ICPBRSubjectAlternativeNames
+  * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class ICPBRCertificatePF {
 
     private OID_2_16_76_1_3_1 oid_2_16_76_1_3_1 = null;

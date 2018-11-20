@@ -40,6 +40,12 @@ package br.gov.frameworkdemoiselle.certificate.keystore.loader;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class KeyStoreLoaderException extends RuntimeException {
 
 	private static final long serialVersionUID = -8414095761444262719L;

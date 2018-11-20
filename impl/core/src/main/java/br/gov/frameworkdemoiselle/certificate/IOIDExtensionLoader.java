@@ -40,6 +40,12 @@ package br.gov.frameworkdemoiselle.certificate;
 import java.lang.reflect.Field;
 import java.security.cert.X509Certificate;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public interface IOIDExtensionLoader {
 
 	public void load(Object object, Field field, X509Certificate x509);

@@ -43,7 +43,9 @@ import br.gov.frameworkdemoiselle.certificate.ui.view.MainFrame;
 
 /**
   * @author SUPST/STDCS
+  * 
  */
+@Deprecated
 public abstract class AbstractFrameExecute implements FrameExecute {
 
     @Override

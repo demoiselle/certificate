@@ -57,6 +57,12 @@ import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderCAFactory;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCA;
 import br.gov.frameworkdemoiselle.certificate.ca.provider.ProviderSignaturePolicyRootCAFactory;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class CAManager {
 
 	private static final CAManager instance = new CAManager();

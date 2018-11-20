@@ -87,7 +87,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.util.ValidadorUtil;
  * definina no documento: REQUISITOS DAS POLÍTICAS DE ASSINATURA DIGITAL NA
  * ICP-BRASIL - DOC-ICP-15.03 - Versão 2.0 - 05 de abril de 2010
  *
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class ADRBCMS_1_0 implements SignaturePolicy {
 
     private final int keySize = 1024;

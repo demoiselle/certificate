@@ -35,7 +35,12 @@
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class FileName implements SignedAttribute {
 
     private String fileName;

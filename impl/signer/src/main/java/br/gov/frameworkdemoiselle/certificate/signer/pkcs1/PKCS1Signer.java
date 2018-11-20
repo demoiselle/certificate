@@ -42,7 +42,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.Signer;
 /**
  * Especificação básica para implementação de assinaturas digitais Formato
  * PKCS1.
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface PKCS1Signer extends Signer {
 
 }

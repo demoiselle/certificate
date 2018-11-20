@@ -44,7 +44,11 @@ import javax.security.auth.callback.CallbackHandler;
  * Especificação de um KeyStoreLoader. A maioria dos providers pedem o PIN
  * number na hora de acessar o recurso. Um PIN Number é a senha de acesso ao
  * token/smart card.
+  * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface KeyStoreLoader {
 
 	public KeyStore getKeyStore();

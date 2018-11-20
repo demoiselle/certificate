@@ -39,7 +39,11 @@ package br.gov.frameworkdemoiselle.certificate.repository;
 
 /**
  * Fábrica de Repository.
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CRLRepositoryFactory {
 
 	/**

@@ -62,7 +62,11 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.configuration.Conf
  * Implementação de KeyStoreLoader baseado em drivers do sistema operacional. É
  * necessário informar o arquivo do driver no sistema operacional e o nome da
  * API.
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class DriverKeyStoreLoader implements KeyStoreLoader {
 
 	private static final String PINNUMBER_INVALID = "PIN access to token can not be null or invalid";

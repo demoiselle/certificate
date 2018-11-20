@@ -54,7 +54,11 @@ import java.util.logging.Logger;
  *
  * @author CETEC/CTCTA
  *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class OID_1_3_6_1_4_1_311_20_2_3 extends OIDGeneric {
 
     private static final Logger logger = Logger.getLogger(OID_1_3_6_1_4_1_311_20_2_3.class.getName());

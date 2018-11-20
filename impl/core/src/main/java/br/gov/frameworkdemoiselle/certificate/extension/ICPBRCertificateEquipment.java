@@ -51,8 +51,11 @@ import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_8;
  * Certificates.
  * 
  * @see ICPBRSubjectAlternativeNames
+  * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
-
+@Deprecated
 public class ICPBRCertificateEquipment {
 
 	private OID_2_16_76_1_3_2 oID_2_16_76_1_3_2 = null;

@@ -52,7 +52,11 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderExce
 /**
  * Implementação de KeyStoreLoader baseado no Provider específico do Windows que
  * acompanha a distribuição da Sun JVM 1.6.
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class MSKeyStoreLoader implements KeyStoreLoader {
 
 	protected static final String MS_PROVIDER = "SunMSCAPI";

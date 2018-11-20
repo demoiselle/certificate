@@ -25,7 +25,7 @@
 	<packaging>pom</packaging>
 
 	<name>Demoiselle Certificate Parent</name>
-	<description />
+	<description > ** PROJETO DESCONTINUADO  veja https://github.com/demoiselle/signer </description>
 	<url>http://www.frameworkdemoiselle.gov.br</url>
 
 	<parent>

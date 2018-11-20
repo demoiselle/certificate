@@ -43,7 +43,12 @@ package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute;
  * Há um conjunto de atributos que são por natureza obrigatórios para o formato
  * CAdES. Dependendo da política de assinatura, mais atributos podem ser
  * obrigatórios.
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface Attribute {
 
 	/**

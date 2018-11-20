@@ -51,7 +51,12 @@ import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoaderExce
  * componente.<br>
  * É possível adicionar um Driver PKCS#11 em tempo de execução, não restringindo
  * a utilização apenas dos drivers configurados no componente.
+
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class Configuration {
 
     private static final Logger LOGGER = Logger.getLogger(Configuration.class.getName());

@@ -40,6 +40,12 @@ import java.security.cert.X509Certificate;
 
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class SigningCertificateV2 extends SigningCertificate {
 
     private String algorithmHash = DigestAlgorithmEnum.SHA_256.getAlgorithm();

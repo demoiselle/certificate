@@ -46,7 +46,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.SignerException;
  * 
  * @see {@link PKCS1Factory}, {@link PKCS7Factory}
  * 
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 abstract public class GenericFactory<F> {
 
 	private String className = null;

@@ -49,6 +49,12 @@ import java.security.cert.X509Certificate;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.KeyStoreLoader;
 import br.gov.frameworkdemoiselle.certificate.keystore.loader.factory.KeyStoreLoaderFactory;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer/">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class CertificateLoaderImpl implements CertificateLoader {
 
 	private KeyStore keyStore;

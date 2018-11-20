@@ -36,7 +36,12 @@
  */
 
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.attribute;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.Attribute;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignedAttribute;
 

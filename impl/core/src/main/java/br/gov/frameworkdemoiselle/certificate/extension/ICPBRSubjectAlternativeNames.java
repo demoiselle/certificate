@@ -39,6 +39,12 @@ package br.gov.frameworkdemoiselle.certificate.extension;
 import java.security.cert.X509Certificate;
 import java.util.logging.Logger;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ICPBRSubjectAlternativeNames {
 
     private static final Logger LOGGER = Logger.getLogger(ICPBRSubjectAlternativeNames.class.getName());

@@ -53,7 +53,12 @@ import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SigPolicyQualifierInfoURL;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyId;
 import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.SignaturePolicyIdentifier;
-
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class BCSignaturePolicyIdentifier extends BCSignedAttribute {
 
     public BCSignaturePolicyIdentifier(SignaturePolicyIdentifier signaturePolicyIdentifier) {

@@ -37,6 +37,12 @@
 
 package br.gov.frameworkdemoiselle.certificate.extension;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public enum DefaultExtensionType {
 
 	BEFORE_DATE, AFTER_DATE, CERTIFICATION_AUTHORITY, CRL_URL, SERIAL_NUMBER, ISSUER_DN, SUBJECT_DN, KEY_USAGE, PATH_LENGTH, AUTHORITY_KEY_IDENTIFIER, SUBJECT_KEY_IDENTIFIER;

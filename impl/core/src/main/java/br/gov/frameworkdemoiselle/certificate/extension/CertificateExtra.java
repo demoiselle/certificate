@@ -62,7 +62,11 @@ import br.gov.frameworkdemoiselle.certificate.oid.OID_2_16_76_1_3_9;
  * rules to PESSOA FISICA, PESSOA JURIDICA and EQUIPAMENTO/APLICAÇÃO
  *
  * @author CETEC/CTCTA
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CertificateExtra {
 
     private static final Logger LOGGER = Logger.getLogger(CertificateExtra.class.getName());

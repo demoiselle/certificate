@@ -42,7 +42,12 @@ import java.security.PublicKey;
 
 /**
  * Especificação básica para implementação de assinaturas digitais.
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public interface Signer {
 
     /**

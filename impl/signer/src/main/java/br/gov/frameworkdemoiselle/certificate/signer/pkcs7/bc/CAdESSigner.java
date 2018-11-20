@@ -100,7 +100,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies.ADRBCMS_1
  * Assinatura de dados no formato PKCS#7 Implementalção baseada na RFC5126 -
  * CAdES (http://tools.ietf.org/html/rfc5126) e voltada para uso no âmbito
  * ICP-Brasil.
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class CAdESSigner implements PKCS7Signer {
 
     private static final Logger LOGGER = Logger.getLogger(CAdESSigner.class.getName());

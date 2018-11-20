@@ -37,6 +37,12 @@
 
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public interface OIDICPBrasil {
 
 	public static final String PREFIX_POLICE_ID = "2.16.76.1.7.1.";

@@ -41,6 +41,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+/**
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
+ */
+@Deprecated
 public class ProviderSignaturePolicyRootCAFactory {
 
     private static final ProviderSignaturePolicyRootCAFactory instance = new ProviderSignaturePolicyRootCAFactory();

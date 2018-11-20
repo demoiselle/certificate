@@ -43,7 +43,11 @@ import java.util.logging.Logger;
  * Especifico do INSS (CEI) da pessoa física titular do certificado
  *
  * @author Humberto Pacheco - SERVICO FEDERAL DE PROCESSAMENTO DE DADOS
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public class OID_2_16_76_1_3_6 extends OIDGeneric {
 
     private static final Logger LOGGER = Logger.getLogger(OID_2_16_76_1_3_6.class.getName());

@@ -42,7 +42,12 @@ import br.gov.frameworkdemoiselle.certificate.signer.pkcs7.attribute.UnsignedAtt
 
 /**
  * Conversao de atributos do componente para BouncyCastle
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public abstract class BCUnsignedAttribute extends BCAttribute implements UnsignedAttribute {
 
 	public BCUnsignedAttribute(Attribute attribute) {

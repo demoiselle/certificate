@@ -45,7 +45,12 @@ import br.gov.frameworkdemoiselle.certificate.criptography.configuration.Configu
  * 
  * @see {@link CriptographyFactory}, {@link DigestFactory}
  * 
+ *
+ * @deprecated replaced by Demoiselle SIGNER
+ * @see <a href="https://github.com/demoiselle/signer">https://github.com/demoiselle/signer</a>
+ * 
  */
+@Deprecated
 public abstract class GenericFactory<F> {
 
 	private String className = null;
