@@ -25,13 +25,13 @@
 	<packaging>pom</packaging>
 
 	<name>Demoiselle Certificate Parent</name>
-	<description > ** PROJETO DESCONTINUADO  veja https://github.com/demoiselle/signer </description>
+	<description> ** PROJETO DESCONTINUADO  veja https://github.com/demoiselle/signer </description>
 	<url>http://www.frameworkdemoiselle.gov.br</url>
 
 	<parent>
 		<groupId>br.gov.frameworkdemoiselle.component</groupId>
 		<artifactId>demoiselle-certificate-build</artifactId>
-		<version>1.2.8-SNAPSHOT</version>
+		<version>1.2.8</version>
 		<relativePath>../../</relativePath>
 	</parent>
 

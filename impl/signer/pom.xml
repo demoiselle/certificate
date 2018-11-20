@@ -44,7 +44,7 @@
     <parent>
         <groupId>br.gov.frameworkdemoiselle.component</groupId>
         <artifactId>demoiselle-certificate-parent</artifactId>
-        <version>1.2.8-SNAPSHOT</version>
+        <version>1.2.8</version>
         <relativePath>../../parent/certificate</relativePath>
     </parent>
 
@@ -79,24 +79,24 @@
         <dependency>
             <groupId>br.gov.frameworkdemoiselle.component</groupId>
             <artifactId>demoiselle-certificate-core</artifactId>
-            <version>1.2.8-SNAPSHOT</version>
+            <version>1.2.8</version>
         </dependency>
         <dependency>
             <groupId>br.gov.frameworkdemoiselle.component</groupId>
             <artifactId>demoiselle-certificate-ca-icpbrasil</artifactId>
-            <version>1.2.8-SNAPSHOT</version>
+            <version>1.2.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>br.gov.frameworkdemoiselle.component</groupId>
             <artifactId>demoiselle-certificate-ca-icpbrasil-homologacao</artifactId>
-            <version>1.2.8-SNAPSHOT</version>
+            <version>1.2.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>br.gov.frameworkdemoiselle.component</groupId>
             <artifactId>demoiselle-certificate-criptography</artifactId>
-            <version>1.2.8-SNAPSHOT</version>
+            <version>1.2.8</version>
         </dependency>
     </dependencies>
 
