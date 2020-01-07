@@ -129,9 +129,9 @@ public class ValidadorUtil {
 
         } catch (Throwable error) {
             error.printStackTrace();
-            if (error.getCause() instanceof CertificateExpiredException) {
-                throw new SignerException("O certificado de uma das cadeias está expirado", error);
-            }
+//            if (error.getCause() instanceof CertificateExpiredException) {
+//                throw new SignerException("O certificado de uma das cadeias está expirado", error);
+//            }
 
             try {
                 CAManager.getInstance().validateRootCAs(trustedCas, userCertificate);

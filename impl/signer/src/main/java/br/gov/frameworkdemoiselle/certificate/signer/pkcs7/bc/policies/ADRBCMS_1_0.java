@@ -36,6 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies;
 
+import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
@@ -223,8 +224,13 @@ public class ADRBCMS_1_0 implements SignaturePolicy {
         }
 
         // Valida a cadeia de certificação de um arquivo assinado
-        ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0, CertPathEncoding.PKCS7);
+        //ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0, CertPathEncoding.PKCS7);
 
+        //Recupera o(s) certificado(s) de confianca para validacao
+        Collection<X509Certificate> trustedCas = CAManager.getInstance().getSignaturePolicyRootCAs(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_1_0);
+        //Efetua a validacao das cadeias do certificado baseado na politica
+        CAManager.getInstance().validateRootCAs(trustedCas, certificate);
+        
         Date dataSigner = null;
         try {
             org.bouncycastle.asn1.cms.Attribute attributeSigningTime = signedAttributesTable.get(CMSAttributes.signingTime);

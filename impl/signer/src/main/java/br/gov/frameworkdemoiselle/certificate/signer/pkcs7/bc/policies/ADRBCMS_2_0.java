@@ -36,6 +36,7 @@
  */
 package br.gov.frameworkdemoiselle.certificate.signer.pkcs7.bc.policies;
 
+import br.gov.frameworkdemoiselle.certificate.ca.manager.CAManager;
 import br.gov.frameworkdemoiselle.certificate.criptography.Digest;
 import br.gov.frameworkdemoiselle.certificate.criptography.DigestAlgorithmEnum;
 import br.gov.frameworkdemoiselle.certificate.criptography.factory.DigestFactory;
@@ -222,6 +223,11 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
 
         // Valida a cadeia de certificação de um arquivo assinado
         //ValidadorUtil.validate(contentSigned, OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0, CertPathEncoding.PKCS7);
+        
+        //Recupera o(s) certificado(s) de confianca para validacao
+        Collection<X509Certificate> trustedCas = CAManager.getInstance().getSignaturePolicyRootCAs(OIDICPBrasil.POLICY_ID_AD_RB_CMS_V_2_0);
+        //Efetua a validacao das cadeias do certificado baseado na politica
+        CAManager.getInstance().validateRootCAs(trustedCas, certificate);
 
         Date dataSigner = null;
         try {
@@ -278,7 +284,6 @@ public class ADRBCMS_2_0 implements SignaturePolicy {
 
         /*
          * Assinaturas digitais geradas segundo esta Política de Assinatura
-         * deverão ser criadas com chave privada associada ao certificado
          * ICP-Brasil * tipo A1 (do OID 2.16.76.1.2.1.1 ao OID
          * 2.16.76.1.2.1.100), tipo A2 (do OID 2.16.76.1.2.2.1 ao OID
          * 2.16.76.1.2.2.100), do tipo A3 (do OID 2.16.76.1.2.3.1 ao OID
